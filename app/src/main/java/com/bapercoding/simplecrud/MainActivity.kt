@@ -4,8 +4,11 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.ActionBar
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
@@ -17,13 +20,19 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    var arrayList = ArrayList<Students>()
+    var arrayList = ArrayList<Kdramas>()
+    private var list: java.util.ArrayList<Film> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportActionBar?.title = "Data Mahasiswa"
+
+        this.getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+        getSupportActionBar()?.setDisplayShowCustomEnabled(true)
+        getSupportActionBar()?.setCustomView(R.layout.custom_action_bar)
+
+        list.addAll(Data.listData)
 
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -39,6 +48,20 @@ class MainActivity : AppCompatActivity() {
         loadAllStudents()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.about_item) {
+            val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
+            startActivity(intentAboutMe)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private fun loadAllStudents(){
 
@@ -46,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         loading.setMessage("Memuat data...")
         loading.show()
 
-        AndroidNetworking.get(ApiEndPoint.READ)
+        AndroidNetworking.get(ApiEndPoint.READ2)
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(object : JSONObjectRequestListener{
@@ -65,15 +88,15 @@ class MainActivity : AppCompatActivity() {
                         for(i in 0 until jsonArray?.length()!!){
 
                             val jsonObject = jsonArray?.optJSONObject(i)
-                            arrayList.add(Students(jsonObject.getString("nim"),
-                                    jsonObject.getString("name"),
-                                    jsonObject.getString("address"),
-                                    jsonObject.getString("gender")))
+                            arrayList.add(Kdramas(jsonObject.getString("judul"),
+                                    jsonObject.getString("rating"),
+                                    jsonObject.getString("episode"),
+                                    jsonObject.getString("sinopsis")))
 
                             if(jsonArray?.length() - 1 == i){
 
                                 loading.dismiss()
-                                val adapter = RVAAdapterStudent(applicationContext,arrayList)
+                                val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
                                 adapter.notifyDataSetChanged()
                                 mRecyclerView.adapter = adapter
 

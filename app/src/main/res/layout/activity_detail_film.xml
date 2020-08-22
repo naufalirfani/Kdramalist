@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:id="@+id/relativeLayout"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+            android:id="@+id/tv_data_received"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#03A9F4"
+            android:textSize="24sp"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/nama_film" />
+    <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="56dp"
+            android:background="@android:color/white"
+            app:tabTextAppearance="@style/MyCustomTabText"
+            app:tabTextColor="#03A9F4"
+            app:tabIndicatorColor="#03A9F4"/>
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:layout_marginTop="82dp"/>
+    <LinearLayout
+            android:id="@+id/db1_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:id="@+id/db2_root"
+                android:gravity="right|bottom"
+                android:orientation="vertical" >
+
+            <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/mFloatingActionButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_add_black_24dp"
+                    tools:ignore="VectorDrawableCompat"
+                    android:focusable="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
