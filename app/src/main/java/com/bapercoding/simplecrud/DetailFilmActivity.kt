@@ -134,7 +134,7 @@ class DetailFilmActivity : AppCompatActivity() {
                     mFloatingActionButton2.visibility = View.GONE
 
                 } else if (tabLayout1.selectedTabPosition == 1) {
-                    var listPhoto = ArrayList<Photo>()
+                    val listPhoto = ArrayList<Photo>()
                     listPhoto.add(Photo(getResources().getIdentifier("comingsoon", "drawable", getPackageName())))
 
                     val adapter = PhotoFilmAdapter(applicationContext,listPhoto)
@@ -144,7 +144,7 @@ class DetailFilmActivity : AppCompatActivity() {
                     mFloatingActionButton2.visibility = View.GONE
 
                 } else if (tabLayout1.selectedTabPosition == 2) {
-                    var listPhoto = ArrayList<Photo>()
+                    val listPhoto = ArrayList<Photo>()
                     listPhoto.add(Photo(getResources().getIdentifier("comingsoon", "drawable", getPackageName())))
 
                     val adapter = PhotoFilmAdapter(applicationContext,listPhoto)
@@ -154,7 +154,7 @@ class DetailFilmActivity : AppCompatActivity() {
                     mFloatingActionButton2.visibility = View.GONE
 
                 } else if (tabLayout1.selectedTabPosition == 3) {
-                    var listPhoto = ArrayList<Photo>()
+                    val listPhoto = ArrayList<Photo>()
                     for(position in 0 until (iterator.size-1)){
                         val nama = "${iterator[letak]}${iterator[position]}"
                         listPhoto.add(Photo(getResources().getIdentifier(nama, "drawable", getPackageName())))
