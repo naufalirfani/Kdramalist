@@ -2,10 +2,12 @@ package com.bapercoding.simplecrud
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v7.app.ActionBar
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +20,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
+
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     var arrayList = ArrayList<Kdramas>()
@@ -34,8 +38,17 @@ class MainActivity : AppCompatActivity() {
 
         list.addAll(Data.listData)
 
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mRecyclerView1.setHasFixedSize(true)
+        mRecyclerView1.layoutManager = LinearLayoutManager(this)
+        mRecyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0)
+                    searchLayout.visibility = View.GONE
+                else if (dy < 0)
+                    searchLayout.visibility = View.VISIBLE
+
+            }
+        })
 
         mFloatingActionButton.setOnClickListener{
             startActivity(Intent(this, ManageStudentActivity::class.java))
@@ -98,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                                 loading.dismiss()
                                 val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
                                 adapter.notifyDataSetChanged()
-                                mRecyclerView.adapter = adapter
+                                mRecyclerView1.adapter = adapter
 
                             }
 
@@ -115,5 +128,4 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
 }

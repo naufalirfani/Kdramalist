@@ -9,7 +9,7 @@ class ApiEndPoint {
         val READ = SERVER+"read.php"
         val DELETE = SERVER+"delete.php"
         val UPDATE = SERVER+"update.php"
-        private val SERVER2 = "http://192.168.42.3/kdrama/simplecrud/"
+        private val SERVER2 = "http://192.168.42.84/kdrama/simplecrud/"
         val CREATE2 = SERVER2+"create.php"
         val READ2 = SERVER2+"read.php"
         val DELETE2 = SERVER2+"delete.php"

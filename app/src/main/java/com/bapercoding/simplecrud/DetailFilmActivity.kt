@@ -13,7 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_detail_film.*
-import kotlinx.android.synthetic.main.activity_main.mRecyclerView
+import kotlinx.android.synthetic.main.activity_main.mRecyclerView1
 
 class DetailFilmActivity : AppCompatActivity() {
 
