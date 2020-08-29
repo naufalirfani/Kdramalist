@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
 
         this.supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
-        getSupportActionBar()?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setDisplayShowCustomEnabled(true)
         getSupportActionBar()?.setCustomView(R.layout.custom_action_bar)
 
         list.addAll(Data.listData)
