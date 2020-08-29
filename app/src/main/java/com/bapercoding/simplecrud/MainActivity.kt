@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        this.getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+        this.supportActionBar?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
         getSupportActionBar()?.setDisplayShowCustomEnabled(true)
         getSupportActionBar()?.setCustomView(R.layout.custom_action_bar)
 
