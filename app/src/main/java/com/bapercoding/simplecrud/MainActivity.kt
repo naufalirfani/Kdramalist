@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
                 //show button when not on top
                 val visibility = if ((mRecyclerView1.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() !== 0) View.VISIBLE else View.GONE
-                btn_back_to_top.setVisibility(visibility)
+                btn_back_to_top.visibility = visibility
 
                 //hide layout when scroll down
                 if (dy > 0){
