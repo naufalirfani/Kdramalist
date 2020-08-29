@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar?.setDisplayShowCustomEnabled(true)
-        getSupportActionBar()?.setCustomView(R.layout.custom_action_bar)
+        supportActionBar?.setCustomView(R.layout.custom_action_bar)
 
         list.addAll(Data.listData)
         searchLayout.visibility = View.GONE
