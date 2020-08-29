@@ -1,5 +1,6 @@
 package com.bapercoding.simplecrud
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -29,8 +30,16 @@ class AboutMe : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intentMain = Intent(this@AboutMe, MainActivity::class.java)
+        startActivity(intentMain)
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
+
 }

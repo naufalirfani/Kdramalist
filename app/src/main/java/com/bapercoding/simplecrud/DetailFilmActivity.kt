@@ -1,6 +1,7 @@
 package com.bapercoding.simplecrud
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -13,7 +14,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_detail_film.*
-import kotlinx.android.synthetic.main.activity_main.mRecyclerView1
+import kotlinx.android.synthetic.main.activity_main.*
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -61,6 +62,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         list.addAll(Data.listData)
 
+
 //        val bottomBorder: LayerDrawable? = getBorders(Color.WHITE, Color.LTGRAY,0,0,0,15)
 //        tvDetail.setBackground(bottomBorder)
 
@@ -84,6 +86,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
+        startActivity(intentMain)
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
     }
     override fun onSupportNavigateUp(): Boolean {

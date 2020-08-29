@@ -1,56 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+        android:background="#b3e5fc"
         android:orientation="vertical">
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/searchLayout"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-        <EditText
-                android:id="@+id/mytextText"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:background="@android:color/transparent"
-                android:hint="@string/find_korean_dramas"
-                android:layout_height="match_parent">
-        </EditText>
-        <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/mFloatingActionButton3"
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/searchLayout"
+                android:background="#FFFFFF"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:backgroundTint="#FFFFFF"
-                app:srcCompat="@drawable/ic_search_black_24dp"
-                tools:ignore="VectorDrawableCompat"
-                android:focusable="true" />
+                android:orientation="horizontal" >
+            <EditText
+                    android:id="@+id/mytextText"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:paddingLeft="8dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/find_korean_dramas"
+                    android:layout_height="match_parent">
+            </EditText>
+            <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/btn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:backgroundTint="#FFFFFF"
+                    app:srcCompat="@drawable/ic_search_black_24dp"
+                    tools:ignore="VectorDrawableCompat"
+                    android:focusable="true" />
 
+        </LinearLayout>
+        <TextView
+                android:id="@+id/tv_nothing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="16dp"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:textColor="#03A9F4"
+                android:background="#FFFFFF"
+                android:textStyle="normal"
+                tools:text="@string/nothing_found" />
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/mRecyclerView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/db1_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:id="@+id/db2_root"
+                android:gravity="right|bottom"
+                android:orientation="vertical" >
+
+            <Button
+                    android:id="@+id/btn_back_to_top"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|right"
+                    android:background="@drawable/buttonshape"
+                    android:drawableStart="@drawable/ic_arrow_upward_white_24dp"
+                    android:textColor="#FFFFFF"
+                    android:padding="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="8dp"
+                    android:alpha="0.5"
+                    android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRecyclerView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/mFloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        tools:ignore="VectorDrawableCompat" />
-
-</LinearLayout>
+</RelativeLayout>
