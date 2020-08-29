@@ -153,13 +153,13 @@ class MainActivity : AppCompatActivity() {
 
                         for(i in 0 until jsonArray?.length()!!){
 
-                            val jsonObject = jsonArray?.optJSONObject(i)
+                            val jsonObject = jsonArray.optJSONObject(i)
                             arrayList.add(Kdramas(jsonObject.getString("judul"),
                                     jsonObject.getString("rating"),
                                     jsonObject.getString("episode"),
                                     jsonObject.getString("sinopsis")))
 
-                            if(jsonArray?.length() - 1 == i){
+                            if(jsonArray.length() - 1 == i){
 
                                 loading.dismiss()
                                 val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
