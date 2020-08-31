@@ -1,20 +1,33 @@
 package com.bapercoding.simplecrud
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.OnTabSelectedListener
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_detail_film.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DetailFilmActivity : AppCompatActivity() {
 
@@ -28,6 +41,7 @@ class DetailFilmActivity : AppCompatActivity() {
     private lateinit var layout4: RecyclerView
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
+    val listPhoto2 = ArrayList<Photo2>()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -172,6 +186,9 @@ class DetailFilmActivity : AppCompatActivity() {
                     mRecyclerView.adapter = adapter
 
                     mFloatingActionButton2.visibility = View.VISIBLE
+                    mFloatingActionButton2.setOnClickListener {
+                        dispatchTakePictureIntent()
+                    }
 
                 }
             }
@@ -179,5 +196,57 @@ class DetailFilmActivity : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+    }
+
+    val REQUEST_TAKE_PHOTO = 1
+
+    private fun dispatchTakePictureIntent() {
+        val options =
+                arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@DetailFilmActivity)
+        builder.setTitle(Html.fromHtml("<font color='#FF7F27'>Add Photo!</font>"))
+        builder.setItems(options) { dialog, item ->
+            if (options[item].equals("Take Photo")) {
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                    takePictureIntent.resolveActivity(packageManager)?.also {
+                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                    }
+                }
+                dialog.dismiss()
+            } else if (options[item].equals("Choose from Gallery")) {
+                val gallery =
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+                startActivityForResult(gallery, 2)
+                dialog.dismiss()
+            } else if (options[item].equals("Cancel")) {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            2 -> if (resultCode == Activity.RESULT_OK) {
+                val selectedImage = data?.data
+                val imageStream = selectedImage?.let { contentResolver.openInputStream(it) }
+                val bitmap = BitmapFactory.decodeStream(imageStream)
+                listPhoto2.add(Photo2(bitmap))
+
+                val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
+                adapter.notifyDataSetChanged()
+                mRecyclerView.adapter = adapter
+            }
+            1 -> if (resultCode == Activity.RESULT_OK) {
+                val imageBitmap = data?.extras?.get("data") as Bitmap
+                listPhoto2.add(Photo2(imageBitmap))
+
+                val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
+                adapter.notifyDataSetChanged()
+                mRecyclerView.adapter = adapter
+                //saveToInternalStorage(myBitmap)
+            }
+        }
     }
 }
