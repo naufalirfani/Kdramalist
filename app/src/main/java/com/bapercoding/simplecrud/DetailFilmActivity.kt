@@ -3,13 +3,13 @@ package com.bapercoding.simplecrud
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.OnTabSelectedListener
@@ -20,15 +20,14 @@ import android.text.Html
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_detail_film.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+@Suppress("DEPRECATION")
 class DetailFilmActivity : AppCompatActivity() {
 
     private var list: ArrayList<Film> = arrayListOf()
@@ -245,8 +244,66 @@ class DetailFilmActivity : AppCompatActivity() {
                 val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
                 adapter.notifyDataSetChanged()
                 mRecyclerView.adapter = adapter
-                //saveToInternalStorage(myBitmap)
+                //saveToInternalStorage(imageBitmap)
             }
         }
     }
+
+    private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
+
+        val namajpg = GenerateNama.randomString(10)
+        val cw = ContextWrapper(applicationContext)
+        // path to /data/data/yourapp/app_data/imageDir
+        val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
+        // Create imageDir
+        val mypath = File(directory, "$namajpg.jpg")
+        var fos: FileOutputStream? = null
+        try {
+            fos = FileOutputStream(mypath)
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            try {
+                fos?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return directory.absolutePath
+    }
+
+    object GenerateNama{
+        const val DATA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        var RANDOM = Random()
+        fun randomString(len: Int): String {
+            val sb = StringBuilder(len)
+            for (i in 0 until len) {
+                sb.append(DATA[RANDOM.nextInt(DATA.length)])
+            }
+            return sb.toString()
+        }
+    }
+
+//    private fun loadImageFromStorage() {
+//        val cw = ContextWrapper(applicationContext)
+//        // path to /data/data/yourapp/app_data/imageDir
+//        val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
+//        val dirlist = directory.listFiles()
+//        try {
+//            for(i in dirlist.indices){
+//                if(i == 0){
+//                    val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
+//                    click_image.setImageBitmap(b)
+//                }
+//                else{
+//                    val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
+//                    click_image.setImageBitmap(b)
+//                }
+//            }
+//        } catch (e: FileNotFoundException) {
+//            e.printStackTrace()
+//        }
+//    }
 }
