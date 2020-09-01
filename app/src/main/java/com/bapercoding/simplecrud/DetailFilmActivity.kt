@@ -272,8 +272,8 @@ class DetailFilmActivity : AppCompatActivity() {
                 loadImage()
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
-                val imgFile = File(currentPhotoPath)
-                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+//                val imgFile = File(currentPhotoPath)
+//                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 //                listPhoto2.add(Photo2(myBitmap))
 //                saveToInternalStorage(imageBitmap)
 //                listPhoto2.add(Photo2(imageBitmap))
