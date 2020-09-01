@@ -238,7 +238,6 @@ class DetailFilmActivity : AppCompatActivity() {
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
                 val cw = ContextWrapper(applicationContext)
-                // path to /data/data/yourapp/app_data/imageDir
                 val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
                 val dirlist = directory.listFiles()
                 try {
