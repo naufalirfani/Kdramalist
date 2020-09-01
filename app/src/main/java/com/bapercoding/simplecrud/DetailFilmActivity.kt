@@ -248,6 +248,7 @@ class DetailFilmActivity : AppCompatActivity() {
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
                 }
+                
                 val imageBitmap = data?.extras?.get("data") as Bitmap
                 saveToInternalStorage(imageBitmap)
 //                listPhoto2.add(Photo2(imageBitmap))
