@@ -261,52 +261,41 @@ class DetailFilmActivity : AppCompatActivity() {
         }
     }
 
-    private fun galleryAddPic() {
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-            val f = File(currentPhotoPath)
-            mediaScanIntent.data = Uri.fromFile(f)
-            sendBroadcast(mediaScanIntent)
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             2 -> if (resultCode == Activity.RESULT_OK) {
-                val selectedImage = data?.data
-                val imageStream = selectedImage?.let { contentResolver.openInputStream(it) }
-                val bitmap = BitmapFactory.decodeStream(imageStream)
-                listPhoto2.add(Photo2(bitmap))
-
-                val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
-                adapter.notifyDataSetChanged()
-                mRecyclerView.adapter = adapter
+//                val selectedImage = data?.data
+//                val imageStream = selectedImage?.let { contentResolver.openInputStream(it) }
+//                val bitmap = BitmapFactory.decodeStream(imageStream)
+//                listPhoto2.add(Photo2(bitmap))
+                loadImage()
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
-//                val cw = ContextWrapper(applicationContext)
-//                val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
-//                val dirlist = directory.listFiles()
-//                try {
-//                    for(i in dirlist.indices){
-//                        val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
-//                        listPhoto2.add(Photo2(b))
-//                    }
-//                } catch (e: FileNotFoundException) {
-//                    e.printStackTrace()
-//                }
-//
-//                galleryAddPic()
                 val imgFile = File(currentPhotoPath)
                 val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-                listPhoto2.add(Photo2(myBitmap))
+//                listPhoto2.add(Photo2(myBitmap))
 //                saveToInternalStorage(imageBitmap)
 //                listPhoto2.add(Photo2(imageBitmap))
-
-                val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
-                adapter.notifyDataSetChanged()
-                mRecyclerView.adapter = adapter
+                loadImage()
             }
         }
+    }
+
+    private fun loadImage(){
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val dirlist = storageDir.listFiles()
+        try {
+            for(i in dirlist.indices){
+                val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
+                listPhoto2.add(Photo2(b))
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
+        adapter.notifyDataSetChanged()
+        mRecyclerView.adapter = adapter
     }
 
     private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
