@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.design.widget.TabLayout
@@ -21,9 +22,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_detail_film.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -238,13 +237,25 @@ class DetailFilmActivity : AppCompatActivity() {
                 mRecyclerView.adapter = adapter
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
+                val cw = ContextWrapper(applicationContext)
+                // path to /data/data/yourapp/app_data/imageDir
+                val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
+                val dirlist = directory.listFiles()
+                try {
+                    for(i in dirlist.indices){
+                        val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
+                        listPhoto2.add(Photo2(b))
+                    }
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                }
                 val imageBitmap = data?.extras?.get("data") as Bitmap
-                listPhoto2.add(Photo2(imageBitmap))
+                saveToInternalStorage(imageBitmap)
+//                listPhoto2.add(Photo2(imageBitmap))
 
                 val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
                 adapter.notifyDataSetChanged()
                 mRecyclerView.adapter = adapter
-                //saveToInternalStorage(imageBitmap)
             }
         }
     }
