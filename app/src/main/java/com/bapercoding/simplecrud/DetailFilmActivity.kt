@@ -249,10 +249,10 @@ class DetailFilmActivity : AppCompatActivity() {
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${judul}")
         return File.createTempFile(
-                "JPEG_${timeStamp}_", /* prefix */
+                "JPEG_${judul}_", /* prefix */
                 ".jpg", /* suffix */
                 storageDir /* directory */
         ).apply {
@@ -283,7 +283,7 @@ class DetailFilmActivity : AppCompatActivity() {
     }
 
     private fun loadImage(){
-        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${judul}")
         val dirlist = storageDir.listFiles()
         try {
             for(i in dirlist.indices){
@@ -303,7 +303,7 @@ class DetailFilmActivity : AppCompatActivity() {
         val namajpg = GenerateNama.randomString(10)
         val cw = ContextWrapper(applicationContext)
         // path to /data/data/yourapp/app_data/imageDir
-        val directory = cw.getDir("imageDir", Context.MODE_PRIVATE)
+        val directory = cw.getDir("imageDir" + "/${judul}", Context.MODE_PRIVATE)
         // Create imageDir
         val mypath = File(directory, "$namajpg.jpg")
         var fos: FileOutputStream? = null
