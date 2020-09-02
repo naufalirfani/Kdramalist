@@ -52,13 +52,13 @@ class DetailFilmActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail_film)
 
         layout = findViewById(R.id.relativeLayout)
-        layout4 = findViewById(R.id.rvPager)
-        layout4.setOnTouchListener(object : OnSwipeTouchListener(this@DetailFilmActivity) {
-            override fun onSwipeRight() {
-                super.onSwipeRight()
-                onBackPressed()
-            }
-        })
+//        layout4 = findViewById(R.id.rvPager)
+//        layout4.setOnTouchListener(object : OnSwipeTouchListener(this@DetailFilmActivity) {
+//            override fun onSwipeRight() {
+//                super.onSwipeRight()
+//                onBackPressed()
+//            }
+//        })
 
         judul = intent.getStringExtra("judul")
         rating = intent.getStringExtra("rating")
@@ -177,22 +177,18 @@ class DetailFilmActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tabLayout1.selectedTabPosition == 0) {
                     mFloatingActionButton2.visibility = View.GONE
-                    rvPager.smoothScrollToPosition(0)
 
                 } else if (tabLayout1.selectedTabPosition == 1) {
                     mFloatingActionButton2.visibility = View.GONE
-                    rvPager.smoothScrollToPosition(1)
 
                 } else if (tabLayout1.selectedTabPosition == 2) {
                     mFloatingActionButton2.visibility = View.GONE
-                    rvPager.smoothScrollToPosition(2)
 
                 } else if (tabLayout1.selectedTabPosition == 3) {
                     mFloatingActionButton2.visibility = View.VISIBLE
                     mFloatingActionButton2.setOnClickListener {
                         dispatchTakePictureIntent()
                     }
-                    rvPager.smoothScrollToPosition(3)
                 }
             }
 
