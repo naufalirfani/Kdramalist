@@ -26,7 +26,6 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_detail_film.*
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -102,6 +101,26 @@ class DetailFilmActivity : AppCompatActivity() {
         rvPager.setHasFixedSize(true)
         rvPager.adapter = RVPagerAdapter(listOf(R.drawable.a_piece,R.drawable.dinner_mate,R.drawable.hospital_playlist,R.drawable.dr_kim))
         PagerSnapHelper().attachToRecyclerView(rvPager)
+
+        rvPager.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val itemPosition: Int = (rvPager?.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (itemPosition == 0) { //  item position of uses
+                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(0)
+                    tab?.select()
+                } else if (itemPosition == 1) { //  item position of side effects
+                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(1)
+                    tab?.select()
+                } else if (itemPosition == 2) { //  item position of how it works
+                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(2)
+                    tab?.select()
+                } else if (itemPosition == 3) { //  item position of precaution
+                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(3)
+                    tab?.select()
+                }
+            }
+        })
     }
 
 
@@ -158,7 +177,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
                     mFloatingActionButton2.visibility = View.GONE
 
-                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),0)
+                    (rvPager?.layoutManager as LinearLayoutManager)
+                            .smoothScrollToPosition(rvPager, RecyclerView.State(),0)
 
                 } else if (tabLayout1.selectedTabPosition == 1) {
                     val listPhoto = ArrayList<Photo>()
@@ -170,7 +190,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
                     mFloatingActionButton2.visibility = View.GONE
 
-                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),1)
+                    (rvPager?.layoutManager as LinearLayoutManager)
+                            .smoothScrollToPosition(rvPager, RecyclerView.State(),1)
 
                 } else if (tabLayout1.selectedTabPosition == 2) {
                     val listPhoto = ArrayList<Photo>()
@@ -182,7 +203,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
                     mFloatingActionButton2.visibility = View.GONE
 
-                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),2)
+                    (rvPager?.layoutManager as LinearLayoutManager)
+                            .smoothScrollToPosition(rvPager, RecyclerView.State(),2)
 
                 } else if (tabLayout1.selectedTabPosition == 3) {
                     val listPhoto = ArrayList<Photo>()
@@ -203,7 +225,8 @@ class DetailFilmActivity : AppCompatActivity() {
                         dispatchTakePictureIntent()
                     }
 
-                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),3)
+                    (rvPager?.layoutManager as LinearLayoutManager)
+                            .smoothScrollToPosition(rvPager, RecyclerView.State(),3)
 
                 }
             }
