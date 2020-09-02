@@ -26,11 +26,17 @@
             app:tabTextColor="#03A9F4"
             app:tabIndicatorColor="#03A9F4"/>
     <android.support.v7.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
+            android:id="@+id/mRecyclerViewH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:layout_marginTop="82dp"/>
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:layout_marginTop="282dp"/>
     <LinearLayout
             android:id="@+id/db1_root"
             android:layout_width="match_parent"
