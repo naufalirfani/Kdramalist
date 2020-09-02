@@ -18,6 +18,7 @@ import android.support.design.widget.TabLayout.OnTabSelectedListener
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.View
@@ -96,6 +97,11 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
 
         tabClick()
+
+        rvPager.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        rvPager.setHasFixedSize(true)
+        rvPager.adapter = RVPagerAdapter(listOf(R.drawable.a_piece,R.drawable.dinner_mate,R.drawable.hospital_playlist,R.drawable.dr_kim))
+        PagerSnapHelper().attachToRecyclerView(rvPager)
     }
 
 

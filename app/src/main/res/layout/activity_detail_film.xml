@@ -26,7 +26,7 @@
             app:tabTextColor="#03A9F4"
             app:tabIndicatorColor="#03A9F4"/>
     <android.support.v7.widget.RecyclerView
-            android:id="@+id/mRecyclerViewH"
+            android:id="@+id/rvPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
