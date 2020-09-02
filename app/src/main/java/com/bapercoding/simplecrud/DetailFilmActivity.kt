@@ -18,6 +18,7 @@ import android.support.design.widget.TabLayout.OnTabSelectedListener
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -25,6 +26,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_detail_film.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,7 +44,7 @@ class DetailFilmActivity : AppCompatActivity() {
     private lateinit var layout4: RecyclerView
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
-    val listPhoto2 = ArrayList<Photo2>()
+    private val listPhoto2 = ArrayList<Photo2>()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,9 +99,18 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabClick()
 
+        val listPhoto3 = ArrayList<Photo>()
+        for(position in 0 until (iterator.size-1)){
+            val nama = "${iterator[letak]}${iterator[position]}"
+            listPhoto3.add(Photo(getResources().getIdentifier(nama, "drawable", getPackageName())))
+            if(nama == "if"){
+                listPhoto3.add(Photo(getResources().getIdentifier("$nama${iterator[position]}", "drawable", getPackageName())))
+            }
+        }
+
         rvPager.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         rvPager.setHasFixedSize(true)
-        rvPager.adapter = RVPagerAdapter(applicationContext,listOf(R.drawable.a_piece,R.drawable.dinner_mate,R.drawable.hospital_playlist,R.drawable.dr_kim))
+        rvPager.adapter = RVPagerAdapter(applicationContext,listOf(1,2,3,4),listPhoto3)
         PagerSnapHelper().attachToRecyclerView(rvPager)
 
         rvPager.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -177,57 +188,25 @@ class DetailFilmActivity : AppCompatActivity() {
 
                     mFloatingActionButton2.visibility = View.GONE
 
-                    (rvPager?.layoutManager as LinearLayoutManager)
-                            .smoothScrollToPosition(rvPager, RecyclerView.State(),0)
+                    rvPager.smoothScrollToPosition(0)
 
                 } else if (tabLayout1.selectedTabPosition == 1) {
-                    val listPhoto = ArrayList<Photo>()
-                    listPhoto.add(Photo(getResources().getIdentifier("comingsoon", "drawable", getPackageName())))
-
-                    val adapter = PhotoFilmAdapter(applicationContext,listPhoto)
-                    adapter.notifyDataSetChanged()
-                    mRecyclerView.adapter = adapter
-
                     mFloatingActionButton2.visibility = View.GONE
 
-                    (rvPager?.layoutManager as LinearLayoutManager)
-                            .smoothScrollToPosition(rvPager, RecyclerView.State(),1)
+                    rvPager.smoothScrollToPosition(1)
 
                 } else if (tabLayout1.selectedTabPosition == 2) {
-                    val listPhoto = ArrayList<Photo>()
-                    listPhoto.add(Photo(getResources().getIdentifier("comingsoon", "drawable", getPackageName())))
-
-                    val adapter = PhotoFilmAdapter(applicationContext,listPhoto)
-                    adapter.notifyDataSetChanged()
-                    mRecyclerView.adapter = adapter
-
                     mFloatingActionButton2.visibility = View.GONE
 
-                    (rvPager?.layoutManager as LinearLayoutManager)
-                            .smoothScrollToPosition(rvPager, RecyclerView.State(),2)
+                    rvPager.smoothScrollToPosition(2)
 
                 } else if (tabLayout1.selectedTabPosition == 3) {
-                    val listPhoto = ArrayList<Photo>()
-                    for(position in 0 until (iterator.size-1)){
-                        val nama = "${iterator[letak]}${iterator[position]}"
-                        listPhoto.add(Photo(getResources().getIdentifier(nama, "drawable", getPackageName())))
-                        if(nama == "if"){
-                            listPhoto.add(Photo(getResources().getIdentifier("$nama${iterator[position]}", "drawable", getPackageName())))
-                        }
-                    }
-
-                    val adapter = PhotoFilmAdapter(applicationContext,listPhoto)
-                    adapter.notifyDataSetChanged()
-                    mRecyclerView.adapter = adapter
-
                     mFloatingActionButton2.visibility = View.VISIBLE
                     mFloatingActionButton2.setOnClickListener {
                         dispatchTakePictureIntent()
                     }
 
-                    (rvPager?.layoutManager as LinearLayoutManager)
-                            .smoothScrollToPosition(rvPager, RecyclerView.State(),3)
-
+                    rvPager.smoothScrollToPosition(3)
                 }
             }
 
