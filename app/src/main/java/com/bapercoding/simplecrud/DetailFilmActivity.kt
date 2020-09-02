@@ -99,7 +99,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         rvPager.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         rvPager.setHasFixedSize(true)
-        rvPager.adapter = RVPagerAdapter(listOf(R.drawable.a_piece,R.drawable.dinner_mate,R.drawable.hospital_playlist,R.drawable.dr_kim))
+        rvPager.adapter = RVPagerAdapter(applicationContext,listOf(R.drawable.a_piece,R.drawable.dinner_mate,R.drawable.hospital_playlist,R.drawable.dr_kim))
         PagerSnapHelper().attachToRecyclerView(rvPager)
 
         rvPager.addOnScrollListener(object : RecyclerView.OnScrollListener() {
