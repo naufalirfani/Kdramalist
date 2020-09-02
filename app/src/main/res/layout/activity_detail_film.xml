@@ -28,15 +28,9 @@
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:paddingTop="16dp"
             android:layout_marginTop="82dp"/>
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:layout_marginTop="282dp"/>
     <LinearLayout
             android:id="@+id/db1_root"
             android:layout_width="match_parent"

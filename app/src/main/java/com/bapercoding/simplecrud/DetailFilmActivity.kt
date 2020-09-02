@@ -52,7 +52,7 @@ class DetailFilmActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail_film)
 
         layout = findViewById(R.id.relativeLayout)
-        layout4 = findViewById(R.id.mRecyclerView)
+        layout4 = findViewById(R.id.rvPager)
         layout4.setOnTouchListener(object : OnSwipeTouchListener(this@DetailFilmActivity) {
             override fun onSwipeRight() {
                 super.onSwipeRight()
@@ -83,12 +83,6 @@ class DetailFilmActivity : AppCompatActivity() {
 //        val bottomBorder: LayerDrawable? = getBorders(Color.WHITE, Color.LTGRAY,0,0,0,15)
 //        tvDetail.setBackground(bottomBorder)
 
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = DetailFilmAdapter(applicationContext,list,judul, rating, episode, sinopsis, letak)
-        adapter.notifyDataSetChanged()
-        mRecyclerView.adapter = adapter
-
         mFloatingActionButton2.visibility = View.GONE
 
         tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
@@ -96,8 +90,6 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addTab(tabLayout1.newTab().setText("Cast"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Episodes"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
-
-        tabClick()
 
         val listPhoto3 = ArrayList<Photo>()
         for(position in 0 until (iterator.size-1)){
@@ -110,7 +102,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         rvPager.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         rvPager.setHasFixedSize(true)
-        rvPager.adapter = RVPagerAdapter(applicationContext,listOf(1,2,3,4),listPhoto3)
+        rvPager.adapter = RVPagerAdapter(applicationContext,listOf(0,1,2,3), listPhoto3, list, judul, rating, episode, sinopsis, letak)
         PagerSnapHelper().attachToRecyclerView(rvPager)
 
         rvPager.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -132,6 +124,8 @@ class DetailFilmActivity : AppCompatActivity() {
                 }
             }
         })
+
+        tabClick()
     }
 
 
@@ -182,22 +176,15 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 if (tabLayout1.selectedTabPosition == 0) {
-                    val adapter = DetailFilmAdapter(applicationContext,list,judul, rating, episode, sinopsis, letak)
-                    adapter.notifyDataSetChanged()
-                    mRecyclerView.adapter = adapter
-
                     mFloatingActionButton2.visibility = View.GONE
-
                     rvPager.smoothScrollToPosition(0)
 
                 } else if (tabLayout1.selectedTabPosition == 1) {
                     mFloatingActionButton2.visibility = View.GONE
-
                     rvPager.smoothScrollToPosition(1)
 
                 } else if (tabLayout1.selectedTabPosition == 2) {
                     mFloatingActionButton2.visibility = View.GONE
-
                     rvPager.smoothScrollToPosition(2)
 
                 } else if (tabLayout1.selectedTabPosition == 3) {
@@ -205,7 +192,6 @@ class DetailFilmActivity : AppCompatActivity() {
                     mFloatingActionButton2.setOnClickListener {
                         dispatchTakePictureIntent()
                     }
-
                     rvPager.smoothScrollToPosition(3)
                 }
             }
@@ -311,7 +297,7 @@ class DetailFilmActivity : AppCompatActivity() {
         }
         val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
         adapter.notifyDataSetChanged()
-        mRecyclerView.adapter = adapter
+        rvPager.adapter = adapter
     }
 
     private fun saveToInternalStorage(bitmapImage: Bitmap): String? {

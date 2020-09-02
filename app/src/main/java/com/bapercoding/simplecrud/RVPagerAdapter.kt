@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_detail_film.*
 import kotlinx.android.synthetic.main.list_photo.view.*
 import kotlinx.android.synthetic.main.recycle_layout.view.*
 
-class RVPagerAdapter(private val context: Context, val colorList: List<Int>, val listPhoto2: ArrayList<Photo>) : RecyclerView.Adapter<SampleViewHolder>() {
+class RVPagerAdapter(private val context: Context, val colorList: List<Int>, val listPhoto2: ArrayList<Photo>, private val list: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val letak: Int) : RecyclerView.Adapter<SampleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SampleViewHolder {
         return SampleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycle_layout, parent, false))
@@ -30,7 +30,7 @@ class RVPagerAdapter(private val context: Context, val colorList: List<Int>, val
         holder.itemView.mRecyclerViewH.setHasFixedSize(true)
         holder.itemView.mRecyclerViewH.layoutManager = LinearLayoutManager(context)
         if(position == 0){
-            val adapter = PhotoFilmAdapter(context,listPhoto)
+            val adapter = DetailFilmAdapter(context,list,judul, rating, episode, sinopsis, letak)
             adapter.notifyDataSetChanged()
             holder.itemView.mRecyclerViewH.adapter = adapter
         }
