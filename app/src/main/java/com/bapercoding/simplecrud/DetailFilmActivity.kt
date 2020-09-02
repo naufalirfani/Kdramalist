@@ -158,6 +158,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
                     mFloatingActionButton2.visibility = View.GONE
 
+                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),0)
+
                 } else if (tabLayout1.selectedTabPosition == 1) {
                     val listPhoto = ArrayList<Photo>()
                     listPhoto.add(Photo(getResources().getIdentifier("comingsoon", "drawable", getPackageName())))
@@ -168,6 +170,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
                     mFloatingActionButton2.visibility = View.GONE
 
+                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),1)
+
                 } else if (tabLayout1.selectedTabPosition == 2) {
                     val listPhoto = ArrayList<Photo>()
                     listPhoto.add(Photo(getResources().getIdentifier("comingsoon", "drawable", getPackageName())))
@@ -177,6 +181,8 @@ class DetailFilmActivity : AppCompatActivity() {
                     mRecyclerView.adapter = adapter
 
                     mFloatingActionButton2.visibility = View.GONE
+
+                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),2)
 
                 } else if (tabLayout1.selectedTabPosition == 3) {
                     val listPhoto = ArrayList<Photo>()
@@ -196,6 +202,8 @@ class DetailFilmActivity : AppCompatActivity() {
                     mFloatingActionButton2.setOnClickListener {
                         dispatchTakePictureIntent()
                     }
+
+                    (rvPager?.layoutManager as LinearLayoutManager).smoothScrollToPosition(rvPager, RecyclerView.State(),3)
 
                 }
             }

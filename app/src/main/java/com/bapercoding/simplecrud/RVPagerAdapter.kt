@@ -25,7 +25,6 @@ class RVPagerAdapter(val colorList: List<Int>) : RecyclerView.Adapter<SampleView
                 .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                 .into(holder.itemView.img_kdrama_photo)
     }
-
 }
 
 class SampleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
