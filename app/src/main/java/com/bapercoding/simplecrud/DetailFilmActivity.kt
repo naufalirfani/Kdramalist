@@ -16,9 +16,9 @@ import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.OnTabSelectedListener
 import android.support.v4.content.FileProvider
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -26,7 +26,6 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_detail_film.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,10 +40,11 @@ class DetailFilmActivity : AppCompatActivity() {
     lateinit var episode:String
     lateinit var sinopsis:String
     private lateinit var layout: RelativeLayout
-    private lateinit var layout4: RecyclerView
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
     private val listPhoto2 = ArrayList<Photo2>()
+    var listPhoto3: ArrayList<Photo> = arrayListOf()
+    var listPhoto4: ArrayList<Int> = arrayListOf()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +91,6 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addTab(tabLayout1.newTab().setText("Episodes"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
 
-        val listPhoto3 = ArrayList<Photo>()
         for(position in 0 until (iterator.size-1)){
             val nama = "${iterator[letak]}${iterator[position]}"
             listPhoto3.add(Photo(getResources().getIdentifier(nama, "drawable", getPackageName())))
@@ -126,8 +125,12 @@ class DetailFilmActivity : AppCompatActivity() {
         })
 
         tabClick()
-    }
 
+        val pagerAdapter = PagerAdapter(supportFragmentManager)
+        val pager = findViewById<View>(R.id.pager) as ViewPager
+        pager.adapter = pagerAdapter
+        tabLayout1.setupWithViewPager(pager)
+    }
 
     override fun onBackPressed() {
         super.onBackPressed()
