@@ -8,15 +8,18 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_cast.*
 import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.fragment_episode.*
 
-class FragmentCast : Fragment() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class FragmentEpisode : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cast, container, false)
+        return inflater.inflate(R.layout.fragment_episode, container, false)
     }
 
     override fun onViewCreated(
@@ -27,10 +30,10 @@ class FragmentCast : Fragment() {
 
         val listPhoto = ArrayList<Photo>()
         listPhoto.add(Photo(R.drawable.comingsoon))
-        rvCast.setHasFixedSize(true)
-        rvCast.layoutManager = LinearLayoutManager(context)
+        rvEpisode.setHasFixedSize(true)
+        rvEpisode.layoutManager = LinearLayoutManager(context)
         val adapter = context?.let { PhotoFilmAdapter(it,listPhoto) }
         adapter?.notifyDataSetChanged()
-        rvCast.adapter = adapter
+        rvEpisode.adapter = adapter
     }
 }
