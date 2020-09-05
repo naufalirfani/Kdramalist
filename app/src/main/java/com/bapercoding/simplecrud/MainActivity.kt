@@ -3,7 +3,9 @@ package com.bapercoding.simplecrud
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -15,13 +17,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_splash_screen.*
 import org.json.JSONObject
 
 
@@ -100,6 +105,8 @@ class MainActivity : AppCompatActivity() {
             closeKeyBoard()
         }
 
+
+
     }
 
     override fun onResume() {
@@ -175,7 +182,25 @@ class MainActivity : AppCompatActivity() {
                     override fun onError(anError: ANError?) {
                         loading.dismiss()
                         Log.d("ONERROR",anError?.errorDetail?.toString())
-                        Toast.makeText(applicationContext,"Connection Failure",Toast.LENGTH_SHORT).show()
+                        val snackBar = Snackbar.make(
+                                currentFocus, "    Connection Failure",
+                                Snackbar.LENGTH_INDEFINITE
+                        )
+                        val snackBarView = snackBar.view
+                        snackBarView.setBackgroundColor(Color.BLACK)
+                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                        textView.setTextColor(Color.WHITE)
+                        textView.setTextSize(16F)
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+                        snack_action_view.setTextColor(Color.YELLOW)
+
+                        // Set an action for snack bar
+                        snackBar.setAction("Retry") {
+                            loadAllStudents()
+
+                        }
+                        snackBar.show()
                     }
                 })
     }
