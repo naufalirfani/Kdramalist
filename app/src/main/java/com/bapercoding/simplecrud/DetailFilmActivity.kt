@@ -243,7 +243,12 @@ class DetailFilmActivity : AppCompatActivity() {
 //                val selectedImage = data?.data
 //                val imageStream = selectedImage?.let { contentResolver.openInputStream(it) }
 //                val bitmap = BitmapFactory.decodeStream(imageStream)
-//                listPhoto2.add(Photo2(bitmap))
+//                listPhoto2.add(bitmap)
+//                tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
+//                val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
+//                val pager = findViewById<View>(R.id.pager) as ViewPager
+//                pager.adapter = pagerAdapter
+//                tabLayout1.setupWithViewPager(pager)
                 loadImage()
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
