@@ -42,9 +42,8 @@ class DetailFilmActivity : AppCompatActivity() {
     private lateinit var layout: RelativeLayout
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
-    private val listPhoto2 = ArrayList<Photo2>()
+    private val listPhoto2 = ArrayList<Bitmap>()
     var listPhoto3: ArrayList<Int> = arrayListOf()
-    var listPhoto4: ArrayList<Int> = arrayListOf()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +100,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, letak, judul, rating, episode, sinopsis)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
@@ -264,14 +263,16 @@ class DetailFilmActivity : AppCompatActivity() {
         try {
             for(i in dirlist.indices){
                 val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
-                listPhoto2.add(Photo2(b))
+                listPhoto2.add(b)
             }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
-        val adapter = PhotoFilmAdapter2(applicationContext,listPhoto2)
-        adapter.notifyDataSetChanged()
-        rvPager.adapter = adapter
+        tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
+        val pager = findViewById<View>(R.id.pager) as ViewPager
+        pager.adapter = pagerAdapter
+        tabLayout1.setupWithViewPager(pager)
     }
 
     private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
