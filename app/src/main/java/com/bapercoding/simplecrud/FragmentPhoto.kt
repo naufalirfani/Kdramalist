@@ -48,7 +48,7 @@ class FragmentPhoto : Fragment() {
 
         rvPhoto.setHasFixedSize(true)
         rvPhoto.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { PhotoFilmAdapter2(it,list2) }
+        val adapter = context?.let { PhotoFilmAdapter(it,list) }
         adapter?.notifyDataSetChanged()
         rvPhoto.adapter = adapter
     }
