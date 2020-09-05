@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_detail_film.*
 import kotlinx.android.synthetic.main.list_photo.view.*
 import kotlinx.android.synthetic.main.recycle_layout.view.*
 
-class RVPagerAdapter(private val context: Context, val colorList: List<Int>, val listPhoto2: ArrayList<Photo>, private val list: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val letak: Int) : RecyclerView.Adapter<SampleViewHolder>() {
+class RVPagerAdapter(private val context: Context, val colorList: List<Int>, val listPhoto2: ArrayList<Int>, private val list: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val letak: Int) : RecyclerView.Adapter<SampleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SampleViewHolder {
         return SampleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycle_layout, parent, false))
@@ -24,8 +24,8 @@ class RVPagerAdapter(private val context: Context, val colorList: List<Int>, val
     override fun getItemCount() = colorList.size
 
     override fun onBindViewHolder(holder: SampleViewHolder, position: Int) {
-        val listPhoto = ArrayList<Photo>()
-        listPhoto.add(Photo(R.drawable.comingsoon))
+        val listPhoto = ArrayList<Int>()
+        listPhoto.add(R.drawable.comingsoon)
 
         holder.itemView.mRecyclerViewH.setHasFixedSize(true)
         holder.itemView.mRecyclerViewH.layoutManager = LinearLayoutManager(context)

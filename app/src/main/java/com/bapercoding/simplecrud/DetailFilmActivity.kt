@@ -43,7 +43,7 @@ class DetailFilmActivity : AppCompatActivity() {
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
     private val listPhoto2 = ArrayList<Photo2>()
-    var listPhoto3: ArrayList<Photo> = arrayListOf()
+    var listPhoto3: ArrayList<Int> = arrayListOf()
     var listPhoto4: ArrayList<Int> = arrayListOf()
 
     @SuppressLint("ClickableViewAccessibility")
@@ -93,9 +93,9 @@ class DetailFilmActivity : AppCompatActivity() {
 
         for(position in 0 until (iterator.size-1)){
             val nama = "${iterator[letak]}${iterator[position]}"
-            listPhoto3.add(Photo(getResources().getIdentifier(nama, "drawable", getPackageName())))
+            listPhoto3.add(getResources().getIdentifier(nama, "drawable", getPackageName()))
             if(nama == "if"){
-                listPhoto3.add(Photo(getResources().getIdentifier("$nama${iterator[position]}", "drawable", getPackageName())))
+                listPhoto3.add(getResources().getIdentifier("$nama${iterator[position]}", "drawable", getPackageName()))
             }
         }
 
@@ -126,7 +126,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, judul, rating, episode, sinopsis)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, judul, rating, episode, sinopsis)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)

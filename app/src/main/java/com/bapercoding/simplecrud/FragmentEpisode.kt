@@ -28,8 +28,8 @@ class FragmentEpisode : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listPhoto = ArrayList<Photo>()
-        listPhoto.add(Photo(R.drawable.comingsoon))
+        val listPhoto = ArrayList<Int>()
+        listPhoto.add(R.drawable.comingsoon)
         rvEpisode.setHasFixedSize(true)
         rvEpisode.layoutManager = LinearLayoutManager(context)
         val adapter = context?.let { PhotoFilmAdapter(it,listPhoto) }

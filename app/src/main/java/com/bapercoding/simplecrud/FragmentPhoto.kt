@@ -27,12 +27,11 @@ class FragmentPhoto : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listPhoto = ArrayList<Photo>()
-        listPhoto.add(Photo(R.drawable.comingsoon))
-        val detailFilmActivity = DetailFilmActivity()
+        val listPhoto = ArrayList<Int>()
+        listPhoto.add(R.drawable.comingsoon)
         rvPhoto.setHasFixedSize(true)
         rvPhoto.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { PhotoFilmAdapter(it,detailFilmActivity.listPhoto3) }
+        val adapter = context?.let { PhotoFilmAdapter(it,listPhoto) }
         adapter?.notifyDataSetChanged()
         rvPhoto.adapter = adapter
     }

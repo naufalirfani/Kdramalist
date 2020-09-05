@@ -25,8 +25,8 @@ class FragmentCast : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listPhoto = ArrayList<Photo>()
-        listPhoto.add(Photo(R.drawable.comingsoon))
+        val listPhoto = ArrayList<Int>()
+        listPhoto.add(R.drawable.comingsoon)
         rvCast.setHasFixedSize(true)
         rvCast.layoutManager = LinearLayoutManager(context)
         val adapter = context?.let { PhotoFilmAdapter(it,listPhoto) }
