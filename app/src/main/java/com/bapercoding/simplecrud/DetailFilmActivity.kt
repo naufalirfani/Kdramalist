@@ -99,31 +99,6 @@ class DetailFilmActivity : AppCompatActivity() {
             }
         }
 
-        rvPager.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        rvPager.setHasFixedSize(true)
-        rvPager.adapter = RVPagerAdapter(applicationContext,listOf(0,1,2,3), listPhoto3, list, judul, rating, episode, sinopsis, letak)
-        PagerSnapHelper().attachToRecyclerView(rvPager)
-
-        rvPager.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val itemPosition: Int = (rvPager?.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                if (itemPosition == 0) { //  item position of uses
-                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(0)
-                    tab?.select()
-                } else if (itemPosition == 1) { //  item position of side effects
-                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(1)
-                    tab?.select()
-                } else if (itemPosition == 2) { //  item position of how it works
-                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(2)
-                    tab?.select()
-                } else if (itemPosition == 3) { //  item position of precaution
-                    val tab: TabLayout.Tab? = tabLayout1.getTabAt(3)
-                    tab?.select()
-                }
-            }
-        })
-
         tabClick()
 
         val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, letak, judul, rating, episode, sinopsis)
