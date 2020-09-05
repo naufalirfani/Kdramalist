@@ -5,14 +5,14 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 
 @Suppress("DEPRECATION")
-class PagerAdapter (fm: FragmentManager) : FragmentStatePagerAdapter(fm){
+class PagerAdapter (fm: FragmentManager, judul: String) : FragmentStatePagerAdapter(fm){
 
     private val tabName : Array<String> = arrayOf("Details", "Cast", "Episodes", "Photos")
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
 
-            0 -> FragmentDetail()
+            0 -> FragmentDetail().newInstance(0,"das", "dsad", "dasd", "das")!!
             1 -> FragmentCast()
             2 -> FragmentEpisode()
             else -> FragmentPhoto()
