@@ -15,6 +15,21 @@ import kotlinx.android.synthetic.main.fragment_photo.*
  */
 class FragmentPhoto : Fragment() {
 
+    private var list: ArrayList<Int> = arrayListOf()
+
+    fun newInstance(list: ArrayList<Int>): FragmentPhoto? {
+        val fragmentPhoto= FragmentPhoto()
+        val args = Bundle()
+        args.putIntegerArrayList("list", list)
+        fragmentPhoto.setArguments(args)
+        return fragmentPhoto
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        list = arguments!!.getIntegerArrayList("list")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -29,9 +44,11 @@ class FragmentPhoto : Fragment() {
 
         val listPhoto = ArrayList<Int>()
         listPhoto.add(R.drawable.comingsoon)
+        listPhoto.add(R.drawable.a_piece)
+        listPhoto.add(R.drawable.hospital_playlist)
         rvPhoto.setHasFixedSize(true)
         rvPhoto.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { PhotoFilmAdapter(it,listPhoto) }
+        val adapter = context?.let { PhotoFilmAdapter(it,list) }
         adapter?.notifyDataSetChanged()
         rvPhoto.adapter = adapter
     }

@@ -19,15 +19,15 @@ class FragmentDetail : Fragment() {
 
     // newInstance constructor for creating fragment with arguments
     fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?): FragmentDetail? {
-        val fragmentFirst = FragmentDetail()
+        val fragmentDetail = FragmentDetail()
         val args = Bundle()
         args.putInt("letak", letak)
         args.putString("judul", judul)
         args.putString("rating", rating)
         args.putString("episode", episode)
         args.putString("sinopsis", sinopsis)
-        fragmentFirst.setArguments(args)
-        return fragmentFirst
+        fragmentDetail.setArguments(args)
+        return fragmentDetail
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -126,7 +126,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, judul, rating, episode, sinopsis)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, letak, judul, rating, episode, sinopsis)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
