@@ -66,13 +66,6 @@ class DetailFilmActivity : AppCompatActivity() {
         sinopsis = intent.getStringExtra("sinopsis")
         letak = intent.getIntExtra("position",0)
 
-        val args = Bundle()
-        args.putString("judul", judul)
-        args.putString("rating", rating)
-        args.putString("episode", episode)
-        args.putString("sinopsis", sinopsis)
-        args.putInt("letak", letak)
-
         val tvDataReceived: TextView = findViewById(R.id.tv_data_received)
         tvDataReceived.text = judul
 
@@ -133,7 +126,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, judul)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, judul, rating, episode, sinopsis)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
