@@ -3,6 +3,8 @@ package com.bapercoding.simplecrud
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -20,8 +22,17 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.OnProgressListener
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_detail_film.*
 import java.io.*
 import java.util.*
@@ -41,6 +52,14 @@ class DetailFilmActivity : AppCompatActivity() {
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
     private val listPhoto2 = ArrayList<Bitmap>()
     var listPhoto3: ArrayList<Int> = arrayListOf()
+    private var firebaseStore: FirebaseStorage? = null
+    private var storageReference: StorageReference? = null
+    var filePath: Uri? = null
+
+    object Constants {
+        const val STORAGE_PATH_UPLOADS = "uploads/"
+        const val DATABASE_PATH_UPLOADS = "uploads"
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +74,9 @@ class DetailFilmActivity : AppCompatActivity() {
 //                onBackPressed()
 //            }
 //        })
+
+        firebaseStore = FirebaseStorage.getInstance()
+        storageReference = FirebaseStorage.getInstance().reference
 
         judul = intent.getStringExtra("judul")
         rating = intent.getStringExtra("rating")
@@ -112,6 +134,12 @@ class DetailFilmActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    fun getFileExtension(uri: Uri?): String? {
+        val cR: ContentResolver = contentResolver
+        val mime: MimeTypeMap = MimeTypeMap.getSingleton()
+        return mime.getExtensionFromMimeType(cR.getType(uri))
     }
 
 //    protected fun getBorders(
@@ -238,7 +266,8 @@ class DetailFilmActivity : AppCompatActivity() {
         //super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             2 -> if (resultCode == Activity.RESULT_OK) {
-                val filePath = data!!.data
+                filePath = data!!.data
+                uploadImage()
                 try {
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
                     listPhoto2.add(bitmap)
@@ -247,12 +276,14 @@ class DetailFilmActivity : AppCompatActivity() {
                 }
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
-//                val imgFile = File(currentPhotoPath)
+                val imgFile = File(currentPhotoPath)
+                filePath = Uri.fromFile(imgFile)
+                uploadImage()
 //                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 //                listPhoto2.add(Photo2(myBitmap))
 //                saveToInternalStorage(imageBitmap)
 //                listPhoto2.add(Photo2(imageBitmap))
-                loadImage()
+//                loadImage()
             }
         }
     }
@@ -309,6 +340,42 @@ class DetailFilmActivity : AppCompatActivity() {
                 sb.append(DATA[RANDOM.nextInt(DATA.length)])
             }
             return sb.toString()
+        }
+    }
+
+    private fun addUploadRecordToDb(uri: String){
+        val db = FirebaseFirestore.getInstance()
+
+        val data = HashMap<String, Any>()
+        data["imageUrl"] = uri
+
+        db.collection("posts")
+                .add(data)
+                .addOnSuccessListener { documentReference ->
+                    Toast.makeText(this, "Saved to DB", Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error saving to DB", Toast.LENGTH_LONG).show()
+                }
+    }
+
+    private fun uploadImage(){
+        val progressDialog = ProgressDialog(this)
+        progressDialog.show()
+        if(filePath != null){
+            val ref = storageReference?.child("images/${judul}/" + GenerateNama.randomString(10))
+            ref?.putFile(filePath!!)?.addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> {
+                progressDialog.dismiss()
+                Toast.makeText(this@DetailFilmActivity, "Image Uploaded", Toast.LENGTH_LONG).show()
+            })?.addOnFailureListener(OnFailureListener { e ->
+                progressDialog.dismiss()
+                Toast.makeText(this@DetailFilmActivity, "Image Uploading Failed " + e.message, Toast.LENGTH_LONG).show()
+            })?.addOnProgressListener (OnProgressListener{taskSnapshot ->
+                val progress: Double = 100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()
+                progressDialog.setMessage("Uploaded " + progress.toInt() + "%")
+            })
+        }else{
+            Toast.makeText(this, "Please Select an Image", Toast.LENGTH_LONG).show()
         }
     }
 
