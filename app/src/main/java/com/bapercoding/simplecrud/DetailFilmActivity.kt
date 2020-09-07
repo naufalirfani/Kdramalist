@@ -363,7 +363,7 @@ class DetailFilmActivity : AppCompatActivity() {
         val progressDialog = ProgressDialog(this)
         progressDialog.show()
         if(filePath != null){
-            val ref = storageReference?.child("images/${judul}/" + GenerateNama.randomString(10))
+            val ref = storageReference?.child("images/${judul}/" + judul + "_" + GenerateNama.randomString(10))
             ref?.putFile(filePath!!)?.addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> {
                 progressDialog.dismiss()
                 Toast.makeText(this@DetailFilmActivity, "Image Uploaded", Toast.LENGTH_LONG).show()
@@ -371,8 +371,8 @@ class DetailFilmActivity : AppCompatActivity() {
                 progressDialog.dismiss()
                 Toast.makeText(this@DetailFilmActivity, "Image Uploading Failed " + e.message, Toast.LENGTH_LONG).show()
             })?.addOnProgressListener (OnProgressListener{taskSnapshot ->
-                val progress: Double = 100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()
-                progressDialog.setMessage("Uploaded " + progress.toInt() + "%")
+                val progress = 100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
+                progressDialog.setMessage("Uploaded " + progress.toInt() + "%...")
             })
         }else{
             Toast.makeText(this, "Please Select an Image", Toast.LENGTH_LONG).show()
