@@ -1,5 +1,7 @@
 package com.bapercoding.simplecrud
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -16,17 +18,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_splash_screen.*
 import org.json.JSONObject
 
 
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     private var list: java.util.ArrayList<Film> = arrayListOf()
     val search = Search()
     private lateinit var etSearch: EditText
+    var isShow = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         list.addAll(Data.listData)
         searchLayout.visibility = View.GONE
+        isShow = false
         tv_nothing.visibility = View.GONE
         btn_back_to_top.visibility = View.GONE
 
@@ -62,7 +66,13 @@ class MainActivity : AppCompatActivity() {
 
                 //hide layout when scroll down
                 if (dy > 0){
-                    searchLayout.visibility = View.GONE
+                    val dialog: LinearLayout = findViewById(R.id.searchLayout)
+                    dialog.setVisibility(LinearLayout.GONE)
+                    val animation: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.anim_hide)
+                    animation.setDuration(300)
+                    dialog.setAnimation(animation)
+                    dialog.animate()
+                    animation.start()
                 }
             }
         })
@@ -99,7 +109,16 @@ class MainActivity : AppCompatActivity() {
             val adapter2 = RVAAdapterStudent(applicationContext,search.listSearch,search.list2)
             adapter2.notifyDataSetChanged()
             mRecyclerView1.adapter = adapter2
-            searchLayout.visibility = View.GONE
+            val dialog: LinearLayout = findViewById(R.id.searchLayout)
+            dialog.animate()
+                    .translationY(0F)
+                    .alpha(0.0f)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            super.onAnimationEnd(animation)
+                            dialog.setVisibility(View.GONE)
+                        }
+                    })
 
             //close virtual keyboard
             closeKeyBoard()
@@ -107,6 +126,31 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+
+    // slide the view from below itself to the current position
+    fun slideUp(view: View) {
+        view.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+                0F,  // fromXDelta
+                0F,  // toXDelta
+                0F,  // fromYDelta
+                view.height.toFloat()) // toYDelta
+        animate.setDuration(300)
+        animate.setFillAfter(true)
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    fun slideDown(view: View) {
+        val animate = TranslateAnimation(
+                0F,  // fromXDelta
+                0F,  // toXDelta
+                view.height.toFloat(),  // fromYDelta
+                0F) // toYDelta
+        animate.setDuration(300)
+        animate.setFillAfter(true)
+        view.startAnimation(animate)
     }
 
     override fun onResume() {
@@ -127,10 +171,17 @@ class MainActivity : AppCompatActivity() {
             searchLayout.visibility = View.GONE
         }
         if(id == R.id.search_item){
-            searchLayout.visibility = View.VISIBLE
             etSearch = findViewById(R.id.mytextText)
             etSearch.text = null
             etSearch.hint = getString(R.string.find_korean_dramas)
+
+            val dialog: LinearLayout = findViewById(R.id.searchLayout)
+            val animation = AnimationUtils.loadAnimation(this, R.anim.anim_show)
+            animation.duration = 300
+            dialog.animation = animation
+            dialog.animate()
+            animation.start()
+            dialog.visibility = LinearLayout.VISIBLE
         }
         return super.onOptionsItemSelected(item)
     }
