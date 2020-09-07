@@ -18,9 +18,6 @@ import android.support.design.widget.TabLayout.OnTabSelectedListener
 import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PagerSnapHelper
-import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.View
 import android.widget.RelativeLayout
@@ -207,9 +204,10 @@ class DetailFilmActivity : AppCompatActivity() {
                 }
                 dialog.dismiss()
             } else if (options[item].equals("Choose from Gallery")) {
-                val gallery =
-                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-                startActivityForResult(gallery, 2)
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 2)
                 dialog.dismiss()
             } else if (options[item].equals("Cancel")) {
                 dialog.dismiss()
@@ -240,16 +238,13 @@ class DetailFilmActivity : AppCompatActivity() {
         //super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             2 -> if (resultCode == Activity.RESULT_OK) {
-//                val selectedImage = data?.data
-//                val imageStream = selectedImage?.let { contentResolver.openInputStream(it) }
-//                val bitmap = BitmapFactory.decodeStream(imageStream)
-//                listPhoto2.add(bitmap)
-//                tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
-//                val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
-//                val pager = findViewById<View>(R.id.pager) as ViewPager
-//                pager.adapter = pagerAdapter
-//                tabLayout1.setupWithViewPager(pager)
-                loadImage()
+                val filePath = data!!.data
+                try {
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+                    listPhoto2.add(bitmap)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
             1 -> if (resultCode == Activity.RESULT_OK) {
 //                val imgFile = File(currentPhotoPath)
