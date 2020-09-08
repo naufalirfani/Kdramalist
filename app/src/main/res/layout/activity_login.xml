@@ -6,4 +6,81 @@
         android:layout_height="match_parent"
         tools:context=".LoginActivity">
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="48dp"
+            android:orientation="vertical">
+
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/cvList"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/searchLayout"
+                    android:background="#FFFFFF"
+                    android:padding="20dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                <EditText
+                        android:id="@+id/et_Email"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/email_or_username"
+                        android:layout_height="match_parent">
+                </EditText>
+                <EditText
+                        android:id="@+id/et_Pass"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/password"
+                        android:layout_marginTop="12dp"
+                        android:layout_height="match_parent">
+                </EditText>
+                
+                <Button
+                        android:id="@+id/btn_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/login"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@color/colorPrimary">
+                    
+                </Button>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Don't have an account?">
+                    </TextView>
+                    <TextView
+                            android:id="@+id/tv_signUp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/colorPrimary"
+                            android:text="Sign Up">
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
