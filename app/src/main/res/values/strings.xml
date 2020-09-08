@@ -20,6 +20,6 @@
     <string name="search">search</string>
     <string name="nothing_found">Tidak ada yang ditemukan</string>
     <string name="login">Login</string>
-    <string name="email_or_username">Email or Username</string>
-    <string name="password">Password</string>
+    <string name="email_or_username"> Email or Username</string>
+    <string name="password"> Password</string>
 </resources>

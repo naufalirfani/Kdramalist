@@ -29,23 +29,32 @@
                     android:padding="20dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
-                <EditText
-                        android:id="@+id/et_Email"
-                        android:layout_weight="1"
+                <TextView
                         android:layout_width="match_parent"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/email_or_username"
-                        android:layout_height="match_parent">
-                </EditText>
-                <EditText
-                        android:id="@+id/et_Pass"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:text="Welcome to Kdramalist"/>
+                <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/password"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                </EditText>
+                        android:layout_height="56dp">
+                    <EditText
+                            android:id="@+id/et_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Email or Username"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp">
+                    <EditText
+                            android:id="@+id/et_pass"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Password"
+                            android:inputType="textPassword"/>
+                </android.support.design.widget.TextInputLayout>
                 
                 <Button
                         android:id="@+id/btn_login"
@@ -59,6 +68,15 @@
                         android:background="@color/colorPrimary">
                     
                 </Button>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:textAlignment="center"
+                        android:text="Forgot password">
+                </TextView>
 
                 <LinearLayout
                         android:layout_width="match_parent"

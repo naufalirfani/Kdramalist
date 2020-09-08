@@ -29,32 +29,41 @@
                     android:padding="20dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
-                <EditText
-                        android:id="@+id/et_username"
-                        android:layout_weight="1"
+                <TextView
                         android:layout_width="match_parent"
-                        android:background="@android:color/transparent"
-                        android:hint="Usaername"
-                        android:layout_height="match_parent">
-                </EditText>
-                <EditText
-                        android:id="@+id/et_Email"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:text="Create an Account"/>
+                <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:background="@android:color/transparent"
-                        android:hint="Email"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                </EditText>
-                <EditText
-                        android:id="@+id/et_Pass"
-                        android:layout_weight="1"
+                        android:layout_height="56dp">
+                    <EditText
+                            android:id="@+id/et_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Username"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/password"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                </EditText>
+                        android:layout_height="56dp">
+                    <EditText
+                            android:id="@+id/et_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Email"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp">
+                    <EditText
+                            android:id="@+id/et_pass"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Password"
+                            android:inputType="textPassword"/>
+                </android.support.design.widget.TextInputLayout>
 
                 <Button
                         android:id="@+id/btn_signUp"
