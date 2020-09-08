@@ -128,31 +128,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // slide the view from below itself to the current position
-    fun slideUp(view: View) {
-        view.visibility = View.VISIBLE
-        val animate = TranslateAnimation(
-                0F,  // fromXDelta
-                0F,  // toXDelta
-                0F,  // fromYDelta
-                view.height.toFloat()) // toYDelta
-        animate.setDuration(300)
-        animate.setFillAfter(true)
-        view.startAnimation(animate)
-    }
-
-    // slide the view from its current position to below itself
-    fun slideDown(view: View) {
-        val animate = TranslateAnimation(
-                0F,  // fromXDelta
-                0F,  // toXDelta
-                view.height.toFloat(),  // fromYDelta
-                0F) // toYDelta
-        animate.setDuration(300)
-        animate.setFillAfter(true)
-        view.startAnimation(animate)
-    }
-
     override fun onResume() {
         super.onResume()
         loadAllStudents()
@@ -168,6 +143,7 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.about_item) {
             val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
             startActivity(intentAboutMe)
+            finish()
             searchLayout.visibility = View.GONE
         }
         if(id == R.id.search_item){

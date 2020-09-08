@@ -16,7 +16,7 @@ class SplashScreen : AppCompatActivity() {
         //set back button
 
         Handler().postDelayed({ //setelah loading maka akan langsung berpindah ke home activity
-            val home = Intent(this@SplashScreen, MainActivity::class.java)
+            val home = Intent(this@SplashScreen, LoginActivity::class.java)
             startActivity(home)
             finish()
         }, 3000)
