@@ -1,5 +1,6 @@
 package com.bapercoding.simplecrud
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -57,18 +58,24 @@ class LoginActivity : AppCompatActivity() {
         tv_signUp.setOnClickListener {
             val home = Intent(this@LoginActivity, SingUpActivity::class.java)
             startActivity(home)
+            overridePendingTransition(R.anim.enter, R.anim.exit)
             finish()
         }
 
-        if(emailEt.text.toString().contains("@")){
-            email = emailEt.text.toString()
-        }
-        else{
-            addUserChangeListener(emailEt.text.toString())
-        }
+//        if(emailEt.text.toString().contains("@")){
+//            email = emailEt.text.toString()
+//        }
+//        else{
+//            addUserChangeListener(emailEt.text.toString())
+//        }
 
         btn_login.setOnClickListener {
+            email = emailEt.text.toString()
             password = passwordEt.text.toString()
+
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Login...")
+            progressDialog.show()
 
             if(TextUtils.isEmpty(password)) {
                 Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
@@ -79,6 +86,7 @@ class LoginActivity : AppCompatActivity() {
             else{
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener { task ->
                     if(task.isSuccessful) {
+                        progressDialog.dismiss()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()

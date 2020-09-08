@@ -67,16 +67,17 @@ class SingUpActivity : AppCompatActivity() {
                     auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener{ task ->
                         if(task.isSuccessful){
                             Toast.makeText(this, "Successfully Registered", Toast.LENGTH_LONG).show()
-                            val intent = Intent(this, MainActivity::class.java)
+                            val intent = Intent(this, LoginActivity::class.java)
+                            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
                             startActivity(intent)
                             finish()
                         }else {
-                            Toast.makeText(this, "Registration Failed", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Username or Email Already Exist", Toast.LENGTH_LONG).show()
                         }
                     })
                 }
                 else{
-                    Toast.makeText(this, "Username Already Exist", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Username or Email Already Exist", Toast.LENGTH_LONG).show()
                 }
             }
         }
