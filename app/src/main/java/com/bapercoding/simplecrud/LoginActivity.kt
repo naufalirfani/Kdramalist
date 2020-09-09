@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -26,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var emailEt: EditText
     private lateinit var passwordEt: EditText
     private lateinit var loginBtn: Button
-    private lateinit var email: String
+    private  var email: String? = null
     private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +56,13 @@ class LoginActivity : AppCompatActivity() {
         dbReference = firebaseDatabase.getReference("users")
         userId = dbReference.push().key.toString()
 
+        if (auth.currentUser != null) {
+            // User is signed in (getCurrentUser() will be null if not signed in)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         tv_signUp.setOnClickListener {
             val home = Intent(this@LoginActivity, SingUpActivity::class.java)
             startActivity(home)
@@ -62,13 +70,26 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-
         btn_login.setOnClickListener {
             if(emailEt.text.toString().contains("@")){
                 email = emailEt.text.toString()
             }
-            else{
-                addUserChangeListener(emailEt.text.toString())
+            if(!(emailEt.text.toString().contains("@"))){
+                val username = emailEt.text.toString()
+                val postListener = object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        // Get Post object and use the values to update the UI
+                        val user = dataSnapshot.getValue(UserInfo::class.java)
+                        if (user != null){
+                            email = user.email
+                        }
+                        // ...
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                }
+                dbReference.child(username).addValueEventListener(postListener)
             }
             password = passwordEt.text.toString()
 
@@ -85,39 +106,20 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
             }
             else{
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        progressDialog.dismiss()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }else {
-                        progressDialog.dismiss()
-                        Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
-                    }
-                })
+                email?.let { it1 ->
+                    auth.signInWithEmailAndPassword(it1, password).addOnCompleteListener(this, OnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            progressDialog.dismiss()
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }else {
+                            progressDialog.dismiss()
+                            Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
+                        }
+                    })
+                }
             }
         }
-    }
-
-    private fun addUserChangeListener(username: String) {
-        // User data change listener
-        dbReference.child(username).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(UserInfo::class.java)
-
-                // Check for null
-                if (user == null) {
-                    return
-                }
-                else{
-                    email = user.email.toString()
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
     }
 }
