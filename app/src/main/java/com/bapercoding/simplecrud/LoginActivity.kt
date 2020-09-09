@@ -62,15 +62,14 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-//        if(emailEt.text.toString().contains("@")){
-//            email = emailEt.text.toString()
-//        }
-//        else{
-//            addUserChangeListener(emailEt.text.toString())
-//        }
 
         btn_login.setOnClickListener {
-            email = emailEt.text.toString()
+            if(emailEt.text.toString().contains("@")){
+                email = emailEt.text.toString()
+            }
+            else{
+                addUserChangeListener(emailEt.text.toString())
+            }
             password = passwordEt.text.toString()
 
             val progressDialog = ProgressDialog(this)

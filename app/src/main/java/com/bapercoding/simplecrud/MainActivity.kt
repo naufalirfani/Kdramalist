@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         isShow = false
         tv_nothing.visibility = View.GONE
         btn_back_to_top.visibility = View.GONE
-        
+
         mRecyclerView1.setHasFixedSize(true)
         mRecyclerView1.layoutManager = LinearLayoutManager(this)
         mRecyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
