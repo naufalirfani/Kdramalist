@@ -19,7 +19,7 @@ class AboutMe : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about_me)
@@ -37,8 +37,9 @@ class AboutMe : AppCompatActivity() {
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
 
-        myName.text = getString(R.string.data_pribadi)
-        email.text = getString(R.string.email)
+        auth = FirebaseAuth.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        dbReference = firebaseDatabase.getReference("users")
 
         val username = emailEt.text.toString()
         val postListener = object : ValueEventListener {
