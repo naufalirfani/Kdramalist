@@ -11,6 +11,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AboutMe : AppCompatActivity() {
@@ -34,6 +37,22 @@ class AboutMe : AppCompatActivity() {
 
         myName.text = getString(R.string.data_pribadi)
         email.text = getString(R.string.email)
+
+        val username = emailEt.text.toString()
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                val user = dataSnapshot.getValue(UserInfo::class.java)
+                if (user != null){
+                    email = user.email
+                }
+                // ...
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        dbReference.child(username).addValueEventListener(postListener)
 
     }
 
