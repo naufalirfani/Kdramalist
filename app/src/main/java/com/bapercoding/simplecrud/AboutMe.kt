@@ -19,6 +19,7 @@ class AboutMe : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
+    var username: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,25 +38,27 @@ class AboutMe : AppCompatActivity() {
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
 
+        username = intent.getStringExtra("username")
+        myName.setText(username)
         auth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
         dbReference = firebaseDatabase.getReference("users")
 
-        val username = emailEt.text.toString()
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                val user = dataSnapshot.getValue(UserInfo::class.java)
-                if (user != null){
-                    email = user.email
-                }
-                // ...
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        }
-        dbReference.child(username).addValueEventListener(postListener)
+//        val postListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                // Get Post object and use the values to update the UI
+//                val user = dataSnapshot.getValue(UserInfo::class.java)
+//                if (user != null){
+//                    myName.text = user.username
+//                    email.text = user.email
+//                }
+//                // ...
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//            }
+//        }
+//        dbReference.child(username!!).addValueEventListener(postListener)
 
     }
 

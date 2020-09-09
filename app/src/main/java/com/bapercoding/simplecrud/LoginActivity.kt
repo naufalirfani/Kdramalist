@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -20,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
+    private lateinit var dbReference2: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
 
     private var userId: String = ""
@@ -52,14 +52,17 @@ class LoginActivity : AppCompatActivity() {
         loginBtn = findViewById(R.id.btn_login)
 
         auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
         firebaseDatabase = FirebaseDatabase.getInstance()
         dbReference = firebaseDatabase.getReference("users")
+        dbReference2 = firebaseDatabase.getReference("users2")
         userId = dbReference.push().key.toString()
 
-        if (auth.currentUser != null) {
+        if (user != null) {
             // User is signed in (getCurrentUser() will be null if not signed in)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.enter, R.anim.exit)
             finish()
         }
 
@@ -79,9 +82,9 @@ class LoginActivity : AppCompatActivity() {
                 val postListener = object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         // Get Post object and use the values to update the UI
-                        val user = dataSnapshot.getValue(UserInfo::class.java)
-                        if (user != null){
-                            email = user.email
+                        val user2 = dataSnapshot.getValue(UserInfo::class.java)
+                        if (user2 != null){
+                            email = user2.email
                         }
                         // ...
                     }
@@ -110,8 +113,11 @@ class LoginActivity : AppCompatActivity() {
                     auth.signInWithEmailAndPassword(it1, password).addOnCompleteListener(this, OnCompleteListener { task ->
                         if(task.isSuccessful) {
                             progressDialog.dismiss()
+                            val username = emailEt.text.toString()
                             val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("username",username)
                             startActivity(intent)
+                            overridePendingTransition(R.anim.enter, R.anim.exit)
                             finish()
                         }else {
                             progressDialog.dismiss()

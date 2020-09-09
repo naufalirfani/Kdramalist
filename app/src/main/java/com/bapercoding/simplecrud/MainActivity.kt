@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SmoothScroller
+import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -27,6 +28,9 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.JSONObjectRequestListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
@@ -39,15 +43,22 @@ class MainActivity : AppCompatActivity() {
     val search = Search()
     private lateinit var etSearch: EditText
     var isShow = false
+    var username: String? = null
+    private lateinit var auth: FirebaseAuth
+    private lateinit var dbReference: DatabaseReference
+    private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+//        supportActionBar?.setDisplayShowCustomEnabled(true)
+//        supportActionBar?.setCustomView(R.layout.custom_action_bar)
 
-        this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-        supportActionBar?.setCustomView(R.layout.custom_action_bar)
+        val actionbar = supportActionBar
+        //set actionbar title
+        actionbar!!.title = intent.getStringExtra("username")
 
         list.addAll(Data.listData)
         searchLayout.visibility = View.GONE
@@ -124,7 +135,19 @@ class MainActivity : AppCompatActivity() {
             closeKeyBoard()
         }
 
-
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        dbReference = firebaseDatabase.getReference("users2")
+        if (user != null) {
+            val name = intent.getStringExtra("username")
+            val id = user.uid
+            val email2 = user.email
+            val user2 = UserInfo(name, email2)
+            if(!TextUtils.isEmpty(name)){
+                dbReference.child(id).setValue(user2)
+            }
+        }
 
     }
 
@@ -141,7 +164,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.about_item) {
+            username = intent.getStringExtra("username")
             val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
+            intentAboutMe.putExtra("username", username)
             startActivity(intentAboutMe)
             finish()
             searchLayout.visibility = View.GONE
