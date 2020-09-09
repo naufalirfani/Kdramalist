@@ -52,13 +52,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-//        supportActionBar?.setDisplayShowCustomEnabled(true)
-//        supportActionBar?.setCustomView(R.layout.custom_action_bar)
+        this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setCustomView(R.layout.custom_action_bar)
 
         val actionbar = supportActionBar
         //set actionbar title
-        actionbar!!.title = intent.getStringExtra("username")
+        actionbar!!.title = ""
 
         list.addAll(Data.listData)
         searchLayout.visibility = View.GONE

@@ -3,6 +3,7 @@ package com.bapercoding.simplecrud
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,28 +39,31 @@ class AboutMe : AppCompatActivity() {
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
 
-        username = intent.getStringExtra("username")
-        myName.setText(username)
+
         auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
         firebaseDatabase = FirebaseDatabase.getInstance()
-        dbReference = firebaseDatabase.getReference("users")
+        dbReference = firebaseDatabase.getReference("users2")
+        if (user != null) {
+            val id = user.uid
+            val email2 = user.email
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    val user2 = dataSnapshot.getValue(UserInfo::class.java)
+                    if (user2 != null){
+                        myName.text = user2.username
+                        email.text = user2.email
+                    }
+                    // ...
+                }
 
-//        val postListener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                // Get Post object and use the values to update the UI
-//                val user = dataSnapshot.getValue(UserInfo::class.java)
-//                if (user != null){
-//                    myName.text = user.username
-//                    email.text = user.email
-//                }
-//                // ...
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//            }
-//        }
-//        dbReference.child(username!!).addValueEventListener(postListener)
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            dbReference.child(id).addValueEventListener(postListener)
 
+        }
     }
 
     override fun onBackPressed() {
