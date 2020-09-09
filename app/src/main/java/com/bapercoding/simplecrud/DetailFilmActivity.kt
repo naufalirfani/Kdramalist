@@ -130,6 +130,7 @@ class DetailFilmActivity : AppCompatActivity() {
         val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
         startActivity(intentMain)
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
+        finish()
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

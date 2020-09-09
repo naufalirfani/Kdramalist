@@ -45,7 +45,6 @@ class RVAAdapterStudent(private val context: Context, private val arrayList: Arr
             i.putExtra("episode",arrayList?.get(position)?.episode)
             i.putExtra("sinopsis",arrayList?.get(position)?.sinopsis)
             context.startActivity(i)
-
         }
 
     }

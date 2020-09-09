@@ -60,6 +60,7 @@ class AboutMe : AppCompatActivity() {
             FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.left_to_right,R.anim.right_to_left)
             finish()
         }
         return super.onOptionsItemSelected(item)
