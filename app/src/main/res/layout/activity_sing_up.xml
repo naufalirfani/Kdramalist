@@ -56,19 +56,53 @@
                         android:hint="Password"
                         android:inputType="textPassword"/>
             </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp">
+                <EditText
+                        android:id="@+id/et_reenterpass_sign"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Re-enter password"
+                        android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                     android:id="@+id/btn_signUp"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:layout_marginTop="24dp"
-                    android:text="Sign Up"
+                    android:text="Sign up"
                     android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@color/colorPrimary">
 
             </Button>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                        android:id="@+id/tv_have"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/have_an_account">
+                </TextView>
+                <TextView
+                        android:id="@+id/tv_Login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/login">
+                </TextView>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

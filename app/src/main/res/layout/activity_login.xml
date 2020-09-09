@@ -35,7 +35,7 @@
                         android:id="@+id/et_email_login"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="Email or Username"/>
+                        android:hint="Username or email"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -48,6 +48,13 @@
                         android:inputType="textPassword"/>
             </android.support.design.widget.TextInputLayout>
 
+            <RadioButton android:id="@+id/radio_remember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/tab_indicator_text"
+                    android:text="@string/remember_me" />
+
             <Button
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
@@ -55,6 +62,7 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/login"
                     android:textColor="#FFFFFF"
+                    android:textAllCaps="false"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:background="@color/colorPrimary">
