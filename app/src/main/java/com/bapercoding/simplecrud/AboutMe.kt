@@ -11,13 +11,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AboutMe : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
+    private lateinit var dbReference: DatabaseReference
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about_me)
