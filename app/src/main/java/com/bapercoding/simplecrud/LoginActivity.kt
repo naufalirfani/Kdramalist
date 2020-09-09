@@ -78,9 +78,11 @@ class LoginActivity : AppCompatActivity() {
             progressDialog.show()
 
             if(TextUtils.isEmpty(password)) {
+                progressDialog.dismiss()
                 Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
             }
             else if(TextUtils.isEmpty(email)){
+                progressDialog.dismiss()
                 Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
             }
             else{
@@ -91,6 +93,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }else {
+                        progressDialog.dismiss()
                         Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
                     }
                 })
