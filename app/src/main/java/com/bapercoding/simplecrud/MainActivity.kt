@@ -31,6 +31,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
@@ -211,6 +212,7 @@ class MainActivity : AppCompatActivity() {
                             loading.dismiss()
                             Toast.makeText(applicationContext,"Student data is empty, Add the data first",Toast.LENGTH_SHORT).show()
                         }
+                        val db = FirebaseFirestore.getInstance()
 
                         for(i in 0 until jsonArray?.length()!!){
 
@@ -219,6 +221,18 @@ class MainActivity : AppCompatActivity() {
                                     jsonObject.getString("rating"),
                                     jsonObject.getString("episode"),
                                     jsonObject.getString("sinopsis")))
+
+                            val city = hashMapOf(
+                                    "judul" to jsonObject.getString("judul"),
+                                    "rating" to jsonObject.getString("rating"),
+                                    "episode" to jsonObject.getString("episode"),
+                                    "sinopsis" to jsonObject.getString("sinopsis")
+                            )
+
+                            db.collection("kdramas").document(jsonObject.getString("judul"))
+                                    .set(city)
+                                    .addOnSuccessListener { Log.d("Message", "DocumentSnapshot successfully added!") }
+                                    .addOnFailureListener { e -> Log.w("Message ", "Error adding document", e) }
 
                             if(jsonArray.length() - 1 == i){
 
