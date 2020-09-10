@@ -2,6 +2,7 @@
 
 package com.bapercoding.simplecrud
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -21,7 +22,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
+    var thisActivity: Activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +118,7 @@ class MainActivity : AppCompatActivity() {
             else{
                 tv_nothing.visibility = View.GONE
             }
-            val adapter2 = RVAAdapterStudent(applicationContext,search.listSearch,search.list2)
+            val adapter2 = RVAAdapterStudent(thisActivity, applicationContext, search.listSearch, search.list2)
             adapter2.notifyDataSetChanged()
             mRecyclerView1.adapter = adapter2
 
@@ -158,10 +163,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.about_item) {
-            username = intent.getStringExtra("username")
             val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
-            intentAboutMe.putExtra("username", username)
             startActivity(intentAboutMe)
+            overridePendingTransition(R.anim.enter, R.anim.exit)
             finish()
             searchLayout.visibility = View.GONE
         }
@@ -202,7 +206,7 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("sinopsis")))
                     }
                     loading.dismiss()
-                    val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
+                    val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list)
                     adapter.notifyDataSetChanged()
                     mRecyclerView1.adapter = adapter
                 }

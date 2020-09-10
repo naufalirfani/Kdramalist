@@ -1,5 +1,6 @@
 package com.bapercoding.simplecrud
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -12,7 +13,7 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 
-class RVAAdapterStudent(private val context: Context, private val arrayList: ArrayList<Kdramas>, private val listFilm: ArrayList<Film>) : RecyclerView.Adapter<RVAAdapterStudent.Holder>() {
+class RVAAdapterStudent(private val activity: Activity, private val context: Context, private val arrayList: ArrayList<Kdramas>, private val listFilm: ArrayList<Film>) : RecyclerView.Adapter<RVAAdapterStudent.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.student_list,parent,false))
@@ -44,7 +45,8 @@ class RVAAdapterStudent(private val context: Context, private val arrayList: Arr
             i.putExtra("rating",arrayList?.get(position)?.rating)
             i.putExtra("episode",arrayList?.get(position)?.episode)
             i.putExtra("sinopsis",arrayList?.get(position)?.sinopsis)
-            context.startActivity(i)
+            activity.startActivity(i)
+            activity.overridePendingTransition(R.anim.enter, R.anim.exit)
         }
 
     }
