@@ -78,12 +78,14 @@ class MainActivity : AppCompatActivity() {
                 //hide layout when scroll down
                 if (dy > 0){
                     val dialog: LinearLayout = findViewById(R.id.searchLayout)
-                    dialog.setVisibility(LinearLayout.GONE)
-                    val animation: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.anim_hide)
-                    animation.setDuration(300)
-                    dialog.setAnimation(animation)
-                    dialog.animate()
-                    animation.start()
+                    if(dialog.visibility == View.VISIBLE){
+                        val animation = AnimationUtils.loadAnimation(applicationContext, R.anim.anim_hide)
+                        animation.duration = 500
+                        dialog.animation = animation
+                        dialog.animate()
+                        animation.start()
+                        dialog.visibility = LinearLayout.GONE
+                    }
                 }
             }
         })
@@ -120,16 +122,14 @@ class MainActivity : AppCompatActivity() {
             val adapter2 = RVAAdapterStudent(applicationContext,search.listSearch,search.list2)
             adapter2.notifyDataSetChanged()
             mRecyclerView1.adapter = adapter2
+
             val dialog: LinearLayout = findViewById(R.id.searchLayout)
+            val animation = AnimationUtils.loadAnimation(this, R.anim.anim_hide)
+            animation.duration = 500
+            dialog.animation = animation
             dialog.animate()
-                    .translationY(0F)
-                    .alpha(0.0f)
-                    .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            super.onAnimationEnd(animation)
-                            dialog.setVisibility(View.GONE)
-                        }
-                    })
+            animation.start()
+            dialog.visibility = LinearLayout.GONE
 
             //close virtual keyboard
             closeKeyBoard()
@@ -178,7 +178,9 @@ class MainActivity : AppCompatActivity() {
 
             val dialog: LinearLayout = findViewById(R.id.searchLayout)
             val animation = AnimationUtils.loadAnimation(this, R.anim.anim_show)
-            animation.duration = 300
+            dialog.bringToFront()
+            dialog.requestLayout()
+            animation.duration = 500
             dialog.animation = animation
             dialog.animate()
             animation.start()
