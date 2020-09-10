@@ -1,7 +1,7 @@
+@file:Suppress("DEPRECATION")
+
 package com.bapercoding.simplecrud
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -19,21 +19,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.common.Priority
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
 
 
 @Suppress("DEPRECATION", "DEPRECATED_IDENTITY_EQUALS")
@@ -197,80 +190,107 @@ class MainActivity : AppCompatActivity() {
         loading.setMessage("Memuat data...")
         loading.show()
 
-        AndroidNetworking.get(ApiEndPoint.READ2)
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(object : JSONObjectRequestListener{
+        val db = FirebaseFirestore.getInstance()
+        db.collection("kdramas")
+                .get()
+                .addOnSuccessListener { result ->
+                    arrayList.clear()
+                    for (document in result) {
+                        arrayList.add(Kdramas(document.getString("judul")!!,
+                                document.getString("rating"),
+                                document.getString("episode")!!,
+                                document.getString("sinopsis")))
+                    }
+                    loading.dismiss()
+                    val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
+                    adapter.notifyDataSetChanged()
+                    mRecyclerView1.adapter = adapter
+                }
+                .addOnFailureListener { exception ->
+                    loading.dismiss()
+                    Log.d("Error", "Error getting documents: ", exception)
+                    val snackBar = Snackbar.make(
+                            currentFocus!!, "    Connection Failure",
+                            Snackbar.LENGTH_INDEFINITE
+                    )
+                    val snackBarView = snackBar.view
+                    snackBarView.setBackgroundColor(Color.BLACK)
+                    val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                    textView.setTextColor(Color.WHITE)
+                    textView.setTextSize(16F)
+                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+                    val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+                    snack_action_view.setTextColor(Color.YELLOW)
 
-                    override fun onResponse(response: JSONObject?) {
-
-                        arrayList.clear()
-
-                        val jsonArray = response?.optJSONArray("result")
-
-                        if(jsonArray?.length() == 0){
-                            loading.dismiss()
-                            Toast.makeText(applicationContext,"Student data is empty, Add the data first",Toast.LENGTH_SHORT).show()
-                        }
-                        val db = FirebaseFirestore.getInstance()
-
-                        for(i in 0 until jsonArray?.length()!!){
-
-                            val jsonObject = jsonArray.optJSONObject(i)
-                            arrayList.add(Kdramas(jsonObject.getString("judul"),
-                                    jsonObject.getString("rating"),
-                                    jsonObject.getString("episode"),
-                                    jsonObject.getString("sinopsis")))
-
-                            val city = hashMapOf(
-                                    "judul" to jsonObject.getString("judul"),
-                                    "rating" to jsonObject.getString("rating"),
-                                    "episode" to jsonObject.getString("episode"),
-                                    "sinopsis" to jsonObject.getString("sinopsis")
-                            )
-
-                            db.collection("kdramas").document(jsonObject.getString("judul"))
-                                    .set(city)
-                                    .addOnSuccessListener { Log.d("Message", "DocumentSnapshot successfully added!") }
-                                    .addOnFailureListener { e -> Log.w("Message ", "Error adding document", e) }
-
-                            if(jsonArray.length() - 1 == i){
-
-                                loading.dismiss()
-                                val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
-                                adapter.notifyDataSetChanged()
-                                mRecyclerView1.adapter = adapter
-
-                            }
-
-                        }
+                    // Set an action for snack bar
+                    snackBar.setAction("Retry") {
+                        loadAllStudents()
 
                     }
+                    snackBar.show()
+                }
 
-                    override fun onError(anError: ANError?) {
-                        loading.dismiss()
-                        Log.d("ONERROR",anError?.errorDetail?.toString())
-                        val snackBar = Snackbar.make(
-                                currentFocus, "    Connection Failure",
-                                Snackbar.LENGTH_INDEFINITE
-                        )
-                        val snackBarView = snackBar.view
-                        snackBarView.setBackgroundColor(Color.BLACK)
-                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-                        textView.setTextColor(Color.WHITE)
-                        textView.setTextSize(16F)
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
-                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
-                        snack_action_view.setTextColor(Color.YELLOW)
-
-                        // Set an action for snack bar
-                        snackBar.setAction("Retry") {
-                            loadAllStudents()
-
-                        }
-                        snackBar.show()
-                    }
-                })
+//        AndroidNetworking.get(ApiEndPoint.READ2)
+//                .setPriority(Priority.MEDIUM)
+//                .build()
+//                .getAsJSONObject(object : JSONObjectRequestListener{
+//
+//                    override fun onResponse(response: JSONObject?) {
+//
+//                        arrayList.clear()
+//
+//                        val jsonArray = response?.optJSONArray("result")
+//
+//                        if(jsonArray?.length() == 0){
+//                            loading.dismiss()
+//                            Toast.makeText(applicationContext,"Student data is empty, Add the data first",Toast.LENGTH_SHORT).show()
+//                        }
+//
+//                        for(i in 0 until jsonArray?.length()!!){
+//
+//                            val jsonObject = jsonArray.optJSONObject(i)
+//                            arrayList.add(Kdramas(jsonObject.getString("judul"),
+//                                    jsonObject.getString("rating"),
+//                                    jsonObject.getString("episode"),
+//                                    jsonObject.getString("sinopsis")))
+//
+//                            if(jsonArray.length() - 1 == i){
+//
+//                                loading.dismiss()
+//                                val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
+//                                adapter.notifyDataSetChanged()
+//                                mRecyclerView1.adapter = adapter
+//
+//                            }
+//
+//                        }
+//
+//                    }
+//
+//                    override fun onError(anError: ANError?) {
+//                        loading.dismiss()
+//                        Log.d("ONERROR",anError?.errorDetail?.toString())
+//                        val snackBar = Snackbar.make(
+//                                currentFocus, "    Connection Failure",
+//                                Snackbar.LENGTH_INDEFINITE
+//                        )
+//                        val snackBarView = snackBar.view
+//                        snackBarView.setBackgroundColor(Color.BLACK)
+//                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+//                        textView.setTextColor(Color.WHITE)
+//                        textView.setTextSize(16F)
+//                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+//                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+//                        snack_action_view.setTextColor(Color.YELLOW)
+//
+//                        // Set an action for snack bar
+//                        snackBar.setAction("Retry") {
+//                            loadAllStudents()
+//
+//                        }
+//                        snackBar.show()
+//                    }
+//                })
     }
 
     private fun closeKeyBoard() {
@@ -281,3 +301,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+//val kdrama = hashMapOf(
+//        "judul" to jsonObject.getString("judul"),
+//        "rating" to jsonObject.getString("rating"),
+//        "episode" to jsonObject.getString("episode"),
+//        "sinopsis" to jsonObject.getString("sinopsis")
+//)
+//
+//db.collection("kdramas").document(jsonObject.getString("judul"))
+//.set(kdrama)
+//.addOnSuccessListener { Log.d("Message", "DocumentSnapshot successfully added!") }
+//.addOnFailureListener { e -> Log.w("Message ", "Error adding document", e) }
