@@ -229,68 +229,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     snackBar.show()
                 }
-
-//        AndroidNetworking.get(ApiEndPoint.READ2)
-//                .setPriority(Priority.MEDIUM)
-//                .build()
-//                .getAsJSONObject(object : JSONObjectRequestListener{
-//
-//                    override fun onResponse(response: JSONObject?) {
-//
-//                        arrayList.clear()
-//
-//                        val jsonArray = response?.optJSONArray("result")
-//
-//                        if(jsonArray?.length() == 0){
-//                            loading.dismiss()
-//                            Toast.makeText(applicationContext,"Student data is empty, Add the data first",Toast.LENGTH_SHORT).show()
-//                        }
-//
-//                        for(i in 0 until jsonArray?.length()!!){
-//
-//                            val jsonObject = jsonArray.optJSONObject(i)
-//                            arrayList.add(Kdramas(jsonObject.getString("judul"),
-//                                    jsonObject.getString("rating"),
-//                                    jsonObject.getString("episode"),
-//                                    jsonObject.getString("sinopsis")))
-//
-//                            if(jsonArray.length() - 1 == i){
-//
-//                                loading.dismiss()
-//                                val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
-//                                adapter.notifyDataSetChanged()
-//                                mRecyclerView1.adapter = adapter
-//
-//                            }
-//
-//                        }
-//
-//                    }
-//
-//                    override fun onError(anError: ANError?) {
-//                        loading.dismiss()
-//                        Log.d("ONERROR",anError?.errorDetail?.toString())
-//                        val snackBar = Snackbar.make(
-//                                currentFocus, "    Connection Failure",
-//                                Snackbar.LENGTH_INDEFINITE
-//                        )
-//                        val snackBarView = snackBar.view
-//                        snackBarView.setBackgroundColor(Color.BLACK)
-//                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-//                        textView.setTextColor(Color.WHITE)
-//                        textView.setTextSize(16F)
-//                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
-//                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
-//                        snack_action_view.setTextColor(Color.YELLOW)
-//
-//                        // Set an action for snack bar
-//                        snackBar.setAction("Retry") {
-//                            loadAllStudents()
-//
-//                        }
-//                        snackBar.show()
-//                    }
-//                })
     }
 
     private fun closeKeyBoard() {
@@ -302,6 +240,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+//write to cloud firestore
 //val kdrama = hashMapOf(
 //        "judul" to jsonObject.getString("judul"),
 //        "rating" to jsonObject.getString("rating"),
@@ -313,3 +252,66 @@ class MainActivity : AppCompatActivity() {
 //.set(kdrama)
 //.addOnSuccessListener { Log.d("Message", "DocumentSnapshot successfully added!") }
 //.addOnFailureListener { e -> Log.w("Message ", "Error adding document", e) }
+
+//read from web api
+//AndroidNetworking.get(ApiEndPoint.READ2)
+//.setPriority(Priority.MEDIUM)
+//.build()
+//.getAsJSONObject(object : JSONObjectRequestListener{
+//
+//    override fun onResponse(response: JSONObject?) {
+//
+//        arrayList.clear()
+//
+//        val jsonArray = response?.optJSONArray("result")
+//
+//        if(jsonArray?.length() == 0){
+//            loading.dismiss()
+//            Toast.makeText(applicationContext,"Student data is empty, Add the data first",Toast.LENGTH_SHORT).show()
+//        }
+//
+//        for(i in 0 until jsonArray?.length()!!){
+//
+//            val jsonObject = jsonArray.optJSONObject(i)
+//            arrayList.add(Kdramas(jsonObject.getString("judul"),
+//                    jsonObject.getString("rating"),
+//                    jsonObject.getString("episode"),
+//                    jsonObject.getString("sinopsis")))
+//
+//            if(jsonArray.length() - 1 == i){
+//
+//                loading.dismiss()
+//                val adapter = RVAAdapterStudent(applicationContext,arrayList,list)
+//                adapter.notifyDataSetChanged()
+//                mRecyclerView1.adapter = adapter
+//
+//            }
+//
+//        }
+//
+//    }
+//
+//    override fun onError(anError: ANError?) {
+//        loading.dismiss()
+//        Log.d("ONERROR",anError?.errorDetail?.toString())
+//        val snackBar = Snackbar.make(
+//                currentFocus, "    Connection Failure",
+//                Snackbar.LENGTH_INDEFINITE
+//        )
+//        val snackBarView = snackBar.view
+//        snackBarView.setBackgroundColor(Color.BLACK)
+//        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+//        textView.setTextColor(Color.WHITE)
+//        textView.setTextSize(16F)
+//        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+//        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+//        snack_action_view.setTextColor(Color.YELLOW)
+//
+//        // Set an action for snack bar
+//        snackBar.setAction("Retry") {
+//            loadAllStudents()
+//
+//        }
+//        snackBar.show()
+//    }
+//})
