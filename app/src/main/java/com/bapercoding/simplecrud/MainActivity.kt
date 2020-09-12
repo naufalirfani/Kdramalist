@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -45,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var dbReference2: DatabaseReference
+    private lateinit var firebaseDatabase2: FirebaseDatabase
     var thisActivity: Activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -319,3 +322,38 @@ class MainActivity : AppCompatActivity() {
 //        snackBar.show()
 //    }
 //})
+
+//write image url to realtime database
+//firebaseDatabase2 = FirebaseDatabase.getInstance()
+//dbReference2 = firebaseDatabase2.getReference("images")
+//val storageReference = FirebaseStorage.getInstance().reference
+//val iterator = arrayOf('i','k','c','g','a','b','e','h','j','d','f')
+//val iterator2 = arrayOf('a','b','c','d','e','f','g','h','i','j')
+//for(position in 0 until (iterator.size)){
+//    for(position2 in iterator2.indices){
+//        val nama = "${iterator[position]}${iterator2[position2]}"
+//        val ref = storageReference.child("images/${arrayList[position].judul}/" + nama + ".jpg")
+//        ref.downloadUrl.addOnSuccessListener {
+//            writeNewImageInfoToDB(position, nama, it.toString())
+//        }.addOnFailureListener {  }
+//        if(nama == "if"){
+//            val nama2 = "${iterator[position]}${iterator2[position2]}${iterator2[position2]}"
+//            val ref2 = storageReference.child("images/${arrayList[position].judul}/" + nama2 + ".jpg")
+//            ref2.downloadUrl.addOnSuccessListener {
+//                writeNewImageInfoToDB(position, nama2, it.toString())
+//            }.addOnFailureListener {  }
+//        }
+//    }
+//}
+//private fun writeNewImageInfoToDB(letak: Int, name: String, url: String) {
+//    val info = Upload(name, url)
+//    val key: String? = dbReference2.push().getKey()
+//    var judul = arrayList[letak].judul
+//    if(judul.contains(".")){
+//        judul = judul.replace(".", "")
+//        dbReference2.child(judul).child(key!!).setValue(info)
+//    }
+//    else{
+//        dbReference2.child(judul).child(key!!).setValue(info)
+//    }
+//}

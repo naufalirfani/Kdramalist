@@ -41,28 +41,10 @@ class AboutMe : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         val iv: ImageView = findViewById(R.id.img_my_photo)
-//        iv.setImageResource(getResources().getIdentifier("fotoku", "drawable", getPackageName()))
-        val storage = FirebaseDatabase.getInstance()
-// Create a reference to a file from a Google Cloud Storage URI
-        val dbReference2 = storage.getReference("images")
+        iv.setImageResource(getResources().getIdentifier("fotoku", "drawable", getPackageName()))
 
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
-
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (data: DataSnapshot in dataSnapshot.children){
-                    val hasil = data.getValue(Upload::class.java)
-                    Glide.with(this@AboutMe)
-                            .load(hasil!!.url)
-                            .into(iv)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        }
-        dbReference2.child("A Piece of Your Mind").addValueEventListener(postListener)
 
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 
 @Suppress("DEPRECATION")
-class PagerAdapter (fm: FragmentManager, private val list: ArrayList<Int>, private val list2: ArrayList<Bitmap>, private val letak: Int, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String) : FragmentStatePagerAdapter(fm){
+class PagerAdapter (fm: FragmentManager, private val list: ArrayList<Int>, private val list2: ArrayList<String>, private val letak: Int, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String) : FragmentStatePagerAdapter(fm){
 
     private val tabName : Array<String> = arrayOf("Details", "Cast", "Episodes", "Photos")
 

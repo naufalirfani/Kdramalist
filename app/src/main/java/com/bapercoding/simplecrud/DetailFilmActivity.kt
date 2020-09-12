@@ -51,7 +51,7 @@ class DetailFilmActivity : AppCompatActivity() {
     private lateinit var layout: RelativeLayout
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
-    private val listPhoto2 = ArrayList<Bitmap>()
+    private val listPhoto2 = ArrayList<String>()
     var listPhoto3: ArrayList<Int> = arrayListOf()
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
@@ -145,36 +145,6 @@ class DetailFilmActivity : AppCompatActivity() {
         val mime: MimeTypeMap = MimeTypeMap.getSingleton()
         return mime.getExtensionFromMimeType(cR.getType(uri))
     }
-
-//    protected fun getBorders(
-//            bgColor: Int, borderColor: Int,
-//            left: Int, top: Int, right: Int, bottom: Int
-//    ): LayerDrawable? {
-//        // Initialize new color drawables
-//        val borderColorDrawable = ColorDrawable(borderColor)
-//        val backgroundColorDrawable = ColorDrawable(bgColor)
-//
-//        // Initialize a new array of drawable objects
-//        val drawables = arrayOf<Drawable>(
-//                borderColorDrawable,
-//                backgroundColorDrawable
-//        )
-//
-//        // Initialize a new layer drawable instance from drawables array
-//        val layerDrawable = LayerDrawable(drawables)
-//
-//        // Set padding for background color layer
-//        layerDrawable.setLayerInset(
-//                1,  // Index of the drawable to adjust [background color layer]
-//                left,  // Number of pixels to add to the left bound [left border]
-//                top,  // Number of pixels to add to the top bound [top border]
-//                right,  // Number of pixels to add to the right bound [right border]
-//                bottom // Number of pixels to add to the bottom bound [bottom border]
-//        )
-//
-//        // Finally, return the one or more sided bordered background drawable
-//        return layerDrawable
-//    }
 
     fun tabClick(){
         tabLayout1.setTabTextColors(Color.parseColor("#b3e5fc"), Color.parseColor("#03A9F4"))
@@ -292,49 +262,6 @@ class DetailFilmActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadImage(){
-        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${judul}")
-        val dirlist = storageDir.listFiles()
-        try {
-            for(i in dirlist.indices){
-                val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
-                listPhoto2.add(b)
-            }
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-        tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
-        val pager = findViewById<View>(R.id.pager) as ViewPager
-        pager.adapter = pagerAdapter
-        tabLayout1.setupWithViewPager(pager)
-    }
-
-    private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
-
-        val namajpg = GenerateNama.randomString(10)
-        val cw = ContextWrapper(applicationContext)
-        // path to /data/data/yourapp/app_data/imageDir
-        val directory = cw.getDir("imageDir" + "/${judul}", Context.MODE_PRIVATE)
-        // Create imageDir
-        val mypath = File(directory, "$namajpg.jpg")
-        var fos: FileOutputStream? = null
-        try {
-            fos = FileOutputStream(mypath)
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            try {
-                fos?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        return directory.absolutePath
-    }
-
     object GenerateNama{
         const val DATA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         var RANDOM = Random()
@@ -377,8 +304,57 @@ class DetailFilmActivity : AppCompatActivity() {
     private fun writeNewImageInfoToDB(name: String, url: String) {
         val info = Upload(name, url)
         val key: String? = dbReference.push().getKey()
-        dbReference.child(judul).child(key!!).setValue(info)
+        if(judul.contains(".")){
+            judul = judul.replace(".", "")
+            dbReference.child(judul).child(key!!).setValue(info)
+        }
+        else{
+            dbReference.child(judul).child(key!!).setValue(info)
+        }
     }
+
+//    private fun loadImage(){
+//        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${judul}")
+//        val dirlist = storageDir.listFiles()
+//        try {
+//            for(i in dirlist.indices){
+//                val b = BitmapFactory.decodeStream(FileInputStream(dirlist[i]))
+//                listPhoto2.add(b)
+//            }
+//        } catch (e: FileNotFoundException) {
+//            e.printStackTrace()
+//        }
+//        tabLayout1 = findViewById<View>(R.id.tabLayout) as TabLayout
+//        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
+//        val pager = findViewById<View>(R.id.pager) as ViewPager
+//        pager.adapter = pagerAdapter
+//        tabLayout1.setupWithViewPager(pager)
+//    }
+//
+//    private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
+//
+//        val namajpg = GenerateNama.randomString(10)
+//        val cw = ContextWrapper(applicationContext)
+//        // path to /data/data/yourapp/app_data/imageDir
+//        val directory = cw.getDir("imageDir" + "/${judul}", Context.MODE_PRIVATE)
+//        // Create imageDir
+//        val mypath = File(directory, "$namajpg.jpg")
+//        var fos: FileOutputStream? = null
+//        try {
+//            fos = FileOutputStream(mypath)
+//            // Use the compress method on the BitMap object to write image to the OutputStream
+//            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            try {
+//                fos?.close()
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//        }
+//        return directory.absolutePath
+//    }
 
 //    private fun setPic() {
 //        // Get the dimensions of the View
@@ -424,5 +400,35 @@ class DetailFilmActivity : AppCompatActivity() {
 //        } catch (e: FileNotFoundException) {
 //            e.printStackTrace()
 //        }
+//    }
+
+//    protected fun getBorders(
+//            bgColor: Int, borderColor: Int,
+//            left: Int, top: Int, right: Int, bottom: Int
+//    ): LayerDrawable? {
+//        // Initialize new color drawables
+//        val borderColorDrawable = ColorDrawable(borderColor)
+//        val backgroundColorDrawable = ColorDrawable(bgColor)
+//
+//        // Initialize a new array of drawable objects
+//        val drawables = arrayOf<Drawable>(
+//                borderColorDrawable,
+//                backgroundColorDrawable
+//        )
+//
+//        // Initialize a new layer drawable instance from drawables array
+//        val layerDrawable = LayerDrawable(drawables)
+//
+//        // Set padding for background color layer
+//        layerDrawable.setLayerInset(
+//                1,  // Index of the drawable to adjust [background color layer]
+//                left,  // Number of pixels to add to the left bound [left border]
+//                top,  // Number of pixels to add to the top bound [top border]
+//                right,  // Number of pixels to add to the right bound [right border]
+//                bottom // Number of pixels to add to the bottom bound [bottom border]
+//        )
+//
+//        // Finally, return the one or more sided bordered background drawable
+//        return layerDrawable
 //    }
 }
