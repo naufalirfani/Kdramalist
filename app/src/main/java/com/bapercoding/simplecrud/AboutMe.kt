@@ -1,6 +1,7 @@
 package com.bapercoding.simplecrud
 
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,9 +12,15 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.student_list.view.*
 
 class AboutMe : AppCompatActivity() {
 
@@ -34,11 +41,28 @@ class AboutMe : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         val iv: ImageView = findViewById(R.id.img_my_photo)
-        iv.setImageResource(getResources().getIdentifier("fotoku", "drawable", getPackageName()))
+//        iv.setImageResource(getResources().getIdentifier("fotoku", "drawable", getPackageName()))
+        val storage = FirebaseDatabase.getInstance()
+// Create a reference to a file from a Google Cloud Storage URI
+        val dbReference2 = storage.getReference("images")
 
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
 
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (data: DataSnapshot in dataSnapshot.children){
+                    val hasil = data.getValue(Upload::class.java)
+                    Glide.with(this@AboutMe)
+                            .load(hasil!!.url)
+                            .into(iv)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        dbReference2.child("A Piece of Your Mind").addValueEventListener(postListener)
 
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser

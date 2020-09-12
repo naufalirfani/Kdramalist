@@ -17,7 +17,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.OnTabSelectedListener
-import android.support.v4.app.FragmentActivity
 import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -350,12 +349,17 @@ class DetailFilmActivity : AppCompatActivity() {
 
     private fun uploadImage(){
         firebaseDatabase = FirebaseDatabase.getInstance()
-        dbReference = firebaseDatabase.getReference("photos")
+        dbReference = firebaseDatabase.getReference("images")
         val progressDialog = ProgressDialog(this)
         progressDialog.show()
         if(filePath != null){
             val ref = storageReference?.child("images/${judul}/" + judul + "_" + GenerateNama.randomString(10))
             ref?.putFile(filePath!!)?.addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> {taskSnapshot ->
+                ref.downloadUrl.addOnSuccessListener {
+                    val name = taskSnapshot.metadata!!.name
+                    val url = it.toString()
+                    writeNewImageInfoToDB(name!!, url)
+                }.addOnFailureListener {}
                 progressDialog.dismiss()
                 Toast.makeText(this@DetailFilmActivity, "Image Uploaded", Toast.LENGTH_LONG).show()
             })?.addOnFailureListener(OnFailureListener { e ->
@@ -368,6 +372,12 @@ class DetailFilmActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this, "Please Select an Image", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun writeNewImageInfoToDB(name: String, url: String) {
+        val info = Upload(name, url)
+        val key: String? = dbReference.push().getKey()
+        dbReference.child(judul).child(key!!).setValue(info)
     }
 
 //    private fun setPic() {
