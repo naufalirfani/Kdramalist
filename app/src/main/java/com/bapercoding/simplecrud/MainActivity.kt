@@ -27,8 +27,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,11 +37,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     var arrayList = ArrayList<Kdramas>()
+    var arrayList2 = ArrayList<String>()
     private var list: java.util.ArrayList<Film> = arrayListOf()
     val search = Search()
     private lateinit var etSearch: EditText
     var isShow = false
-    var username: String? = null
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -112,7 +111,8 @@ class MainActivity : AppCompatActivity() {
             loading.show()
             search.listSearch.clear()
             search.list2.clear()
-            search.searchJudul(etSearch.text.toString(), arrayList,list)
+            search.list3.clear()
+            search.searchJudul(etSearch.text.toString(), arrayList,list, arrayList2)
             loading.dismiss()
             if(search.listSearch.size == 0){
                 tv_nothing.visibility = View.VISIBLE
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             else{
                 tv_nothing.visibility = View.GONE
             }
-            val adapter2 = RVAAdapterStudent(thisActivity, applicationContext, search.listSearch, search.list2)
+            val adapter2 = RVAAdapterStudent(thisActivity, applicationContext, search.listSearch, search.list2, search.list3)
             adapter2.notifyDataSetChanged()
             mRecyclerView1.adapter = adapter2
 
@@ -146,11 +146,24 @@ class MainActivity : AppCompatActivity() {
             val id = user.uid
             val email2 = user.email
             val user2 = UserInfo(name, email2)
-            if(!TextUtils.isEmpty(name)){
+            if(!TextUtils.isEmpty(name) && !(name.contains("@"))){
                 dbReference.child(id).setValue(user2)
             }
         }
 
+        val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
+        val postListener2 = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (data: DataSnapshot in dataSnapshot.children){
+                    val hasil = data.getValue(Upload::class.java)
+                    arrayList2.add(hasil?.url!!)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        dbReference2.addValueEventListener(postListener2)
     }
 
     override fun onResume() {
@@ -209,7 +222,7 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("sinopsis")))
                     }
                     loading.dismiss()
-                    val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list)
+                    val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                     adapter.notifyDataSetChanged()
                     mRecyclerView1.adapter = adapter
                 }

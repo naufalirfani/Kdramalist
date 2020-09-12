@@ -13,7 +13,7 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 
-class RVAAdapterStudent(private val activity: Activity, private val context: Context, private val arrayList: ArrayList<Kdramas>, private val listFilm: ArrayList<Film>) : RecyclerView.Adapter<RVAAdapterStudent.Holder>() {
+class RVAAdapterStudent(private val activity: Activity, private val context: Context, private val arrayList: ArrayList<Kdramas>, private val listFilm: ArrayList<Film>, private val listPage: ArrayList<String>) : RecyclerView.Adapter<RVAAdapterStudent.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.student_list,parent,false))
@@ -24,7 +24,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[position]
         Glide.with(holder.itemView.context)
-                .load(film.photo)
+                .load(listPage[position])
                 .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                 .into(holder.view.img_item_photo)
         Glide.with(holder.itemView.context)

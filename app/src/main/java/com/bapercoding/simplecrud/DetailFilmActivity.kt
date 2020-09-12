@@ -112,14 +112,6 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addTab(tabLayout1.newTab().setText("Episodes"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
 
-        for(position in 0 until (iterator.size-1)){
-            val nama = "${iterator[letak]}${iterator[position]}"
-            listPhoto3.add(getResources().getIdentifier(nama, "drawable", getPackageName()))
-            if(nama == "if"){
-                listPhoto3.add(getResources().getIdentifier("$nama${iterator[position]}", "drawable", getPackageName()))
-            }
-        }
-
         val dbReference2 = FirebaseDatabase.getInstance().getReference("images")
         val postListener2 = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
