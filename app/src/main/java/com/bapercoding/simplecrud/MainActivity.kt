@@ -151,6 +151,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        getImagepage()
+    }
+    fun getImagepage(){
         val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
         val postListener2 = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -221,10 +224,17 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis")))
                     }
+                    getImagepage()
                     loading.dismiss()
-                    val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
-                    adapter.notifyDataSetChanged()
-                    mRecyclerView1.adapter = adapter
+                    if(arrayList2.isNotEmpty()){
+                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
+                        adapter.notifyDataSetChanged()
+                        mRecyclerView1.adapter = adapter
+                    }
+                    else{
+                        loadAllStudents()
+                    }
+
                 }
                 .addOnFailureListener { exception ->
                     loading.dismiss()

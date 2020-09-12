@@ -48,6 +48,7 @@ class DetailFilmActivity : AppCompatActivity() {
     lateinit var rating:String
     lateinit var episode:String
     lateinit var sinopsis:String
+    lateinit var imagepage:String
     private lateinit var layout: RelativeLayout
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
@@ -85,6 +86,7 @@ class DetailFilmActivity : AppCompatActivity() {
         rating = intent.getStringExtra("rating")
         episode = intent.getStringExtra("episode")
         sinopsis = intent.getStringExtra("sinopsis")
+        imagepage = intent.getStringExtra("imagePage")
         letak = intent.getIntExtra("position",0)
 
         val tvDataReceived: TextView = findViewById(R.id.tv_data_received)
@@ -135,7 +137,7 @@ class DetailFilmActivity : AppCompatActivity() {
 
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)

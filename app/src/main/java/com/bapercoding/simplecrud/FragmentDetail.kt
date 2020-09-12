@@ -15,10 +15,11 @@ class FragmentDetail : Fragment() {
     private var rating: String? = null
     private var episode: String? = null
     private var sinopsis: String? = null
+    private var imagePage: String? = null
     private var letak = 0
 
     // newInstance constructor for creating fragment with arguments
-    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?): FragmentDetail? {
+    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?): FragmentDetail? {
         val fragmentDetail = FragmentDetail()
         val args = Bundle()
         args.putInt("letak", letak)
@@ -26,6 +27,7 @@ class FragmentDetail : Fragment() {
         args.putString("rating", rating)
         args.putString("episode", episode)
         args.putString("sinopsis", sinopsis)
+        args.putString("imagePage", imagePage)
         fragmentDetail.setArguments(args)
         return fragmentDetail
     }
@@ -37,6 +39,7 @@ class FragmentDetail : Fragment() {
         rating = arguments!!.getString("rating")
         episode = arguments!!.getString("episode")
         sinopsis = arguments!!.getString("sinopsis")
+        imagePage = arguments!!.getString("imagePage")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -44,17 +47,12 @@ class FragmentDetail : Fragment() {
 
 
         val view: View = inflater.inflate(R.layout.fragment_detail, container, false) //Inflate Layout
-//        val judul = arguments!!.getString("judul")
-//        val rating = arguments!!.getString("rating")
-//        val episode = arguments!!.getString("episode")
-//        val sinopsis = arguments!!.getString("sinopsis")
-//        val letak = arguments!!.getInt("letak")
         val list = ArrayList<Film>()
         list.addAll(Data.listData)
         val rv:RecyclerView = view.findViewById(R.id.rvDetail)
         rv.setHasFixedSize(true)
         rv.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { judul?.let { it1 -> rating?.let { it2 -> episode?.let { it3 -> sinopsis?.let { it4 -> DetailFilmAdapter(it,list, it1, it2, it3, it4, letak) } } } } }
+        val adapter = DetailFilmAdapter(context!!, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak)
         adapter?.notifyDataSetChanged()
         rv.adapter = adapter
 
