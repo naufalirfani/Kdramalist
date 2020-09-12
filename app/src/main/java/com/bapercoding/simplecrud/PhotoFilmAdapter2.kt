@@ -14,7 +14,7 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.list_photo.view.*
 
 
-class PhotoFilmAdapter2(private val context: Context, private val listPhoto: ArrayList<Bitmap>) : RecyclerView.Adapter<PhotoFilmAdapter2.Holder>() {
+class PhotoFilmAdapter2(private val context: Context, private val listPhoto: ArrayList<String>) : RecyclerView.Adapter<PhotoFilmAdapter2.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_photo,parent,false))
