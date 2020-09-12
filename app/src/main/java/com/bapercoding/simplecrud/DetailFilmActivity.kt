@@ -26,10 +26,10 @@ import android.webkit.MimeTypeMap
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
@@ -118,6 +118,27 @@ class DetailFilmActivity : AppCompatActivity() {
             if(nama == "if"){
                 listPhoto3.add(getResources().getIdentifier("$nama${iterator[position]}", "drawable", getPackageName()))
             }
+        }
+
+        val dbReference2 = FirebaseDatabase.getInstance().getReference("images")
+        val postListener2 = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (data: DataSnapshot in dataSnapshot.children){
+                    val hasil = data.getValue(Upload::class.java)
+                    listPhoto2.add(hasil?.url!!)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        var judul2 = judul
+        if(judul2.contains(".")){
+            judul2 = judul2.replace(".", "")
+            dbReference2.child(judul2).addValueEventListener(postListener2)
+        }
+        else{
+            dbReference2.child(judul2).addValueEventListener(postListener2)
         }
 
         tabClick()
