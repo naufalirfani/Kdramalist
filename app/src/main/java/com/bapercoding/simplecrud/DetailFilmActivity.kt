@@ -114,6 +114,28 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addTab(tabLayout1.newTab().setText("Episodes"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
 
+        getPhotos()
+        tabClick()
+
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage)
+        val pager = findViewById<View>(R.id.pager) as ViewPager
+        pager.adapter = pagerAdapter
+        tabLayout1.setupWithViewPager(pager)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
+        startActivity(intentMain)
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
+        finish()
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    fun getPhotos(){
         val dbReference2 = FirebaseDatabase.getInstance().getReference("images")
         val postListener2 = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -134,25 +156,6 @@ class DetailFilmActivity : AppCompatActivity() {
         else{
             dbReference2.child(judul2).addValueEventListener(postListener2)
         }
-
-        tabClick()
-
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage)
-        val pager = findViewById<View>(R.id.pager) as ViewPager
-        pager.adapter = pagerAdapter
-        tabLayout1.setupWithViewPager(pager)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
-        startActivity(intentMain)
-        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
-        finish()
-    }
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 
     fun getFileExtension(uri: Uri?): String? {
@@ -257,6 +260,12 @@ class DetailFilmActivity : AppCompatActivity() {
             2 -> if (resultCode == Activity.RESULT_OK) {
                 filePath = data!!.data
                 uploadImage()
+                val intent = Intent(this@DetailFilmActivity, DetailFilmActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.enter, R.anim.exit)
+                finish()
+                pager.currentItem = 3
+
 //                try {
 //                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
 //                    listPhoto2.add(bitmap)
@@ -268,6 +277,11 @@ class DetailFilmActivity : AppCompatActivity() {
                 val imgFile = File(currentPhotoPath)
                 filePath = Uri.fromFile(imgFile)
                 uploadImage()
+                val intent = Intent(this@DetailFilmActivity, DetailFilmActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.enter, R.anim.exit)
+                finish()
+                pager.currentItem = 3
 //                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 //                listPhoto2.add(Photo2(myBitmap))
 //                saveToInternalStorage(imageBitmap)
