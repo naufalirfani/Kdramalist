@@ -74,26 +74,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btn_login.setOnClickListener {
-            if(emailEt.text.toString().contains("@")){
-                email = emailEt.text.toString()
-            }
-            if(!(emailEt.text.toString().contains("@"))){
-                val username = emailEt.text.toString()
-                val postListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // Get Post object and use the values to update the UI
-                        val user2 = dataSnapshot.getValue(UserInfo::class.java)
-                        if (user2 != null){
-                            email = user2.email
-                        }
-                        // ...
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                    }
-                }
-                dbReference.child(username).addValueEventListener(postListener)
-            }
+            getEmail()
             password = passwordEt.text.toString()
 
             val progressDialog = ProgressDialog(this)
@@ -105,8 +86,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
             }
             else if(TextUtils.isEmpty(email)){
-                progressDialog.dismiss()
-                Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
+                getEmail()
             }
             else{
                 email?.let { it1 ->
@@ -126,6 +106,29 @@ class LoginActivity : AppCompatActivity() {
                     })
                 }
             }
+        }
+    }
+
+    fun getEmail(){
+        if(emailEt.text.toString().contains("@")){
+            email = emailEt.text.toString()
+        }
+        if(!(emailEt.text.toString().contains("@"))){
+            val username = emailEt.text.toString()
+            val postListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    val user2 = dataSnapshot.getValue(UserInfo::class.java)
+                    if (user2 != null){
+                        email = user2.email
+                    }
+                    // ...
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            dbReference.child(username).addValueEventListener(postListener)
         }
     }
 }

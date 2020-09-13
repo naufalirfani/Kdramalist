@@ -255,33 +255,15 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("sinopsis")))
                     }
                     getImagepage()
-                    loading.dismiss()
                     if(arrayList2.isNotEmpty()){
+                        loading.dismiss()
                         val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                         adapter.notifyDataSetChanged()
                         mRecyclerView1.adapter = adapter
                     }
                     else{
-                        loading.dismiss()
-                        val snackBar = Snackbar.make(
-                                currentFocus!!, "    Connection Failure",
-                                Snackbar.LENGTH_INDEFINITE
-                        )
-                        val snackBarView = snackBar.view
-                        snackBarView.setBackgroundColor(Color.BLACK)
-                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-                        textView.setTextColor(Color.WHITE)
-                        textView.setTextSize(16F)
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
-                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
-                        snack_action_view.setTextColor(Color.YELLOW)
-
-                        // Set an action for snack bar
-                        snackBar.setAction("Retry") {
-                            loadAllStudents()
-
-                        }
-                        snackBar.show()
+                        getImagepage()
+                        return@addOnSuccessListener
                     }
 
                 }
