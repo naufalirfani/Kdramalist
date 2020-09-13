@@ -123,6 +123,11 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.setupWithViewPager(pager)
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        listPhoto2.clear()
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
@@ -139,6 +144,9 @@ class DetailFilmActivity : AppCompatActivity() {
         val dbReference2 = FirebaseDatabase.getInstance().getReference("images")
         val postListener2 = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(listPhoto2.isNotEmpty()){
+                    listPhoto2.clear()
+                }
                 for (data: DataSnapshot in dataSnapshot.children){
                     val hasil = data.getValue(Upload::class.java)
                     listPhoto2.add(hasil?.url!!)
@@ -260,12 +268,6 @@ class DetailFilmActivity : AppCompatActivity() {
             2 -> if (resultCode == Activity.RESULT_OK) {
                 filePath = data!!.data
                 uploadImage()
-                val intent = Intent(this@DetailFilmActivity, DetailFilmActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.enter, R.anim.exit)
-                finish()
-                pager.currentItem = 3
-
 //                try {
 //                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
 //                    listPhoto2.add(bitmap)
@@ -277,11 +279,6 @@ class DetailFilmActivity : AppCompatActivity() {
                 val imgFile = File(currentPhotoPath)
                 filePath = Uri.fromFile(imgFile)
                 uploadImage()
-                val intent = Intent(this@DetailFilmActivity, DetailFilmActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.enter, R.anim.exit)
-                finish()
-                pager.currentItem = 3
 //                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 //                listPhoto2.add(Photo2(myBitmap))
 //                saveToInternalStorage(imageBitmap)
@@ -315,9 +312,12 @@ class DetailFilmActivity : AppCompatActivity() {
                     val name = taskSnapshot.metadata!!.name
                     val url = it.toString()
                     writeNewImageInfoToDB(name!!, url)
+                    listPhoto2.add(url)
                 }.addOnFailureListener {}
                 progressDialog.dismiss()
                 Toast.makeText(this@DetailFilmActivity, "Image Uploaded", Toast.LENGTH_LONG).show()
+                finish()
+                startActivity(getIntent())
             })?.addOnFailureListener(OnFailureListener { e ->
                 progressDialog.dismiss()
                 Toast.makeText(this@DetailFilmActivity, "Image Uploading Failed " + e.message, Toast.LENGTH_LONG).show()

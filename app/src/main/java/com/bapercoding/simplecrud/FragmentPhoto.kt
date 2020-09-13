@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,8 @@ class FragmentPhoto : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        list.clear()
+        list2.clear()
         list = arguments!!.getIntegerArrayList("list")
         list2 = arguments!!.getStringArrayList("list2")
     }
@@ -47,8 +50,9 @@ class FragmentPhoto : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rvPhoto.setHasFixedSize(true)
-        rvPhoto.layoutManager = LinearLayoutManager(context)
+        rvPhoto.layoutManager = GridLayoutManager(context, 3)
         val adapter = context?.let { PhotoFilmAdapter2(it,list2) }
+        adapter?.notifyItemRangeRemoved(0, list2.size)
         adapter?.notifyDataSetChanged()
         rvPhoto.adapter = adapter
     }
