@@ -254,17 +254,28 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis")))
                     }
-                    getImagepage()
+                    while(arrayList2.isEmpty()){
+                        val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
+                        val postListener2 = object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                for (data: DataSnapshot in dataSnapshot.children){
+                                    val hasil = data.getValue(Upload::class.java)
+                                    arrayList2.add(hasil?.url!!)
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                            }
+                        }
+                        dbReference2.addValueEventListener(postListener2)
+                    }
+                    loading.dismiss()
                     if(arrayList2.isNotEmpty()){
-                        loading.dismiss()
                         val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                         adapter.notifyDataSetChanged()
                         mRecyclerView1.adapter = adapter
                     }
-                    else{
-                        getImagepage()
-                        return@addOnSuccessListener
-                    }
+
 
                 }
                 .addOnFailureListener { exception ->
