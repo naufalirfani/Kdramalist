@@ -29,8 +29,9 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION", "DEPRECATED_IDENTITY_EQUALS")
@@ -73,8 +74,22 @@ class MainActivity : AppCompatActivity() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
 
                 //show button when not on top
-                val visibility = if ((mRecyclerView1.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() !== 0) View.VISIBLE else View.GONE
+                val visibility = if ((mRecyclerView1.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() !== 0){
+                    View.VISIBLE
+                }
+                else {
+                    View.GONE
+                }
                 btn_back_to_top.visibility = visibility
+
+                if(btn_back_to_top.visibility == View.VISIBLE){
+                    val buttonTimer = Timer()
+                    buttonTimer.schedule(object : TimerTask() {
+                        override fun run() {
+                            runOnUiThread { btn_back_to_top.visibility = View.GONE }
+                        }
+                    }, 5000)
+                }
 
                 //hide layout when scroll down
                 if (dy > 0){
@@ -232,7 +247,26 @@ class MainActivity : AppCompatActivity() {
                         mRecyclerView1.adapter = adapter
                     }
                     else{
-                        loadAllStudents()
+                        loading.dismiss()
+                        val snackBar = Snackbar.make(
+                                currentFocus!!, "    Connection Failure",
+                                Snackbar.LENGTH_INDEFINITE
+                        )
+                        val snackBarView = snackBar.view
+                        snackBarView.setBackgroundColor(Color.BLACK)
+                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                        textView.setTextColor(Color.WHITE)
+                        textView.setTextSize(16F)
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+                        snack_action_view.setTextColor(Color.YELLOW)
+
+                        // Set an action for snack bar
+                        snackBar.setAction("Retry") {
+                            loadAllStudents()
+
+                        }
+                        snackBar.show()
                     }
 
                 }
