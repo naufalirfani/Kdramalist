@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                         override fun run() {
                             runOnUiThread { btn_back_to_top.visibility = View.GONE }
                         }
-                    }, 5000)
+                    }, 6000)
                 }
 
                 //hide layout when scroll down
@@ -102,22 +102,37 @@ class MainActivity : AppCompatActivity() {
                         animation.start()
                         dialog.visibility = LinearLayout.GONE
                     }
+                    btn_back_to_top.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_downward_white_24dp,0,0,0)
+                    //smooth scroll
+                    val smoothScroller: SmoothScroller = object : LinearSmoothScroller(applicationContext) {
+                        override fun getVerticalSnapPreference(): Int {
+                            return SNAP_TO_END
+                        }
+                    }
+
+                    btn_back_to_top.setOnClickListener{
+                        smoothScroller.targetPosition = arrayList.size
+                        mRecyclerView1.layoutManager.startSmoothScroll(smoothScroller)
+                        btn_back_to_top.visibility = View.GONE
+                    }
+                }
+                else if(dy < 0){
+                    btn_back_to_top.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_upward_white_24dp,0,0,0)
+                    //smooth scroll
+                    val smoothScroller: SmoothScroller = object : LinearSmoothScroller(applicationContext) {
+                        override fun getVerticalSnapPreference(): Int {
+                            return SNAP_TO_START
+                        }
+                    }
+
+                    btn_back_to_top.setOnClickListener{
+                        smoothScroller.targetPosition = 0
+                        mRecyclerView1.layoutManager.startSmoothScroll(smoothScroller)
+                        btn_back_to_top.visibility = View.GONE
+                    }
                 }
             }
         })
-
-        //smooth scroll
-        val smoothScroller: SmoothScroller = object : LinearSmoothScroller(applicationContext) {
-            override fun getVerticalSnapPreference(): Int {
-                return SNAP_TO_START
-            }
-        }
-
-        btn_back_to_top.setOnClickListener{
-            smoothScroller.targetPosition = 0
-            mRecyclerView1.layoutManager.startSmoothScroll(smoothScroller)
-            btn_back_to_top.visibility = View.GONE
-        }
 
         etSearch = findViewById(R.id.mytextText)
         btn_search.setOnClickListener {
