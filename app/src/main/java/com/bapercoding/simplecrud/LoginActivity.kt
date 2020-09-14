@@ -77,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
             }
             else if(TextUtils.isEmpty(email)){
+                progressDialog.dismiss()
                 getEmail()
                 email?.let { it1 ->
                     auth.signInWithEmailAndPassword(it1, password).addOnCompleteListener(this, OnCompleteListener { task ->
@@ -145,9 +146,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
-
-        val textView = login_google.getChildAt(0) as TextView
-        textView.text = "Sign in with Google"
     }
 
     fun getEmail(){

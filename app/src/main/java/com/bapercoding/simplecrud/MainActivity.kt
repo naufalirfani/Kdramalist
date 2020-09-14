@@ -257,13 +257,13 @@ class MainActivity : AppCompatActivity() {
                     }
                     getImagepage()
                     loading.dismiss()
-                    if(arrayList2.isNotEmpty() && iterator <= 2){
+                    if(arrayList2.isNotEmpty() && iterator <= 3){
                         loading.dismiss()
                         val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                         adapter.notifyDataSetChanged()
                         mRecyclerView1.adapter = adapter
                     }
-                    else if(iterator <= 2){
+                    else if(iterator <= 3){
                         loading.dismiss()
                         loadAllStudents()
                     }
