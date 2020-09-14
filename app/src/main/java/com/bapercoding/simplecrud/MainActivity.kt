@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dbReference2: DatabaseReference
     private lateinit var firebaseDatabase2: FirebaseDatabase
     var thisActivity: Activity = this
+    var iterator: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -199,9 +200,13 @@ class MainActivity : AppCompatActivity() {
         dbReference2.addValueEventListener(postListener2)
     }
 
+    val loadingMain = ProgressDialog(this)
     override fun onResume() {
         super.onResume()
+        loadingMain.setMessage("Memuat data...")
+        loadingMain.show()
         loadAllStudents()
+        loadingMain.dismiss()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -239,10 +244,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadAllStudents(){
 
-        val loading = ProgressDialog(this)
-        loading.setMessage("Memuat data...")
-        loading.show()
-
+        iterator += 1
         val db = FirebaseFirestore.getInstance()
         db.collection("kdramas")
                 .get()
@@ -255,14 +257,9 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("sinopsis")))
                     }
                     getImagepage()
-                    loading.dismiss()
-                    if(arrayList2.isNotEmpty()){
-                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
-                        adapter.notifyDataSetChanged()
-                        mRecyclerView1.adapter = adapter
-                    }
-                    else{
-                        loading.dismiss()
+                    if(iterator > 2){
+                        loadingMain.dismiss()
+                        iterator = 0
                         val snackBar = Snackbar.make(
                                 currentFocus!!, "    Connection Failure",
                                 Snackbar.LENGTH_INDEFINITE
@@ -283,10 +280,18 @@ class MainActivity : AppCompatActivity() {
                         }
                         snackBar.show()
                     }
-
+                    if(arrayList2.isNotEmpty()){
+                        loadingMain.dismiss()
+                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
+                        adapter.notifyDataSetChanged()
+                        mRecyclerView1.adapter = adapter
+                    }
+                    else{
+                        loadAllStudents()
+                    }
                 }
                 .addOnFailureListener { exception ->
-                    loading.dismiss()
+                    loadingMain.dismiss()
                     Log.d("Error", "Error getting documents: ", exception)
                     val snackBar = Snackbar.make(
                             currentFocus!!, "    Connection Failure",
