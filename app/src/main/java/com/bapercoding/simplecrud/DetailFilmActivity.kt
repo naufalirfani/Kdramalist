@@ -5,15 +5,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.ContentResolver
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.design.widget.TabLayout.OnTabSelectedListener
@@ -28,7 +25,6 @@ import android.webkit.MimeTypeMap
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
@@ -37,8 +33,8 @@ import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_detail_film.*
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
+import java.io.File
+import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -139,8 +135,15 @@ class DetailFilmActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.refresh) {
-            finish()
-            startActivity(intent)
+            val loading = ProgressDialog(this)
+            loading.setMessage("Loading...")
+            loading.show()
+            val handler = Handler()
+            handler.postDelayed(Runnable { // Do something after 5s = 5000ms
+                loading.dismiss()
+                finish()
+                startActivity(intent)
+            }, 4000)
         }
         return super.onOptionsItemSelected(item)
     }
