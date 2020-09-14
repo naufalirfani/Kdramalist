@@ -19,14 +19,14 @@
     <string name="find_korean_dramas">Find Korean Dramas</string>
     <string name="search">search</string>
     <string name="nothing_found">Tidak ada yang ditemukan</string>
-    <string name="login">Login</string>
+    <string name="login">Sign in</string>
     <string name="email_or_username">Username or email</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="welcome_to_kdramalist">Welcome to Kdramalist</string>
+    <string name="welcome_to_kdramalist">Sign in to Kdramalist</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
     <string name="create_an_account">Create an Account</string>
     <string name="have_an_account">Have an account?</string>
-    <string name="remember_me">Remember me</string>
+    <string name="remember_me">Keep me Sign in</string>
 </resources>

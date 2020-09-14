@@ -2,13 +2,11 @@ package com.bapercoding.simplecrud
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -29,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginBtn: Button
     private  var email: String? = null
     private lateinit var password: String
+    var sp: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,14 +57,6 @@ class LoginActivity : AppCompatActivity() {
         dbReference2 = firebaseDatabase.getReference("users2")
         userId = dbReference.push().key.toString()
 
-        if (user != null) {
-            // User is signed in (getCurrentUser() will be null if not signed in)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.anim.enter, R.anim.exit)
-            finish()
-        }
-
         tv_signUp.setOnClickListener {
             val home = Intent(this@LoginActivity, SingUpActivity::class.java)
             startActivity(home)
@@ -78,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
             password = passwordEt.text.toString()
 
             val progressDialog = ProgressDialog(this)
-            progressDialog.setMessage("Login...")
+            progressDialog.setMessage("Sign in...")
             progressDialog.show()
 
             if(TextUtils.isEmpty(password)) {
@@ -87,6 +78,22 @@ class LoginActivity : AppCompatActivity() {
             }
             else if(TextUtils.isEmpty(email)){
                 getEmail()
+                email?.let { it1 ->
+                    auth.signInWithEmailAndPassword(it1, password).addOnCompleteListener(this, OnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            progressDialog.dismiss()
+                            val username = emailEt.text.toString()
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("username",username)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.enter, R.anim.exit)
+                            finish()
+                        }else {
+                            progressDialog.dismiss()
+                            Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
+                        }
+                    })
+                }
             }
             else{
                 email?.let { it1 ->
@@ -106,6 +113,37 @@ class LoginActivity : AppCompatActivity() {
                     })
                 }
             }
+        }
+
+        sp = getSharedPreferences("login",MODE_PRIVATE)
+
+        if(sp!!.getBoolean("login",true)){
+            if (user != null) {
+                // User is signed in (getCurrentUser() will be null if not signed in)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.enter, R.anim.exit)
+                finish()
+            }
+        }
+
+        val radio: RadioButton = findViewById(R.id.radio_remember)
+        var isChecked = false
+        radio.isChecked = true
+        if(radio.isChecked == true){
+            sp?.edit()?.putBoolean("login",true)?.apply()
+        }
+        radio.setOnClickListener{
+            radio.isChecked = isChecked
+            if(isChecked == true){
+                isChecked = !isChecked
+                sp?.edit()?.putBoolean("login",true)?.apply()
+            }
+            else{
+                isChecked = !isChecked
+                sp?.edit()?.putBoolean("login",false)?.apply()
+            }
+
         }
     }
 
