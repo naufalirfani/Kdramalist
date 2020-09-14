@@ -200,13 +200,9 @@ class MainActivity : AppCompatActivity() {
         dbReference2.addValueEventListener(postListener2)
     }
 
-    val loadingMain = ProgressDialog(this)
     override fun onResume() {
         super.onResume()
-        loadingMain.setMessage("Memuat data...")
-        loadingMain.show()
         loadAllStudents()
-        loadingMain.dismiss()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -244,6 +240,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadAllStudents(){
 
+        val loading = ProgressDialog(this)
+        loading.setMessage("Memuat data...")
+        loading.show()
         iterator += 1
         val db = FirebaseFirestore.getInstance()
         db.collection("kdramas")
@@ -257,8 +256,9 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("sinopsis")))
                     }
                     getImagepage()
+                    loading.dismiss()
                     if(iterator > 2){
-                        loadingMain.dismiss()
+                        loading.dismiss()
                         iterator = 0
                         val snackBar = Snackbar.make(
                                 currentFocus!!, "    Connection Failure",
@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity() {
                         snackBar.show()
                     }
                     if(arrayList2.isNotEmpty()){
-                        loadingMain.dismiss()
+                        loading.dismiss()
                         val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                         adapter.notifyDataSetChanged()
                         mRecyclerView1.adapter = adapter
@@ -291,7 +291,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    loadingMain.dismiss()
+                    loading.dismiss()
                     Log.d("Error", "Error getting documents: ", exception)
                     val snackBar = Snackbar.make(
                             currentFocus!!, "    Connection Failure",
