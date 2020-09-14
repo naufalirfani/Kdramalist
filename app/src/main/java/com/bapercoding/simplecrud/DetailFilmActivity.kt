@@ -21,6 +21,8 @@ import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.text.Html
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.RelativeLayout
@@ -35,6 +37,7 @@ import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_detail_film.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -126,6 +129,20 @@ class DetailFilmActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         listPhoto2.clear()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu3, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.refresh) {
+            finish()
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {

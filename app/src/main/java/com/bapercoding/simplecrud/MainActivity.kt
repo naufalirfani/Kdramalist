@@ -257,13 +257,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     getImagepage()
                     loading.dismiss()
-                    if(arrayList2.isNotEmpty()){
-                        loading.dismiss()
-                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
-                        adapter.notifyDataSetChanged()
-                        mRecyclerView1.adapter = adapter
-                    }
-                    else if(iterator > 2){
+                    if(iterator > 3){
                         loading.dismiss()
                         iterator = 0
                         val snackBar = Snackbar.make(
@@ -285,6 +279,12 @@ class MainActivity : AppCompatActivity() {
 
                         }
                         snackBar.show()
+                    }
+                    if(arrayList2.isNotEmpty()){
+                        loading.dismiss()
+                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
+                        adapter.notifyDataSetChanged()
+                        mRecyclerView1.adapter = adapter
                     }
                     else{
                         loadAllStudents()

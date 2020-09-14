@@ -3,6 +3,7 @@ package com.bapercoding.simplecrud
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -25,9 +26,8 @@ class PhotoFilmAdapter2(private val context: Context, private val listPhoto: Arr
     override fun onBindViewHolder(holder: Holder, position: Int) {
         Glide.with(holder.itemView.context)
                 .load(listPhoto[position])
-                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
+//                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                 .into(holder.view.img_kdrama_photo)
-
 
 //        holder.view.img_kdrama_photo.setImageResource(photo.photo)
 

@@ -145,6 +145,9 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
+
+        val textView = login_google.getChildAt(0) as TextView
+        textView.text = "Sign in with Google"
     }
 
     fun getEmail(){
