@@ -33,6 +33,7 @@ class SingUpActivity : AppCompatActivity() {
 
         val actionbar = supportActionBar
         actionbar!!.title = ""
+        actionbar.hide()
 
         auth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()

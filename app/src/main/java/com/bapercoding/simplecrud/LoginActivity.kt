@@ -35,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
         val actionbar = supportActionBar
         actionbar!!.title = ""
+        actionbar.hide()
 
         val tvsignUp: TextView = findViewById(R.id.tv_signUp)
         val tvforgot: TextView = findViewById(R.id.tv_forgot)

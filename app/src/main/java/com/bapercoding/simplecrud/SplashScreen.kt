@@ -13,6 +13,7 @@ class SplashScreen : AppCompatActivity() {
 
         val actionbar = supportActionBar
         actionbar!!.title = ""
+        actionbar.hide()
         //set back button
 
         Handler().postDelayed({ //setelah loading maka akan langsung berpindah ke home activity
