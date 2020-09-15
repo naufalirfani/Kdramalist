@@ -55,7 +55,7 @@ class DetailFilmActivity : AppCompatActivity() {
     var listPhoto3: ArrayList<Int> = arrayListOf()
     private var firebaseStore: FirebaseStorage? = null
     private var storageReference: StorageReference? = null
-    var filePath: Uri? = null
+    private var filePath: Uri? = null
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
 
@@ -223,9 +223,8 @@ class DetailFilmActivity : AppCompatActivity() {
 
     private fun dispatchTakePictureIntent() {
         val options =
-                arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+                arrayOf<CharSequence>("Camera", "Choose from Gallery", "Cancel")
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DetailFilmActivity)
-        builder.setTitle(Html.fromHtml("<font color='#FF7F27'>Add Photo!</font>"))
         builder.setItems(options) { dialog, item ->
             if (options[item].equals("Take Photo")) {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->

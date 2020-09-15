@@ -22,10 +22,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -49,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dbReference2: DatabaseReference
     private lateinit var firebaseDatabase2: FirebaseDatabase
     var thisActivity: Activity = this
-    var iterator: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -202,7 +198,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loadAllStudents()
+        val loading = ProgressDialog(this)
+        loading.setMessage("Memuat data...")
+        loading.show()
+        loadAllStudents(loading)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -238,12 +237,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun loadAllStudents(){
-
-        val loading = ProgressDialog(this)
-        loading.setMessage("Memuat data...")
-        loading.show()
-        iterator += 1
+    private fun loadAllStudents(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
         db.collection("kdramas")
                 .get()
@@ -255,44 +249,19 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis")))
                     }
-                    getImagepage()
-                    loading.dismiss()
-                    if(arrayList2.isNotEmpty() && iterator <= 3){
-                        loading.dismiss()
+
+                    if(arrayList2.isNotEmpty()){
+                        loading2.dismiss()
                         val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                         adapter.notifyDataSetChanged()
                         mRecyclerView1.adapter = adapter
                     }
-                    else if(iterator <= 3){
-                        loading.dismiss()
-                        loadAllStudents()
-                    }
-                    else if(iterator > 2){
-                        loading.dismiss()
-                        iterator = 0
-                        val snackBar = Snackbar.make(
-                                currentFocus!!, "    Connection Failure",
-                                Snackbar.LENGTH_INDEFINITE
-                        )
-                        val snackBarView = snackBar.view
-                        snackBarView.setBackgroundColor(Color.BLACK)
-                        val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-                        textView.setTextColor(Color.WHITE)
-                        textView.setTextSize(16F)
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
-                        val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
-                        snack_action_view.setTextColor(Color.YELLOW)
-
-                        // Set an action for snack bar
-                        snackBar.setAction("Retry") {
-                            loadAllStudents()
-
-                        }
-                        snackBar.show()
+                    else{
+                        loadAllStudents(loading2)
                     }
                 }
                 .addOnFailureListener { exception ->
-                    loading.dismiss()
+                    loading2.dismiss()
                     Log.d("Error", "Error getting documents: ", exception)
                     val snackBar = Snackbar.make(
                             currentFocus!!, "    Connection Failure",
@@ -309,7 +278,7 @@ class MainActivity : AppCompatActivity() {
 
                     // Set an action for snack bar
                     snackBar.setAction("Retry") {
-                        loadAllStudents()
+                        loadAllStudents(loading2)
 
                     }
                     snackBar.show()

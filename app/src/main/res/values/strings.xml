@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simple CRUD</string>
+    <string name="app_name">Kdramalist</string>
     <string name="nama_film">nama_film</string>
     <string name="detail">detail</string>
     <string name="rating">rating</string>

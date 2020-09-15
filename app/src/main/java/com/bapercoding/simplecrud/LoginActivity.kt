@@ -68,34 +68,27 @@ class LoginActivity : AppCompatActivity() {
         btn_login.setOnClickListener {
             getEmail()
             password = passwordEt.text.toString()
+            var iterator = 0
 
             val progressDialog = ProgressDialog(this)
             progressDialog.setMessage("Sign in...")
             progressDialog.show()
 
+            do{
+                getEmail()
+                iterator += 1
+                if(iterator == 3){
+                    break
+                }
+            }while (TextUtils.isEmpty(email))
+
             if(TextUtils.isEmpty(password)) {
                 progressDialog.dismiss()
                 Toast.makeText(this@LoginActivity, "Please fill all the fields", Toast.LENGTH_LONG).show()
             }
-            else if(TextUtils.isEmpty(email)){
+            else if(iterator > 3){
                 progressDialog.dismiss()
-                getEmail()
-                email?.let { it1 ->
-                    auth.signInWithEmailAndPassword(it1, password).addOnCompleteListener(this, OnCompleteListener { task ->
-                        if(task.isSuccessful) {
-                            progressDialog.dismiss()
-                            val username = emailEt.text.toString()
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.putExtra("username",username)
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.enter, R.anim.exit)
-                            finish()
-                        }else {
-                            progressDialog.dismiss()
-                            Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
-                        }
-                    })
-                }
+                Toast.makeText(this, "Invalid login, please try again", Toast.LENGTH_LONG).show()
             }
             else{
                 email?.let { it1 ->
