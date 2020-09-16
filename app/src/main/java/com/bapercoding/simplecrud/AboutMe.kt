@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -25,6 +27,7 @@ import java.io.File
 import java.io.IOException
 
 
+@Suppress("DEPRECATION")
 class AboutMe : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
@@ -128,11 +131,16 @@ class AboutMe : AppCompatActivity() {
                 val tv = v.findViewById(android.R.id.text1) as TextView
 
                 //Put the image on the TextView
-                tv.setCompoundDrawablesWithIntrinsicBounds(items.get(position).icon, 0, 0, 0)
+                val image: Drawable
+                val res: Resources = resources
+                image = res.getDrawable(items.get(position).icon)
+                image.setBounds(0, 0, 100, 100)
+                tv.setCompoundDrawables(image, null, null, null)
 
                 //Add margin between image and text (support various screen densities)
-                val dp5 = (5 * resources.displayMetrics.density + 0.5f).toInt()
+                val dp5 = (15 * resources.displayMetrics.density + 0.5f).toInt()
                 tv.compoundDrawablePadding = dp5
+
                 return v
             }
         }
