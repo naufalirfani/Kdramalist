@@ -3,26 +3,37 @@ package com.bapercoding.simplecrud
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListAdapter
-import android.widget.TextView
+import android.widget.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.OnProgressListener
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_about_me.*
+import kotlinx.android.synthetic.main.list_photo.view.*
 import java.io.File
 import java.io.IOException
 
@@ -32,9 +43,12 @@ class AboutMe : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
+    private lateinit var dbReference2: DatabaseReference
+    private lateinit var dbReference3: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var id: String
     private var filePath: Uri? = null
+    private var storageReference: StorageReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +62,6 @@ class AboutMe : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
 
         val iv: ImageView = findViewById(R.id.img_my_photo)
-        iv.setImageResource(getResources().getIdentifier("fotoku", "drawable", getPackageName()))
 
         val myName: TextView = findViewById(R.id.tv_name)
         val email: TextView = findViewById(R.id.tv_email)
@@ -56,7 +69,9 @@ class AboutMe : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
         firebaseDatabase = FirebaseDatabase.getInstance()
+        storageReference = FirebaseStorage.getInstance().reference
         dbReference = firebaseDatabase.getReference("users2")
+        dbReference2 = firebaseDatabase.getReference("imageProfil")
         if (user != null) {
             id = user.uid
             val email2 = user.email
@@ -68,13 +83,34 @@ class AboutMe : AppCompatActivity() {
                         myName.text = user2.username
                         email.text = user2.email
                     }
-                    // ...
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             }
             dbReference.child(id).addValueEventListener(postListener)
+
+            val postListener2 = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get Post object and use the values to update the UI
+                    val user2 = dataSnapshot.getValue(Upload::class.java)
+                    if (user2 != null){
+                        if(TextUtils.isEmpty(user2.url)){
+                            iv.setImageDrawable(resources.getDrawable(R.drawable.ic_account_circle_grey_24dp))
+                        }
+                        else{
+                            Glide.with(applicationContext)
+                                    .load(user2.url)
+                                    .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
+                                    .into(iv)
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            }
+            dbReference2.child(id).addValueEventListener(postListener2)
 
         }
 
@@ -176,8 +212,16 @@ class AboutMe : AppCompatActivity() {
                         intent.action = Intent.ACTION_GET_CONTENT
                         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 2)
                         dialog.dismiss()
-                    } else if (options[item].equals("Cancel")) {
-                        dialog.dismiss()
+                    } else if (options[item].equals("Delete")) {
+                        val loading = ProgressDialog(this)
+                        loading.setMessage("Loading...")
+                        loading.show()
+                        val handler = Handler()
+                        handler.postDelayed(Runnable { // Do something after 5s = 5000ms
+                            loading.dismiss()
+                            dbReference3 = firebaseDatabase.getReference("imageProfil")
+                            dbReference3.child(id).child("url").setValue(null)
+                        }, 3000)
                     }
                 }.show()
     }
@@ -212,6 +256,7 @@ class AboutMe : AppCompatActivity() {
         when (requestCode) {
             2 -> if (resultCode == Activity.RESULT_OK) {
                 filePath = data!!.data
+                uploadImage()
 //                try {
 //                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
 //                    listPhoto2.add(bitmap)
@@ -222,6 +267,7 @@ class AboutMe : AppCompatActivity() {
             1 -> if (resultCode == Activity.RESULT_OK) {
                 val imgFile = File(currentPhotoPath)
                 filePath = Uri.fromFile(imgFile)
+                uploadImage()
 //                val myBitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 //                listPhoto2.add(Photo2(myBitmap))
 //                saveToInternalStorage(imageBitmap)
@@ -231,4 +277,35 @@ class AboutMe : AppCompatActivity() {
         }
     }
 
+    private fun uploadImage(){
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        dbReference3 = firebaseDatabase.getReference("imageProfil")
+        val progressDialog = ProgressDialog(this)
+        progressDialog.show()
+        if(filePath != null){
+            val ref = storageReference?.child("imageProfile/${id}/foto")
+            ref?.putFile(filePath!!)?.addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
+                ref.downloadUrl.addOnSuccessListener {
+                    val name = taskSnapshot.metadata!!.name
+                    val url = it.toString()
+                    writeNewImageInfoToDB(name!!, url)
+                }.addOnFailureListener {}
+                progressDialog.dismiss()
+                Toast.makeText(this@AboutMe, "Image proflie changed", Toast.LENGTH_LONG).show()
+            })?.addOnFailureListener(OnFailureListener { e ->
+                progressDialog.dismiss()
+                Toast.makeText(this@AboutMe, "Image Uploading Failed " + e.message, Toast.LENGTH_LONG).show()
+            })?.addOnProgressListener (OnProgressListener{ taskSnapshot ->
+                val progress = 100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
+                progressDialog.setMessage("Uploaded " + progress.toInt() + "%...")
+            })
+        }else{
+            Toast.makeText(this, "Please Select an Image", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun writeNewImageInfoToDB(name: String, url: String) {
+        val info = Upload(name, url)
+        dbReference3.child(id).setValue(info)
+    }
 }

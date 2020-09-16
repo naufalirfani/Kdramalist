@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
             val dialog: LinearLayout = findViewById(R.id.searchLayout)
             val animation = AnimationUtils.loadAnimation(this, R.anim.anim_hide)
-            animation.duration = 500
+            animation.duration = 300
             dialog.animation = animation
             dialog.animate()
             animation.start()
@@ -177,7 +177,6 @@ class MainActivity : AppCompatActivity() {
                 dbReference.child(id).setValue(user2)
             }
         }
-
         getImagepage()
     }
     fun getImagepage(){
@@ -227,7 +226,7 @@ class MainActivity : AppCompatActivity() {
             val animation = AnimationUtils.loadAnimation(this, R.anim.anim_show)
             dialog.bringToFront()
             dialog.requestLayout()
-            animation.duration = 500
+            animation.duration = 300
             dialog.animation = animation
             dialog.animate()
             animation.start()
