@@ -4,61 +4,96 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <RelativeLayout
+    <ImageView
+            android:id="@+id/img_item_photo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@android:color/white">
-
-        <ImageView
-                android:id="@+id/img_item_photo2"
-                android:layout_width="145dp"
-                android:layout_height="175dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                tools:src="@android:color/darker_gray" />
+            android:padding="8dp"
+            tools:src="@android:color/darker_gray" />
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="false"
-                android:layout_toEndOf="@id/img_item_photo2"
-                android:layout_toRightOf="@id/img_item_photo2"
-                android:orientation="vertical">
+                android:padding="8dp"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:textColor="#FFFFFF"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:background="@drawable/layout_rating"/>
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:paddingLeft="8dp"
+                    android:orientation="vertical">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                    <TextView
+                            android:id="@+id/tv_item_rating2"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#0C0C0C"
+                            android:maxLines="2"
+                            tools:text="Your rating:" />
+                    <RatingBar
+                            android:id="@+id/ratingbar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:saveEnabled="true"
+                            android:numStars="5"
+                            android:theme="@style/RatingBar"
+                            android:paddingTop="2dp"
+                            android:paddingLeft="4dp"
+                            android:stepSize="0.1"/>
+                    <TextView
+                            android:id="@+id/tv_rating_user"
+                            android:textSize="14sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#0C0C0C"
+                            android:maxLines="2"
+                            android:layout_marginLeft="8dp"
+                            tools:text="@string/rating" />
 
-                <ImageView
-                        android:id="@+id/img_rating2"
-                        android:layout_width="70dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        tools:src="@android:color/darker_gray" />
-
+                </LinearLayout>
                 <TextView
-                        android:id="@+id/tv_item_rating2"
-                        android:textSize="16sp"
+                        android:id="@+id/tv_rating_all"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#0C0C0C"
-                        android:maxLines="2"
-                        tools:text="@string/rating" />
+                        android:text="@string/rating"/>
+                <TextView
+                        android:id="@+id/tv_view_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#0C0C0C"
+                        android:text="@string/rating"/>
+
             </LinearLayout>
-            <TextView
-                    android:id="@+id/tv_item_rating"
-                    android:textSize="16sp"
-                    android:layout_width="match_parent"
-                    android:textColor="#0C0C0C"
-                    android:layout_height="wrap_content"
-                    android:maxLines="10"
-                    tools:text="@string/rating_user" />
         </LinearLayout>
-    </RelativeLayout>
+        <TextView
+                android:id="@+id/tv_item_rating"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:textColor="#0C0C0C"
+                android:layout_height="wrap_content"
+                android:maxLines="10"
+                android:padding="8dp"
+                tools:text="@string/rating_user" />
+    </LinearLayout>
     <TextView
             android:id="@+id/tv_sinopsis"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="#0C0C0C"
             android:padding="8dp"
             android:layout_width="match_parent"
