@@ -74,16 +74,21 @@
                             android:layout_height="wrap_content"
                             android:paddingTop="4dp"
                             android:orientation="horizontal">
-                        <RatingBar
+                        <com.iarcuschin.simpleratingbar.SimpleRatingBar
                                 android:id="@+id/ratingbar"
-                                android:layout_width="wrap_content"
+                                android:layout_width="100dp"
                                 android:layout_height="wrap_content"
-                                android:saveEnabled="true"
-                                style="?android:attr/ratingBarStyleSmall"
-                                android:numStars="5"
-                                android:theme="@style/RatingBar"
                                 android:paddingTop="2dp"
-                                android:stepSize="0.1"/>
+                                android:clickable="false"
+                                app:srb_fillColor="#FFC107"
+                                app:srb_borderColor="#FFC107"
+                                app:srb_pressedFillColor="#FFC107"
+                                app:srb_pressedBorderColor="#FFC107"
+                                app:srb_stepSize="0.1"
+                                app:srb_gravity="left"
+                                app:srb_starBorderWidth="3"
+                                app:srb_isIndicator="true"
+                                />
 
                         <TextView
                                 android:id="@+id/tv_item_rating"
