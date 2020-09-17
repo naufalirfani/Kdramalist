@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.student_list.view.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import kotlinx.android.synthetic.main.student_list.view.*
 
 class RVAAdapterStudent(private val activity: Activity, private val context: Context, private val arrayList: ArrayList<Kdramas>, private val listFilm: ArrayList<Film>, private val listPage: ArrayList<String>) : RecyclerView.Adapter<RVAAdapterStudent.Holder>() {
 
@@ -27,12 +27,11 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
                 .load(listPage[position])
                 .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                 .into(holder.view.img_item_photo)
-        Glide.with(holder.itemView.context)
-                .load(film.rating)
-                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
-                .into(holder.view.img_rating)
+
 
 //        holder.view.tv_item_name.text = arrayList[position].nim
+        val ratingValue = arrayList?.get(position)?.rating!!.toFloat() / 2
+        holder.view.ratingbar.rating = ratingValue
         holder.view.tv_item_name.text = arrayList?.get(position)?.judul
         holder.view.tv_item_rating.text = arrayList?.get(position)?.rating
         holder.view.tv_item_detail.text = arrayList?.get(position)?.episode
