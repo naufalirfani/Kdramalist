@@ -13,7 +13,7 @@ class PagerAdapter (fm: FragmentManager, private val list: ArrayList<Int>, priva
     override fun getItem(position: Int): Fragment {
         return when (position) {
 
-            0 -> FragmentDetail().newInstance(letak,judul, rating, episode, sinopsis, imagePage)!!
+            0 -> FragmentDetail().newInstance(letak,judul, rating, episode, sinopsis, imagePage,list2)!!
             1 -> FragmentCast()
             2 -> FragmentEpisode()
             else -> FragmentPhoto().newInstance(list,list2)!!

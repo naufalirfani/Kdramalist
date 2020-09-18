@@ -28,7 +28,7 @@
                     android:layout_height="70dp"
                     android:textColor="#FFFFFF"
                     android:gravity="center"
-                    android:textSize="24sp"
+                    android:textSize="28sp"
                     android:background="@drawable/layout_rating"/>
             <LinearLayout
                     android:layout_width="match_parent"
@@ -113,16 +113,5 @@
                 android:maxLines="10"
                 android:padding="8dp"
                 tools:text="@string/rating_user" />
-        <TextView
-                android:id="@+id/tv_cast"
-                android:textSize="14sp"
-                android:layout_width="match_parent"
-                android:textColor="#0C0C0C"
-                android:background=""
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:padding="8dp"
-                tools:text="Cast &amp; Credits" />
     </LinearLayout>
 </LinearLayout>
