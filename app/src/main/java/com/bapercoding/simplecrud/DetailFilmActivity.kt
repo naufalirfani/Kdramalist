@@ -193,7 +193,7 @@ class DetailFilmActivity : AppCompatActivity() {
     }
 
     fun tabClick(){
-        tabLayout1.setTabTextColors(Color.parseColor("#b3e5fc"), Color.parseColor("#03A9F4"))
+        tabLayout1.setTabTextColors(Color.parseColor("#bbdefb"), Color.parseColor("#2196F3"))
         tabLayout1.setSelectedTabIndicatorHeight(7)
         tabLayout1.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {

@@ -24,8 +24,8 @@
 
             <TextView
                     android:id="@+id/tv_rating"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:textColor="#FFFFFF"
                     android:gravity="center"
                     android:textSize="24sp"
@@ -87,6 +87,23 @@
                         android:text="@string/rating"/>
             </LinearLayout>
         </LinearLayout>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#919191" />
+        <TextView
+                android:id="@+id/tv_sinopsis"
+                android:textSize="16sp"
+                android:textColor="#0C0C0C"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="40"
+                tools:text="@string/sinopsis" />
         <TextView
                 android:id="@+id/tv_item_rating"
                 android:textSize="14sp"
@@ -96,23 +113,16 @@
                 android:maxLines="10"
                 android:padding="8dp"
                 tools:text="@string/rating_user" />
+        <TextView
+                android:id="@+id/tv_cast"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:textColor="#0C0C0C"
+                android:background=""
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:maxLines="1"
+                android:padding="8dp"
+                tools:text="Cast &amp; Credits" />
     </LinearLayout>
-    <TextView
-            android:id="@+id/tv_sinopsis"
-            android:textSize="16sp"
-            android:textColor="#0C0C0C"
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="40"
-            tools:text="@string/sinopsis" />
-    <TextView
-            android:id="@+id/tv_film_detail"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:textColor="#0C0C0C"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="20"
-            tools:text="@string/film_detail" />
 </LinearLayout>

@@ -25,7 +25,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
         val film = listFilm[position]
         Glide.with(holder.itemView.context)
                 .load(listPage[position])
-                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
+//                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                 .into(holder.view.img_item_photo)
 
 

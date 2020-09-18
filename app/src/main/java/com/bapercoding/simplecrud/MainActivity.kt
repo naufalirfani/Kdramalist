@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
@@ -251,6 +252,8 @@ class MainActivity : AppCompatActivity() {
 
                     if(arrayList2.isNotEmpty()){
                         loading2.dismiss()
+                        mRecyclerView1.setHasFixedSize(true)
+                        mRecyclerView1.layoutManager = GridLayoutManager(this, 2)
                         val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
                         adapter.notifyDataSetChanged()
                         mRecyclerView1.adapter = adapter
