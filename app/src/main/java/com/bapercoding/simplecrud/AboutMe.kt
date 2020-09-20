@@ -14,6 +14,7 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.view.ContextThemeWrapper
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -33,7 +34,6 @@ import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_about_me.*
-import kotlinx.android.synthetic.main.list_photo.view.*
 import java.io.File
 import java.io.IOException
 
@@ -165,6 +165,7 @@ class AboutMe : AppCompatActivity() {
                 //Use super class to create the View
                 val v: View = super.getView(position, convertView, parent!!)
                 val tv = v.findViewById(android.R.id.text1) as TextView
+                tv.setTextSize(16F)
 
                 //Put the image on the TextView
                 val image: Drawable
@@ -180,7 +181,8 @@ class AboutMe : AppCompatActivity() {
                 return v
             }
         }
-        AlertDialog.Builder(this)
+        val cw = ContextThemeWrapper(this, R.style.AlertDialogTheme)
+        AlertDialog.Builder(cw)
                 .setAdapter(adapter) { dialog, item ->
                     if (options[item].equals("Camera")) {
                         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->

@@ -19,4 +19,8 @@
         <item name="colorControlNormal">#FFC107</item>
         <item name="colorControlActivated">#FFC107</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="android:Theme.Dialog">
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

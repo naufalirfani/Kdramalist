@@ -1,21 +1,17 @@
 package com.bapercoding.simplecrud
 
-import android.app.Activity
+import android.R.attr.name
+import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RatingBar
+import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import kotlinx.android.synthetic.main.detail_film.view.*
 import java.text.DecimalFormat
@@ -32,7 +28,6 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
     override fun getItemCount(): Int = 1
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        getPhotos()
         val film = listFilm[letak]
         Glide.with(holder.itemView.context)
                 .load(imagePage)
@@ -43,9 +38,19 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
             override fun onRatingChanged(simpleRatingBar: SimpleRatingBar?, rating: Float, fromUser: Boolean) {
                 val df = DecimalFormat("#.#")
                 holder.view.tv_rating_user.text = df.format(rating*2) + "/10"
+
+                val rankDialog = Dialog(context)
+                rankDialog.setContentView(R.layout.rating_dialog)
+                rankDialog.setCancelable(true)
+                val ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar) as RatingBar
+                ratingBar.setRating(rating)
+
+                val text = rankDialog.findViewById(R.id.rank_dialog_text2) as TextView
+                text.text = df.format(rating*2) + "/10"
+                rankDialog.show()
             }
         })
-        holder.view.tv_rating_user.text = listPhoto2.size.toString()
+        holder.view.tv_rating_user.text = "0/10"
         holder.view.tv_rating.text = rating
         holder.view.tv_item_rating2.text = "Your rating:"
         holder.view.tv_rating_all.text = Html.fromHtml("Ratings: " + "<b>" + rating + "</b>" + " from users")
@@ -55,31 +60,4 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
     }
 
     class Holder(val view: View) : RecyclerView.ViewHolder(view)
-
-    fun getPhotos(){
-        val dbReference2 = FirebaseDatabase.getInstance().getReference("images")
-        val postListener2 = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(listPhoto2.isNotEmpty()){
-                    listPhoto2.clear()
-                }
-                for (data: DataSnapshot in dataSnapshot.children){
-                    val hasil = data.getValue(Upload::class.java)
-                    listPhoto2.add(hasil?.url!!)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        }
-        var judul2 = judul
-        if(judul2.contains(".")){
-            judul2 = judul2.replace(".", "")
-            dbReference2.child(judul2).addValueEventListener(postListener2)
-        }
-        else{
-            dbReference2.child(judul2).addValueEventListener(postListener2)
-        }
-    }
-
 }
