@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.list_photo.view.*
 import kotlinx.android.synthetic.main.student_list.view.*
 
 
-class PhotoFilmAdapter2(private val context: Context, private val listPhoto: ArrayList<String>) : RecyclerView.Adapter<PhotoFilmAdapter2.Holder>() {
+class PhotoFilmAdapter2(private val context: Context, private val listPhoto: ArrayList<String>, private val judul: String) : RecyclerView.Adapter<PhotoFilmAdapter2.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_photo,parent,false))
@@ -38,6 +38,7 @@ class PhotoFilmAdapter2(private val context: Context, private val listPhoto: Arr
             val i = Intent(context,PhotoActivity::class.java)
             i.putExtra("position",position)
             i.putStringArrayListExtra("list", listPhoto)
+            i.putExtra("judul", judul)
             context.startActivity(i)
         }
 

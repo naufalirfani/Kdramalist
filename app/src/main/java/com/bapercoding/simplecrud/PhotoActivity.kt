@@ -18,6 +18,7 @@ class PhotoActivity : AppCompatActivity() {
 
     private var list:ArrayList<String> = arrayListOf()
     private var position: Int = 0
+    private var judul: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo)
@@ -29,6 +30,9 @@ class PhotoActivity : AppCompatActivity() {
 
         list = intent.getStringArrayListExtra("list")
         position = intent.getIntExtra("position", 0)
+        judul = intent.getStringExtra("judul")
+
+        actionBar.title = judul
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val gson = Gson()

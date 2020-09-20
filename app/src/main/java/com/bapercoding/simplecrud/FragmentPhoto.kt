@@ -19,12 +19,14 @@ class FragmentPhoto : Fragment() {
 
     private var list: ArrayList<Int> = arrayListOf()
     private var list2: ArrayList<String> = arrayListOf()
+    private var judul: String = ""
 
-    fun newInstance(list: ArrayList<Int>, list2: ArrayList<String>): FragmentPhoto? {
+    fun newInstance(list: ArrayList<Int>, list2: ArrayList<String>, judul:String): FragmentPhoto? {
         val fragmentPhoto= FragmentPhoto()
         val args = Bundle()
         args.putIntegerArrayList("list", list)
         args.putStringArrayList("list2", list2)
+        args.putString("judul", judul)
         fragmentPhoto.setArguments(args)
         return fragmentPhoto
     }
@@ -35,6 +37,7 @@ class FragmentPhoto : Fragment() {
         list2.clear()
         list = arguments!!.getIntegerArrayList("list")
         list2 = arguments!!.getStringArrayList("list2")
+        judul = arguments!!.getString("judul")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +54,7 @@ class FragmentPhoto : Fragment() {
 
         rvPhoto.setHasFixedSize(true)
         rvPhoto.layoutManager = GridLayoutManager(context, 3)
-        val adapter = context?.let { PhotoFilmAdapter2(it,list2) }
+        val adapter = context?.let { PhotoFilmAdapter2(it,list2, judul) }
         adapter?.notifyItemRangeRemoved(0, list2.size)
         adapter?.notifyDataSetChanged()
         rvPhoto.adapter = adapter

@@ -16,7 +16,7 @@ class PagerAdapter (fm: FragmentManager, private val list: ArrayList<Int>, priva
             0 -> FragmentDetail().newInstance(letak,judul, rating, episode, sinopsis, imagePage,list2)!!
             1 -> FragmentCast()
             2 -> FragmentEpisode()
-            else -> FragmentPhoto().newInstance(list,list2)!!
+            else -> FragmentPhoto().newInstance(list,list2,judul)!!
         }
     }
 
