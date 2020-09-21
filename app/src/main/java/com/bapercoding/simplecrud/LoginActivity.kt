@@ -77,8 +77,8 @@ class LoginActivity : AppCompatActivity() {
             progressDialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             progressDialog.setIndeterminate(true)
             progressDialog.setCancelable(true)
-            progressDialog.setContentView(R.layout.progressdialog)
             progressDialog.show()
+            progressDialog.setContentView(R.layout.progressdialog)
 
 
             if(TextUtils.isEmpty(password)) {

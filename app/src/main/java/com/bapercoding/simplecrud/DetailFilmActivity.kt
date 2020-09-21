@@ -148,8 +148,8 @@ class DetailFilmActivity : AppCompatActivity() {
             loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             loading.setIndeterminate(true)
             loading.setCancelable(true)
-            loading.setContentView(R.layout.progressdialog)
             loading.show()
+            loading.setContentView(R.layout.progressdialog)
             val handler = Handler()
             handler.postDelayed(Runnable { // Do something after 5s = 5000ms
                 loading.dismiss()

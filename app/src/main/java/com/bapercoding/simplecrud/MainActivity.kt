@@ -203,8 +203,8 @@ class MainActivity : AppCompatActivity() {
         loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         loading.setIndeterminate(true)
         loading.setCancelable(true)
-        loading.setContentView(R.layout.progressdialog)
         loading.show()
+        loading.setContentView(R.layout.progressdialog)
         loadAllStudents(loading)
     }
 

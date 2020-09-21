@@ -5,6 +5,8 @@ import android.R.attr.overScrollFooter
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -64,7 +66,11 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
                     dbReference = FirebaseDatabase.getInstance().getReference("userRaring")
                     val info = Upload(judul, rating.toString())
                     val loading = ProgressDialog(context)
+                    loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    loading.setIndeterminate(true)
+                    loading.setCancelable(true)
                     loading.show()
+                    loading.setContentView(R.layout.progressdialog)
                     val handler = Handler()
                     handler.postDelayed(Runnable { // Do something after 5s = 5000ms
                         loading.dismiss()
