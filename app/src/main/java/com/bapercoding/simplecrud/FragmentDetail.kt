@@ -1,17 +1,31 @@
 package com.bapercoding.simplecrud
 
+import android.app.ProgressDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.detail_film.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 
@@ -25,9 +39,10 @@ class FragmentDetail : Fragment() {
     private var imagePage: String? = null
     private var letak = 0
     private var list2: ArrayList<String> = arrayListOf()
+    private var id: String? = null
 
     // newInstance constructor for creating fragment with arguments
-    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>): FragmentDetail? {
+    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>, id: String?): FragmentDetail? {
         val fragmentDetail = FragmentDetail()
         val args = Bundle()
         args.putInt("letak", letak)
@@ -37,6 +52,7 @@ class FragmentDetail : Fragment() {
         args.putString("sinopsis", sinopsis)
         args.putString("imagePage", imagePage)
         args.putStringArrayList("list2", list2)
+        args.putString("id", id)
         fragmentDetail.setArguments(args)
         return fragmentDetail
     }
@@ -50,6 +66,7 @@ class FragmentDetail : Fragment() {
         sinopsis = arguments!!.getString("sinopsis")
         imagePage = arguments!!.getString("imagePage")
         list2 = arguments!!.getStringArrayList("list2")
+        id = arguments!!.getString("id")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +85,7 @@ class FragmentDetail : Fragment() {
         list.addAll(Data.listData)
         rvDetail.setHasFixedSize(true)
         rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2) }
+        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!) }
         adapter?.notifyDataSetChanged()
         rvDetail.adapter = adapter
     }

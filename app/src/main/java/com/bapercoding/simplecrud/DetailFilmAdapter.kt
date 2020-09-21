@@ -1,8 +1,11 @@
 package com.bapercoding.simplecrud
 
 import android.R.attr.name
+import android.R.attr.overScrollFooter
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
+import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.LayoutInflater
@@ -12,15 +15,16 @@ import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.*
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import kotlinx.android.synthetic.main.detail_film.view.*
 import java.text.DecimalFormat
 
 
 @Suppress("DEPRECATION")
-class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
+class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>, private val id: String) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
 
-    val listPhoto2: ArrayList<String> = arrayListOf()
+    private lateinit var dbReference: DatabaseReference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(LayoutInflater.from(parent.context).inflate(R.layout.detail_film,parent,false))
     }
@@ -42,17 +46,38 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
                 val rankDialog = Dialog(context)
                 rankDialog.setContentView(R.layout.rating_dialog)
                 rankDialog.setCancelable(true)
-                val ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar) as RatingBar
+                val ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar) as SimpleRatingBar
                 ratingBar.setRating(rating)
+                ratingBar.setOnRatingBarChangeListener(object : SimpleRatingBar.OnRatingBarChangeListener {
+                    override fun onRatingChanged(simpleRatingBar: SimpleRatingBar?, rating: Float, fromUser: Boolean) {
+                        ratingBar.setRating(rating)
+                    }
+                })
 
                 val text = rankDialog.findViewById(R.id.rank_dialog_text2) as TextView
                 text.text = df.format(rating*2) + "/10"
+
+                val btnCancel: Button = rankDialog.findViewById(R.id.rank_dialog_button2)
+                btnCancel.setOnClickListener { rankDialog.dismiss() }
+                val btnSubmit: Button = rankDialog.findViewById(R.id.rank_dialog_button)
+                btnSubmit.setOnClickListener {
+                    dbReference = FirebaseDatabase.getInstance().getReference("userRaring")
+                    val info = Upload(judul, rating.toString())
+                    val loading = ProgressDialog(context)
+                    loading.show()
+                    val handler = Handler()
+                    handler.postDelayed(Runnable { // Do something after 5s = 5000ms
+                        loading.dismiss()
+                        dbReference.child(id).child(judul).setValue(info)
+                        rankDialog.dismiss()
+                    }, 3000)
+                }
                 rankDialog.show()
             }
         })
         holder.view.tv_rating_user.text = "0/10"
         holder.view.tv_rating.text = rating
-        holder.view.tv_item_rating2.text = "Your rating:"
+        holder.view.tv_item_rating2.text = "Your rating"
         holder.view.tv_rating_all.text = Html.fromHtml("Ratings: " + "<b>" + rating + "</b>" + " from users")
         holder.view.tv_view_user.text = "Views:"
         holder.view.tv_item_rating.text = film.detail

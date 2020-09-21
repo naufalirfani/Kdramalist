@@ -4,11 +4,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="16dp">
 
     <TextView android:text="Your rating"
             android:id="@+id/rank_dialog_text1"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,7 +17,9 @@
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp">
         <com.iarcuschin.simpleratingbar.SimpleRatingBar
                 android:id="@+id/dialog_ratingbar"
                 android:layout_width="150dp"
@@ -30,9 +32,7 @@
                 app:srb_pressedBorderColor="#FFC107"
                 app:srb_stepSize="0.1"
                 app:srb_gravity="left"
-                app:srb_starBorderWidth="3"
-                app:srb_isIndicator="true"
-                />
+                app:srb_starBorderWidth="3"/>
         <TextView android:text="Your rating"
                 android:id="@+id/rank_dialog_text2"
                 android:paddingLeft="8dp"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="32dp">
         <Button android:id="@+id/rank_dialog_button"
                 android:layout_height="wrap_content"
                 android:text="Submit"
@@ -59,18 +59,20 @@
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_margin="12dp"/>
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"/>
         <Button android:id="@+id/rank_dialog_button2"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
-                android:background="@color/colorPrimary"
+                android:background="#F44336"
                 android:focusable="false"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_margin="12dp"/>
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"/>
     </LinearLayout>
 
 </LinearLayout>

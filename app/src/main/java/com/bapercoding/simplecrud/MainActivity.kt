@@ -7,6 +7,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.ActionBar
@@ -199,7 +200,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val loading = ProgressDialog(this)
-        loading.setMessage("Memuat data...")
+        loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        loading.setIndeterminate(true)
+        loading.setCancelable(true)
+        loading.setContentView(R.layout.progressdialog)
         loading.show()
         loadAllStudents(loading)
     }

@@ -3,6 +3,8 @@ package com.bapercoding.simplecrud
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -72,7 +74,10 @@ class LoginActivity : AppCompatActivity() {
             var iterator = 0
 
             val progressDialog = ProgressDialog(this)
-            progressDialog.setMessage("Sign in...")
+            progressDialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            progressDialog.setIndeterminate(true)
+            progressDialog.setCancelable(true)
+            progressDialog.setContentView(R.layout.progressdialog)
             progressDialog.show()
 
 

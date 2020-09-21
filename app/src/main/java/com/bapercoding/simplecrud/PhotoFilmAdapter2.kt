@@ -44,8 +44,6 @@ class PhotoFilmAdapter2(private val context: Context, private val listPhoto: Arr
 
     }
 
-
-
     class Holder(val view: View) : RecyclerView.ViewHolder(view)
 
 }

@@ -7,6 +7,7 @@ import android.app.ProgressDialog
 import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -19,6 +20,7 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,6 +30,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
@@ -39,7 +42,7 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
-@Suppress("DEPRECATION", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@Suppress("DEPRECATION", "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class DetailFilmActivity : AppCompatActivity() {
 
     private var list: ArrayList<Film> = arrayListOf()
@@ -59,6 +62,7 @@ class DetailFilmActivity : AppCompatActivity() {
     private var filePath: Uri? = null
     private lateinit var dbReference: DatabaseReference
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var id: String
 
     object Constants {
         const val STORAGE_PATH_UPLOADS = "uploads/"
@@ -117,7 +121,11 @@ class DetailFilmActivity : AppCompatActivity() {
         getPhotos()
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage)
+        val auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        id = user!!.uid
+
+        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
@@ -137,7 +145,10 @@ class DetailFilmActivity : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.refresh) {
             val loading = ProgressDialog(this)
-            loading.setMessage("Loading...")
+            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.setIndeterminate(true)
+            loading.setCancelable(true)
+            loading.setContentView(R.layout.progressdialog)
             loading.show()
             val handler = Handler()
             handler.postDelayed(Runnable { // Do something after 5s = 5000ms
