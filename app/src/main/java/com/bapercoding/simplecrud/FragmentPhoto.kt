@@ -1,8 +1,10 @@
 package com.bapercoding.simplecrud
 
 
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,7 +12,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_photo.*
+import java.lang.reflect.Type
 
 /**
  * A simple [Fragment] subclass.
@@ -52,10 +57,22 @@ class FragmentPhoto : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val gson = Gson()
+        if(list2.isNotEmpty()){
+            val editor: SharedPreferences.Editor = sharedPrefs.edit()
+            val json = gson.toJson(list2)
+
+            editor.putString("list", json)
+            editor.commit()
+        }
+        val json = sharedPrefs.getString("list", "")
+        val type: Type = object : TypeToken<ArrayList<String?>?>() {}.getType()
+        val arrayList: ArrayList<String> = gson.fromJson(json, type)
+
         rvPhoto.setHasFixedSize(true)
         rvPhoto.layoutManager = GridLayoutManager(context, 3)
-        val adapter = context?.let { PhotoFilmAdapter2(it,list2, judul) }
-        adapter?.notifyItemRangeRemoved(0, list2.size)
+        val adapter = context?.let { PhotoFilmAdapter2(it,arrayList, judul) }
         adapter?.notifyDataSetChanged()
         rvPhoto.adapter = adapter
     }
