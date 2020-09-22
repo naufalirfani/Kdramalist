@@ -85,7 +85,7 @@ class FragmentDetail : Fragment() {
         list.addAll(Data.listData)
         rvDetail.setHasFixedSize(true)
         rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!) }
+        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!) }
         adapter?.notifyDataSetChanged()
         rvDetail.adapter = adapter
     }
