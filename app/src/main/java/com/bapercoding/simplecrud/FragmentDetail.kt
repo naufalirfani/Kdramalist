@@ -1,8 +1,11 @@
 package com.bapercoding.simplecrud
 
 import android.app.ProgressDialog
+import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.annotation.Nullable
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -25,11 +28,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.detail_film.*
 import kotlinx.android.synthetic.main.fragment_detail.*
+import java.lang.reflect.Type
 
 
+@Suppress("DEPRECATION")
 class FragmentDetail : Fragment() {
 
     private var judul: String? = null
@@ -81,11 +88,18 @@ class FragmentDetail : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        val progressDialog = ProgressDialog(this.context)
+        progressDialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        progressDialog.setIndeterminate(true)
+        progressDialog.setCancelable(true)
+        progressDialog.show()
+        progressDialog.setContentView(R.layout.progressdialog)
+
         val list = ArrayList<Film>()
         list.addAll(Data.listData)
         rvDetail.setHasFixedSize(true)
         rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!) }
+        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, progressDialog) }
         adapter?.notifyDataSetChanged()
         rvDetail.adapter = adapter
     }

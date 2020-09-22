@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.bapercoding.simplecrud
 
 import android.R.attr.name
@@ -32,7 +34,7 @@ import java.text.DecimalFormat
 
 
 @Suppress("DEPRECATION")
-class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>, private val id: String, private val activity: FragmentActivity) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
+class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>, private val id: String, private val activity: FragmentActivity, private val loading: ProgressDialog) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
 
     private lateinit var dbReference: DatabaseReference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -43,6 +45,23 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[letak]
+        if(list2.isEmpty()){
+            activity.finish()
+            activity.startActivity(activity.intent)
+        }
+        else{
+            loading.dismiss()
+            holder.view.tv_jumlah_photo.text = "View all (${list2.size})"
+            holder.view.tv_jumlah_photo.setOnClickListener {
+                activity.pager.setCurrentItem(3)
+            }
+            holder.view.rvPhoto2.setHasFixedSize(true)
+            holder.view.rvPhoto2.layoutManager = GridLayoutManager(context, 3)
+            val adapter = context?.let { PhotoFilmAdapter3(it,list2, judul) }
+            adapter?.notifyItemRangeRemoved(0, list2.size)
+            adapter?.notifyDataSetChanged()
+            holder.view.rvPhoto2.adapter = adapter
+        }
         Glide.with(holder.itemView.context)
                 .load(imagePage)
 //                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
@@ -93,23 +112,6 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
                 rankDialog.show()
             }
         })
-
-        if(list2.isEmpty()){
-            activity.finish()
-            activity.startActivity(activity.intent)
-        }
-        else{
-            holder.view.tv_jumlah_photo.text = "View all (${list2.size})"
-            holder.view.tv_jumlah_photo.setOnClickListener {
-                activity.pager.setCurrentItem(3)
-            }
-            holder.view.rvPhoto2.setHasFixedSize(true)
-            holder.view.rvPhoto2.layoutManager = GridLayoutManager(context, 3)
-            val adapter = context?.let { PhotoFilmAdapter3(it,list2, judul) }
-            adapter?.notifyItemRangeRemoved(0, list2.size)
-            adapter?.notifyDataSetChanged()
-            holder.view.rvPhoto2.adapter = adapter
-        }
         Glide.with(holder.itemView.context)
                 .load(R.drawable.comingsoon)
 //                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
