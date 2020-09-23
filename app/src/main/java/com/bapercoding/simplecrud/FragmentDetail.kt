@@ -46,6 +46,7 @@ class FragmentDetail : Fragment() {
     private var imagePage: String? = null
     private var letak = 0
     private var list2: ArrayList<String> = arrayListOf()
+    private var listPhoto2: ArrayList<String> = arrayListOf()
     private var id: String? = null
 
     // newInstance constructor for creating fragment with arguments
@@ -88,18 +89,11 @@ class FragmentDetail : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val progressDialog = ProgressDialog(this.context)
-        progressDialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        progressDialog.setIndeterminate(true)
-        progressDialog.setCancelable(true)
-        progressDialog.show()
-        progressDialog.setContentView(R.layout.progressdialog)
-
         val list = ArrayList<Film>()
         list.addAll(Data.listData)
         rvDetail.setHasFixedSize(true)
         rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, progressDialog) }
+        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!) }
         adapter?.notifyDataSetChanged()
         rvDetail.adapter = adapter
     }

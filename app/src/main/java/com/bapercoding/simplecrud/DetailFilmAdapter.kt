@@ -2,17 +2,14 @@
 
 package com.bapercoding.simplecrud
 
-import android.R.attr.name
-import android.R.attr.overScrollFooter
-import android.app.Activity
 import android.app.Dialog
-import android.app.Fragment
 import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
 import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -20,13 +17,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import kotlinx.android.synthetic.main.activity_detail_film.*
 import kotlinx.android.synthetic.main.detail_film.view.*
@@ -34,7 +29,7 @@ import java.text.DecimalFormat
 
 
 @Suppress("DEPRECATION")
-class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>, private val id: String, private val activity: FragmentActivity, private val loading: ProgressDialog) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
+class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>, private val id: String, private val activity: FragmentActivity) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
 
     private lateinit var dbReference: DatabaseReference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -46,11 +41,11 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[letak]
         if(list2.isEmpty()){
-            activity.finish()
-            activity.startActivity(activity.intent)
+//            activity.finish()
+//            activity.startActivity(activity.intent)
+            Toast.makeText(context, "kosong bro", Toast.LENGTH_LONG).show()
         }
         else{
-            loading.dismiss()
             holder.view.tv_jumlah_photo.text = "View all (${list2.size})"
             holder.view.tv_jumlah_photo.setOnClickListener {
                 activity.pager.setCurrentItem(3)
@@ -105,7 +100,7 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
                     val handler = Handler()
                     handler.postDelayed(Runnable { // Do something after 5s = 5000ms
                         loading.dismiss()
-                        dbReference.child(id).child(judul).setValue(info)
+                        dbReference.child(judul).child(id).setValue(info)
                         rankDialog.dismiss()
                     }, 3000)
                 }
