@@ -72,25 +72,20 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
                 rankDialog.setCancelable(true)
                 val ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar) as SimpleRatingBar
                 ratingBar.setRating(rating)
-                ratingBar.setOnRatingBarChangeListener(object : SimpleRatingBar.OnRatingBarChangeListener {
-                    override fun onRatingChanged(simpleRatingBar: SimpleRatingBar?, rating: Float, fromUser: Boolean) {
-                        ratingBar.setRating(rating)
-                    }
-                })
 
                 val text = rankDialog.findViewById(R.id.rank_dialog_text2) as TextView
                 text.text = df.format(rating*2) + "/10"
 
                 val btnCancel: Button = rankDialog.findViewById(R.id.rank_dialog_button2)
                 btnCancel.setOnClickListener {
-                    rankDialog.dismiss()
                     activity.finish()
                     activity.startActivity(activity.intent)
+                    rankDialog.dismiss()
                 }
                 val btnSubmit: Button = rankDialog.findViewById(R.id.rank_dialog_button)
                 btnSubmit.setOnClickListener {
-                    dbReference = FirebaseDatabase.getInstance().getReference("userRaring")
-                    val info = Upload(judul, rating.toString())
+                    dbReference = FirebaseDatabase.getInstance().getReference("userRating")
+                    val info = Upload(judul, df.format(rating*2))
                     val loading = ProgressDialog(context)
                     loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                     loading.setIndeterminate(true)
@@ -102,6 +97,8 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
                         loading.dismiss()
                         dbReference.child(judul).child(id).setValue(info)
                         rankDialog.dismiss()
+                        activity.finish()
+                        activity.startActivity(activity.intent)
                     }, 3000)
                 }
                 rankDialog.show()

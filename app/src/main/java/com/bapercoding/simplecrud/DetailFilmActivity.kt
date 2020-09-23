@@ -52,6 +52,8 @@ class DetailFilmActivity : AppCompatActivity() {
     lateinit var episode:String
     lateinit var sinopsis:String
     lateinit var imagepage:String
+    private val  ratingUser = ArrayList<String>()
+    private  var jumlahuserRating: Int = 0
     private lateinit var layout: RelativeLayout
     private lateinit var tabLayout1: TabLayout
     val iterator = arrayOf('a','b','c','d','e','f','g','h','i','j','k')
@@ -118,12 +120,13 @@ class DetailFilmActivity : AppCompatActivity() {
         tabLayout1.addTab(tabLayout1.newTab().setText("Episodes"))
         tabLayout1.addTab(tabLayout1.newTab().setText("Photos"))
 
-        getPhotos()
-        tabClick()
-
         val auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
         id = user!!.uid
+
+        getPhotos()
+        getRating()
+        tabClick()
 
         val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id)
         val pager = findViewById<View>(R.id.pager) as ViewPager
@@ -195,6 +198,36 @@ class DetailFilmActivity : AppCompatActivity() {
         }
         else{
             dbReference2.child(judul2).addValueEventListener(postListener2)
+        }
+    }
+
+    fun getRating(){
+        jumlahuserRating = 0
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        val dbReferenceR = firebaseDatabase.getReference("userRating")
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                for(data: DataSnapshot in dataSnapshot.children){
+                    val user2 = data.getValue(Upload::class.java)
+                    if(user2?.name == judul){
+                        ratingUser.add(user2.url!!)
+                    }
+                    jumlahuserRating += 1
+                    ratingUser.add(1,jumlahuserRating.toString())
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        var judul2 = judul
+        if(judul2.contains(".")){
+            judul2 = judul2.replace(".", "")
+            dbReferenceR.child(judul2).addValueEventListener(postListener)
+        }
+        else{
+            dbReferenceR.child(judul2).addValueEventListener(postListener)
         }
     }
 

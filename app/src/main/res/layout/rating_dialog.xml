@@ -32,7 +32,8 @@
                 app:srb_pressedBorderColor="#FFC107"
                 app:srb_stepSize="0.1"
                 app:srb_gravity="left"
-                app:srb_starBorderWidth="3"/>
+                app:srb_starBorderWidth="3"
+                app:srb_isIndicator="true"/>
         <TextView android:text="Your rating"
                 android:id="@+id/rank_dialog_text2"
                 android:paddingLeft="8dp"
