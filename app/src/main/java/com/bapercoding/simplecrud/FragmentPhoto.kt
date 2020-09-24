@@ -22,14 +22,14 @@ import java.lang.reflect.Type
  */
 class FragmentPhoto : Fragment() {
 
-    private var list: ArrayList<Int> = arrayListOf()
+    private var list: ArrayList<String> = arrayListOf()
     private var list2: ArrayList<String> = arrayListOf()
     private var judul: String = ""
 
-    fun newInstance(list: ArrayList<Int>, list2: ArrayList<String>, judul:String): FragmentPhoto? {
+    fun newInstance(list: ArrayList<String>, list2: ArrayList<String>, judul:String): FragmentPhoto? {
         val fragmentPhoto= FragmentPhoto()
         val args = Bundle()
-        args.putIntegerArrayList("list", list)
+        args.putStringArrayList("list", list)
         args.putStringArrayList("list2", list2)
         args.putString("judul", judul)
         fragmentPhoto.setArguments(args)
@@ -40,7 +40,7 @@ class FragmentPhoto : Fragment() {
         super.onCreate(savedInstanceState)
         list.clear()
         list2.clear()
-        list = arguments!!.getIntegerArrayList("list")
+        list = arguments!!.getStringArrayList("list")
         list2 = arguments!!.getStringArrayList("list2")
         judul = arguments!!.getString("judul")
     }

@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.list_photo.view.*
 class PhotoBesarAdapter(private val context: Context, private val listPhoto: ArrayList<String>) : RecyclerView.Adapter<PhotoBesarAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_photo,parent,false))
+        return Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_photo3,parent,false))
     }
 
     override fun getItemCount(): Int = listPhoto.size

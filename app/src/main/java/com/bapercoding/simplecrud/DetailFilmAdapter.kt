@@ -29,7 +29,19 @@ import java.text.DecimalFormat
 
 
 @Suppress("DEPRECATION")
-class DetailFilmAdapter(private val context: Context, private val listFilm: ArrayList<Film>, private val judul: String, private val rating: String, private val episode: String, private val sinopsis: String, private val imagePage: String, private val letak: Int, private val list2: ArrayList<String>, private val id: String, private val activity: FragmentActivity) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
+class DetailFilmAdapter(
+        private val context: Context,
+        private val listFilm: ArrayList<Film>,
+        private val judul: String,
+        private val rating: String,
+        private val episode: String,
+        private val sinopsis: String,
+        private val imagePage: String,
+        private val letak: Int,
+        private val list2: ArrayList<String>,
+        private val id: String,
+        private val activity: FragmentActivity,
+        private val listRating: ArrayList<String>) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
 
     private lateinit var dbReference: DatabaseReference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -40,12 +52,15 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[letak]
-        if(list2.isEmpty()){
+        if(list2.isEmpty() && listRating.isEmpty()){
 //            activity.finish()
 //            activity.startActivity(activity.intent)
             Toast.makeText(context, "kosong bro", Toast.LENGTH_LONG).show()
         }
         else{
+            holder.view.tv_rating_user.text = "${listRating[0]}/10"
+            holder.view.ratingBar1.rating = listRating[0].toFloat()/2
+            holder.view.tv_rating_all.text = Html.fromHtml("Ratings: " + "<b>" + rating + "</b>" + " from ${listRating[1]} users")
             holder.view.tv_jumlah_photo.text = "View all (${list2.size})"
             holder.view.tv_jumlah_photo.setOnClickListener {
                 activity.pager.setCurrentItem(3)
@@ -111,10 +126,8 @@ class DetailFilmAdapter(private val context: Context, private val listFilm: Arra
         holder.view.tv_jumla_cast.setOnClickListener {
             activity.pager.setCurrentItem(2)
         }
-        holder.view.tv_rating_user.text = "0/10"
         holder.view.tv_rating.text = rating
         holder.view.tv_item_rating2.text = "Your rating"
-        holder.view.tv_rating_all.text = Html.fromHtml("Ratings: " + "<b>" + rating + "</b>" + " from users")
         holder.view.tv_view_user.text = "Views:"
         holder.view.tv_item_rating.text = film.detail
         holder.view.tv_sinopsis.text = sinopsis

@@ -133,7 +133,7 @@ class DetailFilmActivity : AppCompatActivity() {
         getRating()
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, listPhoto3, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, ratingUser, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
@@ -207,6 +207,8 @@ class DetailFilmActivity : AppCompatActivity() {
     }
 
     fun getRating(){
+        ratingUser.add(0,"0")
+        ratingUser.add(1,"0")
         jumlahuserRating = 0
         firebaseDatabase = FirebaseDatabase.getInstance()
         val dbReferenceR = firebaseDatabase.getReference("userRating")
@@ -215,15 +217,23 @@ class DetailFilmActivity : AppCompatActivity() {
                 // Get Post object and use the values to update the UI
                 for(data: DataSnapshot in dataSnapshot.children){
                     val user2 = data.getValue(Upload::class.java)
-                    if(user2?.name == judul){
-                        ratingUser.add(user2.url!!)
+                    if(user2?.name!!.isNotEmpty()){
+                        if(user2.name == judul){
+                            ratingUser.add(0, user2.url!!)
+                        }
+                        jumlahuserRating += 1
+                        ratingUser.add(1, jumlahuserRating.toString())
                     }
-                    jumlahuserRating += 1
-                    ratingUser.add(1,jumlahuserRating.toString())
+                    else{
+                        ratingUser.add("0")
+                        ratingUser.add("0")
+                    }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                ratingUser.add("0")
+                ratingUser.add("0")
             }
         }
         var judul2 = judul
@@ -243,7 +253,7 @@ class DetailFilmActivity : AppCompatActivity() {
     }
 
     fun tabClick(){
-        tabLayout1.setTabTextColors(Color.parseColor("#bbdefb"), Color.parseColor("#2196F3"))
+        tabLayout1.setTabTextColors(Color.parseColor("#e1f5fe"), Color.parseColor("#2196F3"))
         tabLayout1.setSelectedTabIndicatorHeight(7)
         tabLayout1.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
