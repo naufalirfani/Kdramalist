@@ -249,6 +249,7 @@ class MainActivity : AppCompatActivity() {
                     arrayList.clear()
                     for (document in result) {
                         arrayList.add(Kdramas(document.getString("judul")!!,
+                                document.getString("genre")!!,
                                 document.getString("rating"),
                                 document.getString("episode")!!,
                                 document.getString("sinopsis")))
