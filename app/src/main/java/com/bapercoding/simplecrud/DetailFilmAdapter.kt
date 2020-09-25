@@ -41,7 +41,8 @@ class DetailFilmAdapter(
         private val list2: ArrayList<String>,
         private val id: String,
         private val activity: FragmentActivity,
-        private val listRating: ArrayList<String>) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
+        private val listRating: ArrayList<String>,
+        private val listDetail: ArrayList<String>) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
 
     private lateinit var dbReference: DatabaseReference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -52,7 +53,7 @@ class DetailFilmAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[letak]
-        if(list2.isEmpty() && listRating.isEmpty()){
+        if(list2.isEmpty() || listRating.isEmpty()){
 //            activity.finish()
 //            activity.startActivity(activity.intent)
             Toast.makeText(context, "kosong bro", Toast.LENGTH_LONG).show()
@@ -129,11 +130,26 @@ class DetailFilmAdapter(
         holder.view.tv_rating.text = rating
         holder.view.tv_item_rating2.text = "Your rating"
         holder.view.tv_view_user.text = "Views:"
-        holder.view.tv_item_rating.text = film.detail
         holder.view.tv_sinopsis.text = sinopsis
         holder.view.tv_photo.text = "Photos"
         holder.view.tv_cast.text = "Cast"
         holder.view.tv_jumla_cast.text = "View all (0)"
+        val detail = """
+            <b>Native Title: </b>${listDetail[0]}
+            <br /><b>Also Known As: </b>${listDetail[1]}
+            <br /><b>Director: </b>${listDetail[2]}
+            <br /><b>Screenwriter: </b>${listDetail[3]}
+            <br /><b>Genres: </b>${listDetail[4]}
+            <br /><b>Country: </b>${listDetail[5]}
+            <br /><b>Type: </b>${listDetail[6]}
+            <br /><b>Episodes: </b>${listDetail[7]}
+            <br /><b>Aired: </b>${listDetail[8]}
+            <br /><b>Aired On: </b>${listDetail[9]}
+            <br /><b>Original Network: </b>${listDetail[10]}
+            <br /><b>Duration: </b>${listDetail[11]}
+            <br /><b>Content Rating: </b>${listDetail[12]}
+        """.trimIndent()
+        holder.view.tv_item_rating.text = Html.fromHtml(detail)
 
     }
 

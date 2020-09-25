@@ -1,3 +1,6 @@
 package com.bapercoding.simplecrud
 
-data class Kdramas(val judul: String, val genre: String, val rating:String?, val episode:String, val sinopsis:String?)
+import java.util.*
+import kotlin.collections.ArrayList
+
+data class Kdramas(val judul: String, val genre: String, val rating:String?, val episode:String, val sinopsis:String?, val detail: ArrayList<String>)

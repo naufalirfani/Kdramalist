@@ -47,10 +47,11 @@ class FragmentDetail : Fragment() {
     private var letak = 0
     private var list2: ArrayList<String> = arrayListOf()
     private var listRating: ArrayList<String> = arrayListOf()
+    private var listDetail: ArrayList<String> = arrayListOf()
     private var id: String? = null
 
     // newInstance constructor for creating fragment with arguments
-    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>, id: String?, listRating: ArrayList<String>): FragmentDetail? {
+    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>, id: String?, listRating: ArrayList<String>, listDetail: ArrayList<String>): FragmentDetail? {
         val fragmentDetail = FragmentDetail()
         val args = Bundle()
         args.putInt("letak", letak)
@@ -61,6 +62,7 @@ class FragmentDetail : Fragment() {
         args.putString("imagePage", imagePage)
         args.putStringArrayList("list2", list2)
         args.putStringArrayList("listRating", listRating)
+        args.putStringArrayList("listDetail", listDetail)
         args.putString("id", id)
         fragmentDetail.setArguments(args)
         return fragmentDetail
@@ -76,6 +78,7 @@ class FragmentDetail : Fragment() {
         imagePage = arguments!!.getString("imagePage")
         list2 = arguments!!.getStringArrayList("list2")
         listRating = arguments!!.getStringArrayList("listRating")
+        listDetail = arguments!!.getStringArrayList("listDetail")
         id = arguments!!.getString("id")
     }
 
@@ -95,7 +98,7 @@ class FragmentDetail : Fragment() {
         list.addAll(Data.listData)
         rvDetail.setHasFixedSize(true)
         rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, listRating) }
+        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, listRating, listDetail) }
         adapter?.notifyDataSetChanged()
         rvDetail.adapter = adapter
     }

@@ -48,6 +48,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
             i.putExtra("episode",arrayList?.get(position)?.episode)
             i.putExtra("sinopsis",arrayList?.get(position)?.sinopsis)
             i.putExtra("imagePage",listPage[position])
+            i.putExtra("detail", arrayList[position].detail)
             activity.startActivity(i)
             activity.overridePendingTransition(R.anim.enter, R.anim.exit)
         }

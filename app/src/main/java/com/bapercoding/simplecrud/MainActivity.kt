@@ -252,7 +252,8 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("genre")!!,
                                 document.getString("rating"),
                                 document.getString("episode")!!,
-                                document.getString("sinopsis")))
+                                document.getString("sinopsis"),
+                                document.get("detail") as ArrayList<String>))
                     }
 
                     if(arrayList2.isNotEmpty()){

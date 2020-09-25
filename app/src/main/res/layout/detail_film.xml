@@ -9,7 +9,7 @@
             android:id="@+id/img_item_photo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="16dp"
             tools:src="@android:color/darker_gray" />
     <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:padding="16dp"
                 android:orientation="horizontal">
 
             <TextView
@@ -92,14 +92,14 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="#919191" />
         <TextView
                 android:id="@+id/tv_sinopsis"
                 android:textSize="14sp"
                 android:textColor="#0C0C0C"
-                android:padding="8dp"
+                android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="40"
@@ -110,8 +110,8 @@
                 android:layout_width="match_parent"
                 android:textColor="#0C0C0C"
                 android:layout_height="wrap_content"
-                android:maxLines="10"
-                android:padding="8dp"
+                android:maxLines="30"
+                android:padding="16dp"
                 tools:text="@string/rating_user" />
     </LinearLayout>
 
