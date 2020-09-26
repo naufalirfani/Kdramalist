@@ -49,6 +49,8 @@ class LoginActivity : AppCompatActivity() {
         tvwelcome.text = resources.getString(R.string.welcome_to_kdramalist)
         tvdoyou.text = resources.getString(R.string.don_t_have_an_account)
 
+        val textView = login_google.getChildAt(0) as TextView
+        textView.text = "Google"
 
         emailEt = findViewById(R.id.et_email_login)
         passwordEt = findViewById(R.id.et_pass_login)

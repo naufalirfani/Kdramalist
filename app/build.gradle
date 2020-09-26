@@ -49,4 +49,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:18.0.0'
     implementation 'com.firebaseui:firebase-ui-storage:4.0.0'
     implementation 'com.github.FlyingPumba:SimpleRatingBar:v0.1.5'
+    implementation 'com.facebook.android:facebook-android-sdk:4.10.0'
 }
