@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
@@ -57,6 +58,7 @@ class DetailFilmActivity : AppCompatActivity() {
     lateinit var episode:String
     lateinit var sinopsis:String
     lateinit var imagepage:String
+    lateinit var watch:String
     private var listDetail: ArrayList<String> = arrayListOf()
     private val  ratingUser = ArrayList<String>()
     private  var jumlahuserRating: Int = 0
@@ -101,6 +103,7 @@ class DetailFilmActivity : AppCompatActivity() {
         imagepage = intent.getStringExtra("imagePage")
         letak = intent.getIntExtra("position",0)
         listDetail = intent.getStringArrayListExtra("detail")
+        watch = intent.getStringExtra("watch")
 
         val tvDataReceived: TextView = findViewById(R.id.tv_data_received)
         tvDataReceived.text = judul
@@ -135,7 +138,7 @@ class DetailFilmActivity : AppCompatActivity() {
         getRating()
         tabClick()
 
-        val pagerAdapter = PagerAdapter(supportFragmentManager, ratingUser, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id, listDetail)
+        val pagerAdapter = PagerAdapter(supportFragmentManager, ratingUser, listPhoto2, letak, judul, rating, episode, sinopsis, imagepage, id, listDetail, watch)
         val pager = findViewById<View>(R.id.pager) as ViewPager
         pager.adapter = pagerAdapter
         tabLayout1.setupWithViewPager(pager)
@@ -172,6 +175,14 @@ class DetailFilmActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        val db = FirebaseFirestore.getInstance()
+        db.collection("kdramas").document(judul)
+                .update("watch", (watch.toInt() + 1).toString())
+                .addOnSuccessListener { result ->
+                }
+                .addOnFailureListener { exception ->
+                }
+
         val intentMain = Intent(this@DetailFilmActivity, MainActivity::class.java)
         startActivity(intentMain)
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)

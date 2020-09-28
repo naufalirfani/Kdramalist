@@ -22,6 +22,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import kotlinx.android.synthetic.main.activity_detail_film.*
 import kotlinx.android.synthetic.main.detail_film.view.*
@@ -42,7 +43,8 @@ class DetailFilmAdapter(
         private val id: String,
         private val activity: FragmentActivity,
         private val listRating: ArrayList<String>,
-        private val listDetail: ArrayList<String>) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
+        private val listDetail: ArrayList<String>,
+        private val watch: String) : RecyclerView.Adapter<DetailFilmAdapter.Holder>() {
 
     private lateinit var dbReference: DatabaseReference
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -72,6 +74,7 @@ class DetailFilmAdapter(
             adapter?.notifyItemRangeRemoved(0, list2.size)
             adapter?.notifyDataSetChanged()
             holder.view.rvPhoto2.adapter = adapter
+
         }
         Glide.with(holder.itemView.context)
                 .load(imagePage)
@@ -128,8 +131,8 @@ class DetailFilmAdapter(
             activity.pager.setCurrentItem(2)
         }
         holder.view.tv_rating.text = rating
-        holder.view.tv_item_rating2.text = "Your rating"
-        holder.view.tv_view_user.text = "Views:"
+        holder.view.tv_item_rating2.text = "Your rating:"
+        holder.view.tv_view_user.text = "Watchers: $watch"
         holder.view.tv_sinopsis.text = sinopsis
         holder.view.tv_photo.text = "Photos"
         holder.view.tv_cast.text = "Cast"

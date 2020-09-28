@@ -253,7 +253,8 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("rating"),
                                 document.getString("episode")!!,
                                 document.getString("sinopsis"),
-                                document.get("detail") as ArrayList<String>))
+                                document.get("detail") as ArrayList<String>,
+                                document.getString("watch")))
                     }
 
                     if(arrayList2.isNotEmpty()){

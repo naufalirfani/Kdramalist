@@ -49,9 +49,10 @@ class FragmentDetail : Fragment() {
     private var listRating: ArrayList<String> = arrayListOf()
     private var listDetail: ArrayList<String> = arrayListOf()
     private var id: String? = null
+    private var watch: String? = null
 
     // newInstance constructor for creating fragment with arguments
-    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>, id: String?, listRating: ArrayList<String>, listDetail: ArrayList<String>): FragmentDetail? {
+    fun newInstance(letak: Int, judul: String?, rating: String?, episode: String?, sinopsis: String?, imagePage: String?, list2: ArrayList<String>, id: String?, listRating: ArrayList<String>, listDetail: ArrayList<String>, watch: String?): FragmentDetail? {
         val fragmentDetail = FragmentDetail()
         val args = Bundle()
         args.putInt("letak", letak)
@@ -64,6 +65,7 @@ class FragmentDetail : Fragment() {
         args.putStringArrayList("listRating", listRating)
         args.putStringArrayList("listDetail", listDetail)
         args.putString("id", id)
+        args.putString("watch", watch)
         fragmentDetail.setArguments(args)
         return fragmentDetail
     }
@@ -80,6 +82,7 @@ class FragmentDetail : Fragment() {
         listRating = arguments!!.getStringArrayList("listRating")
         listDetail = arguments!!.getStringArrayList("listDetail")
         id = arguments!!.getString("id")
+        watch = arguments!!.getString("watch")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -98,7 +101,7 @@ class FragmentDetail : Fragment() {
         list.addAll(Data.listData)
         rvDetail.setHasFixedSize(true)
         rvDetail.layoutManager = LinearLayoutManager(context)
-        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, listRating, listDetail) }
+        val adapter = context?.let { DetailFilmAdapter(it, list, judul!!, rating!!, episode!!, sinopsis!!, imagePage!!, letak, list2, id!!, activity!!, listRating, listDetail, watch!!) }
         adapter?.notifyDataSetChanged()
         rvDetail.adapter = adapter
     }

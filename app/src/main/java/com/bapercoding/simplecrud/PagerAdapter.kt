@@ -16,14 +16,15 @@ class PagerAdapter (fm: FragmentManager,
                     private val sinopsis: String,
                     private val imagePage: String,
                     private var id: String,
-                    private val listDetail: ArrayList<String>) : FragmentStatePagerAdapter(fm){
+                    private val listDetail: ArrayList<String>,
+                    private val watch: String) : FragmentStatePagerAdapter(fm){
 
     private val tabName : Array<String> = arrayOf("Details", "Cast", "Episodes", "Photos")
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
 
-            0 -> FragmentDetail().newInstance(letak,judul, rating, episode, sinopsis, imagePage,list2, id, list, listDetail)!!
+            0 -> FragmentDetail().newInstance(letak,judul, rating, episode, sinopsis, imagePage,list2, id, list, listDetail, watch)!!
             1 -> FragmentCast()
             2 -> FragmentEpisode()
             else -> FragmentPhoto().newInstance(list,list2,judul)!!
