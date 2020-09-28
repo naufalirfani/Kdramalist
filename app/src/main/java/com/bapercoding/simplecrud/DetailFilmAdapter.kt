@@ -82,18 +82,18 @@ class DetailFilmAdapter(
                 .into(holder.view.img_item_photo2)
 
         holder.view.ratingBar1.setOnRatingBarChangeListener(object : SimpleRatingBar.OnRatingBarChangeListener {
-            override fun onRatingChanged(simpleRatingBar: SimpleRatingBar?, rating: Float, fromUser: Boolean) {
+            override fun onRatingChanged(simpleRatingBar: SimpleRatingBar?, ratingStar: Float, fromUser: Boolean) {
                 val df = DecimalFormat("#.#")
-                holder.view.tv_rating_user.text = df.format(rating*2) + "/10"
+                holder.view.tv_rating_user.text = df.format(ratingStar*2) + "/10"
 
                 val rankDialog = Dialog(context)
                 rankDialog.setContentView(R.layout.rating_dialog)
                 rankDialog.setCancelable(true)
                 val ratingBar = rankDialog.findViewById(R.id.dialog_ratingbar) as SimpleRatingBar
-                ratingBar.setRating(rating)
+                ratingBar.setRating(ratingStar)
 
                 val text = rankDialog.findViewById(R.id.rank_dialog_text2) as TextView
-                text.text = df.format(rating*2) + "/10"
+                text.text = df.format(ratingStar*2) + "/10"
 
                 val btnCancel: Button = rankDialog.findViewById(R.id.rank_dialog_button2)
                 btnCancel.setOnClickListener {
@@ -104,7 +104,7 @@ class DetailFilmAdapter(
                 val btnSubmit: Button = rankDialog.findViewById(R.id.rank_dialog_button)
                 btnSubmit.setOnClickListener {
                     dbReference = FirebaseDatabase.getInstance().getReference("userRating")
-                    val info = Upload(judul, df.format(rating*2))
+                    val info = Upload(judul, df.format(ratingStar*2))
                     val loading = ProgressDialog(context)
                     loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                     loading.setIndeterminate(true)
@@ -115,6 +115,14 @@ class DetailFilmAdapter(
                     handler.postDelayed(Runnable { // Do something after 5s = 5000ms
                         loading.dismiss()
                         dbReference.child(judul).child(id).setValue(info)
+                        val newRating = ((rating.toFloat() + ratingStar*2)/2).toString()
+                        val db = FirebaseFirestore.getInstance()
+                        db.collection("kdramas").document(judul)
+                                .update("rating", newRating)
+                                .addOnSuccessListener { result ->
+                                }
+                                .addOnFailureListener { exception ->
+                                }
                         rankDialog.dismiss()
                         activity.finish()
                         activity.startActivity(activity.intent)
