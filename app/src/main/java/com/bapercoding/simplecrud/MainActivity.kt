@@ -17,16 +17,22 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.SmoothScroller
+import android.text.SpannableString
 import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
@@ -183,22 +189,6 @@ class MainActivity : AppCompatActivity() {
                 dbReference.child(id).setValue(user2)
             }
         }
-        getImagepage()
-    }
-    fun getImagepage(){
-        val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
-        val postListener2 = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (data: DataSnapshot in dataSnapshot.children){
-                    val hasil = data.getValue(Upload::class.java)
-                    arrayList2.add(hasil?.url!!)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        }
-        dbReference2.addValueEventListener(postListener2)
     }
 
     override fun onResume() {
@@ -241,7 +231,7 @@ class MainActivity : AppCompatActivity() {
             animation.start()
             dialog.visibility = LinearLayout.VISIBLE
         }
-        if(id == R.id.rating_list){
+        if(id == R.id.rating_sort){
             val loading = ProgressDialog(this)
             loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             loading.setIndeterminate(true)
@@ -250,9 +240,17 @@ class MainActivity : AppCompatActivity() {
             loading.setContentView(R.layout.progressdialog)
             loadAllRating(loading)
         }
+        if(id == R.id.release_sort){
+            val loading = ProgressDialog(this)
+            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.setIndeterminate(true)
+            loading.setCancelable(true)
+            loading.show()
+            loading.setContentView(R.layout.progressdialog)
+            loadAllRelease(loading)
+        }
         return super.onOptionsItemSelected(item)
     }
-
 
     private fun loadAllStudents(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
@@ -267,7 +265,8 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis"),
                                 document.get("detail") as ArrayList<String>,
-                                document.getString("watch")))
+                                document.getString("watch"),
+                                document.getString("imageMain")))
                     }
 
                     if(arrayList2.isNotEmpty()){
@@ -321,7 +320,8 @@ class MainActivity : AppCompatActivity() {
                                 document.getString("episode")!!,
                                 document.getString("sinopsis"),
                                 document.get("detail") as ArrayList<String>,
-                                document.getString("watch")))
+                                document.getString("watch"),
+                                document.getString("imageMain")))
                     }
 
                     if(arrayList2.isNotEmpty()){
@@ -360,6 +360,62 @@ class MainActivity : AppCompatActivity() {
                     snackBar.show()
                 }
     }
+
+    private fun loadAllRelease(loading2: ProgressDialog){
+        val db = FirebaseFirestore.getInstance()
+        db.collection("kdramas")
+                .orderBy("rating", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener { result ->
+                    arrayList.clear()
+                    for (document in result) {
+                        arrayList.add(Kdramas(document.getString("judul")!!,
+                                document.getString("genre")!!,
+                                document.getString("rating"),
+                                document.getString("episode")!!,
+                                document.getString("sinopsis"),
+                                document.get("detail") as ArrayList<String>,
+                                document.getString("watch"),
+                                document.getString("imageMain")))
+                    }
+
+                    if(arrayList2.isNotEmpty()){
+                        loading2.dismiss()
+                        mRecyclerView1.setHasFixedSize(true)
+                        mRecyclerView1.layoutManager = GridLayoutManager(this, 2)
+                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
+                        adapter.notifyDataSetChanged()
+                        mRecyclerView1.adapter = adapter
+                    }
+                    else{
+                        loadAllRelease(loading2)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    loading2.dismiss()
+                    Log.d("Error", "Error getting documents: ", exception)
+                    val snackBar = Snackbar.make(
+                            currentFocus!!, "    Connection Failure",
+                            Snackbar.LENGTH_INDEFINITE
+                    )
+                    val snackBarView = snackBar.view
+                    snackBarView.setBackgroundColor(Color.BLACK)
+                    val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                    textView.setTextColor(Color.WHITE)
+                    textView.setTextSize(16F)
+                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+                    val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+                    snack_action_view.setTextColor(Color.YELLOW)
+
+                    // Set an action for snack bar
+                    snackBar.setAction("Retry") {
+                        loadAllRelease(loading2)
+
+                    }
+                    snackBar.show()
+                }
+    }
+
     private fun closeKeyBoard() {
         val view = this.currentFocus
         if (view != null) {
@@ -478,4 +534,20 @@ class MainActivity : AppCompatActivity() {
 //    else{
 //        dbReference2.child(judul).child(key!!).setValue(info)
 //    }
+//}
+
+//fun getImagepage(){
+//    val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
+//    val postListener2 = object : ValueEventListener {
+//        override fun onDataChange(dataSnapshot: DataSnapshot) {
+//            for (data: DataSnapshot in dataSnapshot.children){
+//                val hasil = data.getValue(Upload::class.java)
+//                arrayList2.add(hasil?.url!!)
+//            }
+//        }
+//
+//        override fun onCancelled(databaseError: DatabaseError) {
+//        }
+//    }
+//    dbReference2.addValueEventListener(postListener2)
 //}

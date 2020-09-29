@@ -27,7 +27,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val film = listFilm[position]
         Glide.with(holder.itemView.context)
-                .load(listPage[position])
+                .load(arrayList[position].image)
 //                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                 .into(holder.view.img_item_photo)
 
@@ -47,7 +47,7 @@ class RVAAdapterStudent(private val activity: Activity, private val context: Con
             i.putExtra("rating",arrayList?.get(position)?.rating)
             i.putExtra("episode",arrayList?.get(position)?.episode)
             i.putExtra("sinopsis",arrayList?.get(position)?.sinopsis)
-            i.putExtra("imagePage",listPage[position])
+            i.putExtra("imagePage",arrayList[position].image)
             i.putExtra("detail", arrayList[position].detail)
             i.putExtra("watch", arrayList[position].watch)
             activity.startActivity(i)
