@@ -194,8 +194,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val loading = ProgressDialog(this)
-        loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        loading.setIndeterminate(true)
+        loading.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        loading.isIndeterminate = true
         loading.setCancelable(true)
         loading.show()
         loading.setContentView(R.layout.progressdialog)
@@ -233,8 +233,8 @@ class MainActivity : AppCompatActivity() {
         }
         if(id == R.id.rating_sort){
             val loading = ProgressDialog(this)
-            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            loading.setIndeterminate(true)
+            loading.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.isIndeterminate = true
             loading.setCancelable(true)
             loading.show()
             loading.setContentView(R.layout.progressdialog)
@@ -242,8 +242,8 @@ class MainActivity : AppCompatActivity() {
         }
         if(id == R.id.release_sort){
             val loading = ProgressDialog(this)
-            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            loading.setIndeterminate(true)
+            loading.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.isIndeterminate = true
             loading.setCancelable(true)
             loading.show()
             loading.setContentView(R.layout.progressdialog)
@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity() {
                     snackBarView.setBackgroundColor(Color.BLACK)
                     val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                     textView.setTextColor(Color.WHITE)
-                    textView.setTextSize(16F)
+                    textView.textSize = 16F
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
                     val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
                     snack_action_view.setTextColor(Color.YELLOW)
@@ -347,7 +347,7 @@ class MainActivity : AppCompatActivity() {
                     snackBarView.setBackgroundColor(Color.BLACK)
                     val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                     textView.setTextColor(Color.WHITE)
-                    textView.setTextSize(16F)
+                    textView.textSize = 16F
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
                     val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
                     snack_action_view.setTextColor(Color.YELLOW)
@@ -402,7 +402,7 @@ class MainActivity : AppCompatActivity() {
                     snackBarView.setBackgroundColor(Color.BLACK)
                     val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                     textView.setTextColor(Color.WHITE)
-                    textView.setTextSize(16F)
+                    textView.textSize = 16F
                     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
                     val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
                     snack_action_view.setTextColor(Color.YELLOW)
