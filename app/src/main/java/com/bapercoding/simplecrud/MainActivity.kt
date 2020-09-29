@@ -31,8 +31,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
@@ -189,12 +188,29 @@ class MainActivity : AppCompatActivity() {
                 dbReference.child(id).setValue(user2)
             }
         }
+        getImagepage()
+    }
+
+    fun getImagepage(){
+        val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
+        val postListener2 = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (data: DataSnapshot in dataSnapshot.children){
+                    val hasil = data.getValue(Upload::class.java)
+                    arrayList2.add(hasil?.url!!)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        }
+        dbReference2.addValueEventListener(postListener2)
     }
 
     override fun onResume() {
         super.onResume()
         val loading = ProgressDialog(this)
-        loading.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         loading.isIndeterminate = true
         loading.setCancelable(true)
         loading.show()
@@ -212,7 +228,7 @@ class MainActivity : AppCompatActivity() {
         if (id == android.R.id.home) {
             val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
             startActivity(intentAboutMe)
-            overridePendingTransition(R.anim.enter, R.anim.exit)
+            overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
             finish()
             searchLayout.visibility = View.GONE
         }
@@ -233,7 +249,7 @@ class MainActivity : AppCompatActivity() {
         }
         if(id == R.id.rating_sort){
             val loading = ProgressDialog(this)
-            loading.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             loading.isIndeterminate = true
             loading.setCancelable(true)
             loading.show()
@@ -242,7 +258,7 @@ class MainActivity : AppCompatActivity() {
         }
         if(id == R.id.release_sort){
             val loading = ProgressDialog(this)
-            loading.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             loading.isIndeterminate = true
             loading.setCancelable(true)
             loading.show()
@@ -364,7 +380,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadAllRelease(loading2: ProgressDialog){
         val db = FirebaseFirestore.getInstance()
         db.collection("kdramas")
-                .orderBy("rating", Query.Direction.DESCENDING)
+                .orderBy("episode", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { result ->
                     arrayList.clear()
@@ -536,18 +552,3 @@ class MainActivity : AppCompatActivity() {
 //    }
 //}
 
-//fun getImagepage(){
-//    val dbReference2 = FirebaseDatabase.getInstance().getReference("imagesPage")
-//    val postListener2 = object : ValueEventListener {
-//        override fun onDataChange(dataSnapshot: DataSnapshot) {
-//            for (data: DataSnapshot in dataSnapshot.children){
-//                val hasil = data.getValue(Upload::class.java)
-//                arrayList2.add(hasil?.url!!)
-//            }
-//        }
-//
-//        override fun onCancelled(databaseError: DatabaseError) {
-//        }
-//    }
-//    dbReference2.addValueEventListener(postListener2)
-//}

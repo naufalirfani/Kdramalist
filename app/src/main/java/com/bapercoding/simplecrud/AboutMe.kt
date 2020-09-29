@@ -123,7 +123,7 @@ class AboutMe : AppCompatActivity() {
         super.onBackPressed()
         val intentMain = Intent(this@AboutMe, MainActivity::class.java)
         startActivity(intentMain)
-        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left)
+        overridePendingTransition(R.anim.enter, R.anim.exit)
     }
 
     override fun onSupportNavigateUp(): Boolean {
