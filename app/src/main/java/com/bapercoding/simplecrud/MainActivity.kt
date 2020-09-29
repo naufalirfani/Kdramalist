@@ -28,6 +28,7 @@ import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -56,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         this.supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setCustomView(R.layout.custom_action_bar)
+
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_account_circle_black_24dp)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val actionbar = supportActionBar
         //set actionbar title
@@ -215,7 +219,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.about_item) {
+        if (id == android.R.id.home) {
             val intentAboutMe = Intent(this@MainActivity, AboutMe::class.java)
             startActivity(intentAboutMe)
             overridePendingTransition(R.anim.enter, R.anim.exit)
@@ -236,6 +240,15 @@ class MainActivity : AppCompatActivity() {
             dialog.animate()
             animation.start()
             dialog.visibility = LinearLayout.VISIBLE
+        }
+        if(id == R.id.rating_list){
+            val loading = ProgressDialog(this)
+            loading.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            loading.setIndeterminate(true)
+            loading.setCancelable(true)
+            loading.show()
+            loading.setContentView(R.layout.progressdialog)
+            loadAllRating(loading)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -294,6 +307,59 @@ class MainActivity : AppCompatActivity() {
                 }
     }
 
+    private fun loadAllRating(loading2: ProgressDialog){
+        val db = FirebaseFirestore.getInstance()
+        db.collection("kdramas")
+                .orderBy("rating", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener { result ->
+                    arrayList.clear()
+                    for (document in result) {
+                        arrayList.add(Kdramas(document.getString("judul")!!,
+                                document.getString("genre")!!,
+                                document.getString("rating"),
+                                document.getString("episode")!!,
+                                document.getString("sinopsis"),
+                                document.get("detail") as ArrayList<String>,
+                                document.getString("watch")))
+                    }
+
+                    if(arrayList2.isNotEmpty()){
+                        loading2.dismiss()
+                        mRecyclerView1.setHasFixedSize(true)
+                        mRecyclerView1.layoutManager = GridLayoutManager(this, 2)
+                        val adapter = RVAAdapterStudent(thisActivity, applicationContext, arrayList, list, arrayList2)
+                        adapter.notifyDataSetChanged()
+                        mRecyclerView1.adapter = adapter
+                    }
+                    else{
+                        loadAllRating(loading2)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    loading2.dismiss()
+                    Log.d("Error", "Error getting documents: ", exception)
+                    val snackBar = Snackbar.make(
+                            currentFocus!!, "    Connection Failure",
+                            Snackbar.LENGTH_INDEFINITE
+                    )
+                    val snackBarView = snackBar.view
+                    snackBarView.setBackgroundColor(Color.BLACK)
+                    val textView = snackBarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                    textView.setTextColor(Color.WHITE)
+                    textView.setTextSize(16F)
+                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.warning, 0, 0, 0)
+                    val snack_action_view = snackBarView.findViewById<Button>(android.support.design.R.id.snackbar_action)
+                    snack_action_view.setTextColor(Color.YELLOW)
+
+                    // Set an action for snack bar
+                    snackBar.setAction("Retry") {
+                        loadAllRating(loading2)
+
+                    }
+                    snackBar.show()
+                }
+    }
     private fun closeKeyBoard() {
         val view = this.currentFocus
         if (view != null) {

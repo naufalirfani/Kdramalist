@@ -7,8 +7,25 @@
             app:showAsAction="always"
             android:title="@string/search" />
     <item
-            android:id="@+id/about_item"
-            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:id="@+id/sort_item"
+            android:icon="@drawable/ic_sort_white_24dp"
             app:showAsAction="ifRoom"
-            android:title="@string/about" />
+            android:title="@string/about">
+        <menu>
+            <item
+                    android:id="@+id/rating_list"
+                    android:title="Top Rated"
+                    app:showAsAction="never"/>
+            <item
+                    android:id="@+id/popular_grid"
+                    android:title="Most Popular"
+                    app:showAsAction="never"/>
+            <item
+                    android:id="@+id/action_cardview"
+                    android:title="Release Date"
+                    app:showAsAction="never"/>
+        </menu>
+    </item>
+
+
 </menu>
