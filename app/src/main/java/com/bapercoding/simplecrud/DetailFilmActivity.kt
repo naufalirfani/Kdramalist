@@ -299,7 +299,7 @@ class DetailFilmActivity : AppCompatActivity() {
                 arrayOf<CharSequence>("Camera", "Choose from Gallery", "Cancel")
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@DetailFilmActivity)
         builder.setItems(options) { dialog, item ->
-            if (options[item].equals("Take Photo")) {
+            if (options[item].equals("Camera")) {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     // Ensure that there's a camera activity to handle the intent
                     takePictureIntent.resolveActivity(packageManager)?.also {

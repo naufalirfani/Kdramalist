@@ -1,7 +1,6 @@
 package com.bapercoding.simplecrud
 
 import android.annotation.SuppressLint
-import android.widget.ArrayAdapter
 
 class Search {
 
